@@ -1,9 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useMobileMenu } from "@/components/layout/MobileMenuProvider";
 import { Menu } from "lucide-react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionTemplate,
+} from "motion/react";
 
 const navLinks = [
   { href: "/#work", label: "Work" },
@@ -12,15 +17,32 @@ const navLinks = [
 ];
 
 export function SiteHeader() {
-  const { openMenu } = useMobileMenu();
-  const pathname = usePathname();
+  const { openMenu, open } = useMobileMenu();
+  const { scrollYProgress } = useScroll();
+  const headerBgOpacity = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0.78, 0.98]
+  );
+  const headerBackground = useMotionTemplate`rgba(11, 14, 16, ${headerBgOpacity})`;
 
   return (
-    <header className="site-header">
+    <motion.header
+      className="site-header"
+      style={{
+        background: headerBackground,
+        borderTop: "1px solid var(--color-line-2)",
+      }}
+    >
       <div className="content-max site-header__inner">
         <Link href="/" className="logo">
           <span className="logo__mark">SS</span>
-          <span className="logo__name">Shivam Shelatkar</span>
+          <span
+            className="logo__name"
+            style={{ letterSpacing: "0.1em" }}
+          >
+            Shivam Shelatkar
+          </span>
         </Link>
 
         <nav className="site-header__nav" aria-label="Primary">
@@ -29,11 +51,15 @@ export function SiteHeader() {
               key={link.label}
               href={link.href}
               className="link-underline"
+              style={{ letterSpacing: "-0.02em" }}
             >
               {link.label}
             </Link>
           ))}
-          <Link href="/work" className="btn btn--accent">
+          <Link
+            href="/work"
+            className="btn btn--accent site-header__cta"
+          >
             Start a project
           </Link>
         </nav>
@@ -42,11 +68,11 @@ export function SiteHeader() {
           className="site-header__menu"
           onClick={openMenu}
           aria-label="Open menu"
-          aria-expanded={pathname !== "/"}
+          aria-expanded={open}
         >
           <Menu size={18} />
         </button>
       </div>
-    </header>
+    </motion.header>
   );
 }

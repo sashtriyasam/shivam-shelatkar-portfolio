@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { motion } from "motion/react";
 import { projects } from "@/lib/projects";
 import { ProjectCard } from "@/components/projects/ProjectCard";
@@ -28,8 +26,8 @@ export default function WorkPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            A few projects where research, design, and engineering came
-            together to solve real problems for real people.
+            A few projects where research, design, and engineering came together
+            to solve real problems for real people.
           </motion.p>
         </header>
 

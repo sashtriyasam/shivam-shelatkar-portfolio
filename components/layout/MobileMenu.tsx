@@ -36,9 +36,10 @@ export function MobileMenu() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="mobile-menu__top">
+            <span className="mobile-menu__label">MENU / 03</span>
             <button
               className="site-header__menu"
               onClick={close}
@@ -47,14 +48,19 @@ export function MobileMenu() {
               <X size={18} />
             </button>
           </div>
-          <nav className="mobile-menu__nav">
-            {links.map((link) => (
+
+          <nav className="mobile-menu__nav" aria-label="Mobile primary">
+            {links.map((link, index) => (
               <motion.div
                 key={link.label}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: 24 }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.08,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
               >
                 <Link
                   href={link.href}
@@ -66,6 +72,15 @@ export function MobileMenu() {
               </motion.div>
             ))}
           </nav>
+
+          <div className="mobile-menu__bottom">
+            <a
+              href="mailto:hello@shivam.runs-on.dev"
+              className="mobile-menu__contact"
+            >
+              hello@shivam.runs-on.dev
+            </a>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

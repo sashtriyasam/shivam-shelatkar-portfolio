@@ -1,9 +1,37 @@
-"use client";
-
-"use client";
+﻿"use client";
 
 import { motion } from "motion/react";
 import { Briefcase, Code2, Lightbulb, Users } from "lucide-react";
+
+const ease = [0.16, 1, 0.3, 1] as const;
+const viewport = { once: true, margin: "-100px" } as const;
+
+const interests = [
+  {
+    icon: Briefcase,
+    index: "01",
+    title: "Product craft",
+    text: "Turning messy requirements into calm, usable experiences.",
+  },
+  {
+    icon: Code2,
+    index: "02",
+    title: "Frontend engineering",
+    text: "Building accessible, performant interfaces that hold up at scale.",
+  },
+  {
+    icon: Lightbulb,
+    index: "03",
+    title: "Creative technology",
+    text: "Exploring WebGL, generative art, and interactive storytelling.",
+  },
+  {
+    icon: Users,
+    index: "04",
+    title: "Team leadership",
+    text: "Mentoring designers and engineers to build stronger product teams.",
+  },
+];
 
 export default function AboutPage() {
   return (
@@ -15,8 +43,8 @@ export default function AboutPage() {
             className="about__title display"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
+            viewport={viewport}
+            transition={{ duration: 0.8, ease }}
           >
             Designer by instinct. Engineer by practice.
           </motion.h1>
@@ -26,12 +54,12 @@ export default function AboutPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
+            viewport={viewport}
+            transition={{ duration: 0.8, ease }}
           >
             <p className="about__lead">
               I help teams turn ambiguous problems into products that feel
-              inevitable — from the first sketch to the final commit.
+              inevitable â€” from the first sketch to the final commit.
             </p>
             <p className="about__copy">
               Over the last decade I&apos;ve worked with startups, agencies, and
@@ -40,13 +68,18 @@ export default function AboutPage() {
               beautiful, and I enjoy getting my hands dirty with the code that
               ships them.
             </p>
+            <aside className="about__facts" aria-label="Snapshot">
+              <span className="about__fact">10+ years</span>
+              <span className="about__fact">San Francisco, CA</span>
+              <span className="about__fact">Remote / onsite</span>
+            </aside>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.1 }}
+            viewport={viewport}
+            transition={{ duration: 0.8, delay: 0.1, ease }}
           >
             <h2 className="about__subtitle">What I do</h2>
             <ul className="about__list">
@@ -59,47 +92,68 @@ export default function AboutPage() {
         </div>
 
         <section className="about__interests">
-          <h2 className="about__subtitle">Interests</h2>
+          <motion.div
+            className="about__interests-head"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewport}
+            transition={{ duration: 0.7, ease }}
+          >
+            <h2 className="about__subtitle">What I&apos;m exploring</h2>
+            <p className="about__interests-kicker">
+              <span className="about__kicker-line" />
+              <span>04 / artifacts in motion</span>
+            </p>
+          </motion.div>
+
           <div className="about__cards">
-            <div className="about__card">
-              <Briefcase size={24} />
-              <h3 className="about__card-title">Product craft</h3>
-              <p className="about__card-text">
-                Turning messy requirements into calm, usable experiences.
-              </p>
-            </div>
-            <div className="about__card">
-              <Code2 size={24} />
-              <h3 className="about__card-title">Frontend engineering</h3>
-              <p className="about__card-text">
-                Building accessible, performant interfaces that hold up at scale.
-              </p>
-            </div>
-            <div className="about__card">
-              <Lightbulb size={24} />
-              <h3 className="about__card-title">Creative technology</h3>
-              <p className="about__card-text">
-                Exploring WebGL, generative art, and interactive storytelling.
-              </p>
-            </div>
-            <div className="about__card">
-              <Users size={24} />
-              <h3 className="about__card-title">Team leadership</h3>
-              <p className="about__card-text">
-                Mentoring designers and engineers to build stronger product teams.
-              </p>
-            </div>
+            {interests.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  className="about__card"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={viewport}
+                  transition={{ duration: 0.7, delay: i * 0.1, ease }}
+                >
+                  <span className="about__card-index" aria-hidden="true">
+                    {item.index}
+                  </span>
+                  <div className="about__card-icon">
+                    <Icon size={24} />
+                  </div>
+                  <h3 className="about__card-title">{item.title}</h3>
+                  <p className="about__card-text">{item.text}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
-        <section>
-          <h2 className="about__subtitle">Tools in the toolbox</h2>
-          <p className="about__tools-text">
-            Figma, Next.js, React, TypeScript, Tailwind CSS, Three.js, GSAP,
-            Lenis, Framer Motion, Storybook, and a growing list of experimental
+        <section className="about__tools">
+          <motion.div
+            className="about__tools-head"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewport}
+            transition={{ duration: 0.7, ease }}
+          >
+            <h2 className="about__subtitle">How I think</h2>
+            <span className="about__tools-line" aria-hidden="true" />
+          </motion.div>
+          <motion.p
+            className="about__tools-text"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewport}
+            transition={{ duration: 0.7, delay: 0.1, ease }}
+          >
+            Figma, Next.js, React, TypeScript, Tailwind CSS, Three.js, Lenis, Motion for React, Storybook, and a growing list of experimental
             frameworks. I also keep a sketchbook nearby for ideas that don&apos;t
             fit on a screen yet.
-          </p>
+          </motion.p>
         </section>
       </div>
     </div>

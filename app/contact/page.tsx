@@ -1,6 +1,5 @@
 "use client";
 
-"use client";
 
 import { motion } from "motion/react";
 import { Mail, MapPin, Phone, Activity } from "lucide-react";

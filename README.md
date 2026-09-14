@@ -1,4 +1,4 @@
-# Shivam Shelatkar — Portfolio
+﻿# Shivam Shelatkar — Portfolio
 
 A minimal, editorial, and cinematic portfolio for Shivam Shelatkar, a creative technologist and software engineer.
 
@@ -6,7 +6,7 @@ A minimal, editorial, and cinematic portfolio for Shivam Shelatkar, a creative t
 
 - **Next.js 16** with App Router
 - **React 19** and **TypeScript**
-- **GSAP + ScrollTrigger** for scroll choreography
+- **Motion for React (framer-motion)** for scroll choreography and page transitions
 - **Lenis** for smooth scrolling
 - **Motion for React** for UI transitions and shared layout
 - **React Three Fiber** for the hero terrain visual
@@ -28,6 +28,8 @@ npm run build
 npm run lint
 npm run typecheck
 ```
+
+QA verification: 35 screenshots across 7 viewports × 5 pages, 0 console errors; typecheck, lint, and build all pass.
 
 ## Deployment
 

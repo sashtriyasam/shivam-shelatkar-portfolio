@@ -1,4 +1,4 @@
-# Portfolio Design System
+﻿# Portfolio Design System
 
 This document records the implemented visual and motion system for the Shivam Shelatkar portfolio.
 
@@ -6,7 +6,7 @@ This document records the implemented visual and motion system for the Shivam Sh
 
 - **Mood**: minimal, editorial, cinematic, engineering-led.
 - **Palette**: graphite ink `#0b0e10`, warm paper `#f2f0e9`, signal lime `#c7f35a`, cyan `#66e3ff`, warm orange `#ff7a4d`, muted UI gray `#8a918c`.
-- **Typography**: Inter for UI and body, a serif display stack for headlines, a monospace stack for metadata and labels.
+- **Typography**: Space Grotesk (variable `--font-clash`) for display headings, Inter (variable `--font-inter`) for body/UI, and a monospace stack for metadata and labels.
 - **Layout**: generous gutters, a 1240px max content width, strong vertical rhythm, and intentional stillness between dense sections.
 
 ## Motion principles
@@ -18,18 +18,19 @@ This document records the implemented visual and motion system for the Shivam Sh
   - Content: 680ms
   - Cinematic: 1100ms
 - **Library responsibilities**:
-  - **GSAP + ScrollTrigger**: scroll choreography, pinned reveals, and section timing.
-  - **Lenis**: smooth scrolling synchronized with the GSAP ticker.
-  - **Motion for React**: page transitions, menu transitions, hover states, and shared project layout.
+  - **Motion for React**: all scroll choreography, pinned reveals, section timing, page transitions, menu transitions, hover states, and shared project layout.
+  - **Lenis**: smooth scrolling, synchronized with Motion for React.
   - **React Three Fiber**: hero terrain visual only; lazy-loaded with a CSS fallback.
 - **Reduced motion**: `prefers-reduced-motion` disables smooth scroll, cursor, page transitions, and long animations.
 
 ## Component architecture
 
 - `app/layout.tsx`: metadata, providers, header, page transition, footer.
-- `components/layout/`: providers, header, footer, page transition, scroll progress.
+- `components/sections/`: site header and footer.
+- `components/layout/`: mobile menu provider and mobile menu.
+- `components/scroll-progress/`: scroll progress indicator driven by Motion for React.
 - `components/hero/`: hero copy and dynamic terrain scene.
-- `components/motion/`: reveal primitive using GSAP ScrollTrigger.
+- `components/motion/`: Motion provider and motion primitives.
 - `components/projects/`: project card and procedural project visuals.
 - `components/cursor/`: contextual custom cursor for pointer devices.
 - `lib/projects.ts`: verified project data and helpers.
@@ -53,6 +54,6 @@ This document records the implemented visual and motion system for the Shivam Sh
 
 - Hero WebGL is dynamically imported and only renders when visible.
 - No external images; visuals are inline SVG or CSS.
-- Fonts use a system-first stack with an optional external import.
-- Scroll handlers are managed through GSAP and Lenis, not raw listeners.
+- **Fonts**: `next/font/google` loads Space Grotesk (`--font-clash`) and Inter (`--font-inter`).
+- Scroll handlers are managed through Motion for React and Lenis, not raw listeners.
 - Three.js renderer caps device pixel ratio at 1.5.
