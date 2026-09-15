@@ -31,8 +31,8 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <p className="site-footer__tech">
-          EST. 2026 &middot; SAN FRANCISCO, CA &middot; v2.0
+<p className="site-footer__tech">
+          v2.0
         </p>
 
         <div className="site-footer__meta">

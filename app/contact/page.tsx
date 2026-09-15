@@ -33,40 +33,18 @@ export default function ContactPage() {
               love to hear about it. I usually reply within two business days.
             </p>
 
-            <div className="contact__links" style={{ marginTop: "2rem" }}>
-              <a href="mailto:hello@shivam.runs-on.dev" className="contact__link">
-                <span className="contact__link-icon">
-                  <Mail size={18} />
-                </span>
-                <span className="contact__link-text">
-                  <strong>Email</strong>
-                  <span>hello@shivam.runs-on.dev</span>
-                </span>
-              </a>
-              <a href="tel:+15550123456" className="contact__link">
-                <span className="contact__link-icon">
-                  <Phone size={18} />
-                </span>
-                <span className="contact__link-text">
-                  <strong>Phone</strong>
-                  <span>+1 (555) 012-3456</span>
-                </span>
-              </a>
-              <a
-                href="https://maps.google.com/?q=San+Francisco"
-                target="_blank"
-                rel="noreferrer"
-                className="contact__link"
-              >
-                <span className="contact__link-icon">
-                  <MapPin size={18} />
-                </span>
-                <span className="contact__link-text">
-                  <strong>Location</strong>
-                  <span>San Francisco, CA</span>
-                </span>
-              </a>
-            </div>
+<div className="contact__links" style={{ marginTop: "2rem" }}>
+               <a href="mailto:hello@shivam.runs-on.dev" className="contact__link">
+                 <span className="contact__link-icon">
+                   <Mail size={18} />
+                 </span>
+                 <span className="contact__link-text">
+                   <strong>Email</strong>
+                   <span>hello@shivam.runs-on.dev</span>
+                 </span>
+               </a>
+               {/* Phone and location removed for privacy - use email for contact */}
+             </div>
           </motion.div>
 
           <motion.div

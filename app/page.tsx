@@ -33,14 +33,14 @@ export default function HomePage() {
           >
             Creative technologist
           </motion.p>
-          <motion.p
-            className="hero__meta-line"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.18, ease }}
-          >
-            EST. 2026 · SAN FRANCISCO, CA · CREATIVE TECHNOLOGIST
-          </motion.p>
+<motion.p
+             className="hero__meta-line"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ duration: 0.6, delay: 0.18, ease }}
+           >
+             CREATIVE TECHNOLOGIST
+           </motion.p>
         </div>
 
         <h1 className="hero__title display">

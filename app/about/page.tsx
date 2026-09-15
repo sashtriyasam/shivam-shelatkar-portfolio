@@ -58,8 +58,8 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease }}
           >
             <p className="about__lead">
-              I help teams turn ambiguous problems into products that feel
-              inevitable â€” from the first sketch to the final commit.
+I help teams turn ambiguous problems into products that feel
+               inevitable — from the first sketch to the final commit.
             </p>
             <p className="about__copy">
               Over the last decade I&apos;ve worked with startups, agencies, and
@@ -68,11 +68,11 @@ export default function AboutPage() {
               beautiful, and I enjoy getting my hands dirty with the code that
               ships them.
             </p>
-            <aside className="about__facts" aria-label="Snapshot">
-              <span className="about__fact">10+ years</span>
-              <span className="about__fact">San Francisco, CA</span>
-              <span className="about__fact">Remote / onsite</span>
-            </aside>
+<aside className="about__facts" aria-label="Snapshot">
+               <span className="about__fact">10+ years</span>
+               <span className="about__fact">Remote</span>
+               <span className="about__fact">Full-time</span>
+             </aside>
           </motion.div>
 
           <motion.div
