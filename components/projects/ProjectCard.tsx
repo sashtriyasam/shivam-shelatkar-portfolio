@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValue, useTransform } from "motion/react";
 import { useRef } from "react";
 import type { Project } from "@/lib/projects";
 import { ProjectVisual } from "@/lib/ProjectVisual";
@@ -12,17 +12,10 @@ const ease = [0.16, 1, 0.3, 1] as const;
 export function ProjectCard({ project }: { project: Project }) {
   const cardRef = useRef<HTMLAnchorElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
-  
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
-
-  const spring = { stiffness: 280, damping: 24, mass: 0.6 };
-  const scale = useSpring(1, spring);
-  const labelOpacity = useSpring(0, spring);
-  const ringScale = useSpring(1.2, spring);
-  const dotScale = useSpring(1, spring);
 
   const handleMove = (e: React.MouseEvent) => {
     const card = cardRef.current;
