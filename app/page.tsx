@@ -1,8 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import Link from "next/link";
+import { useRef } from "react";
 import { HeroFallback } from "@/components/hero/HeroFallback";
 
 const HeroTerrain = dynamic(() =>
@@ -13,17 +14,33 @@ const HeroTerrain = dynamic(() =>
 const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function HomePage() {
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.4, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.95, 0.9]);
+
   return (
-    <section className="hero" id="hero">
+    <section className="hero" id="hero" ref={heroRef}>
       <HeroTerrain />
       <HeroFallback />
 
-      <div className="hero__decor" aria-hidden="true">
+      <motion.div
+        className="hero__decor"
+        aria-hidden="true"
+        style={{ opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0]) }}
+      >
         <span className="hero__decor-line" />
         <span className="hero__decor-label">hero / index 01</span>
-      </div>
+      </motion.div>
 
-      <div className="content-max hero__content">
+      <motion.div
+        className="content-max hero__content"
+        style={{ y, opacity, scale }}
+      >
         <div className="hero__meta">
           <motion.p
             className="hero__eyebrow"
@@ -33,14 +50,14 @@ export default function HomePage() {
           >
             Creative technologist
           </motion.p>
-<motion.p
-             className="hero__meta-line"
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
-             transition={{ duration: 0.6, delay: 0.18, ease }}
-           >
-             CREATIVE TECHNOLOGIST
-           </motion.p>
+          <motion.p
+            className="hero__meta-line"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.18, ease }}
+          >
+            CREATIVE TECHNOLOGIST
+          </motion.p>
         </div>
 
         <h1 className="hero__title display">
@@ -93,7 +110,7 @@ export default function HomePage() {
             Start a project
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
 
       <motion.a
         href="#work"
@@ -101,6 +118,7 @@ export default function HomePage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.6 }}
+        style={{ y }}
       >
         <span className="hero__scroll-label">scroll down</span>
         <span className="hero__scroll-rule" />

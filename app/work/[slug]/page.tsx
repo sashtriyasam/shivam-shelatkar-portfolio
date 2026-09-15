@@ -91,7 +91,7 @@ export default function ProjectSlugPage({
           <section className="project-page__section">
             <p className="eyebrow">Status</p>
             <p className="project-page__status">
-              {project.status} � {project.year}
+              {project.status} / {project.year}
             </p>
           </section>
 

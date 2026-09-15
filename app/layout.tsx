@@ -4,6 +4,7 @@ import "./globals.css";
 import { CursorProvider } from "@/components/cursor/CursorProvider";
 import { ScrollProgress } from "@/components/scroll-progress/ScrollProgress";
 import { MobileMenuProvider } from "@/components/layout/MobileMenuProvider";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { SiteHeader } from "@/components/sections/SiteHeader";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
@@ -65,6 +66,7 @@ export default function RootLayout({
             <MobileMenuProvider>
               <ScrollProgress />
               <CustomCursor />
+              <MobileMenu />
               <div className="shell">
                 <SiteHeader />
                 <main id="main" className="page-transition" tabIndex={-1}>

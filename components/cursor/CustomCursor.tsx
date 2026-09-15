@@ -19,21 +19,17 @@ export function CustomCursor() {
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const rx = useSpring(x, { stiffness: 500, damping: 28 });
-  const ry = useSpring(y, { stiffness: 500, damping: 28 });
+  const rx = useSpring(x, { stiffness: 500, damping: 28, mass: 1 });
+  const ry = useSpring(y, { stiffness: 500, damping: 28, mass: 1 });
 
-  const scale = useSpring(1, { stiffness: 500, damping: 30 });
-  const labelOpacity = useSpring(0, { stiffness: 400, damping: 30 });
+  const scale = useSpring(1, { stiffness: 500, damping: 30, mass: 1 });
+  const labelOpacity = useSpring(0, { stiffness: 400, damping: 30, mass: 1 });
 
   const labelRef = useRef<HTMLSpanElement>(null);
   const lastTargetRef = useRef<Element | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    const coarse = window.matchMedia("(pointer: coarse)");
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (coarse.matches || reduced.matches) return;
 
     const move = (e: MouseEvent) => {
       setVisible(true);
@@ -98,4 +94,3 @@ export function CustomCursor() {
     </motion.div>
   );
 }
-

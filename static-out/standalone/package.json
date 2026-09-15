@@ -1,0 +1,38 @@
+{
+  "name": "shivam-shelatkar-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio of Shivam Shelatkar — creative technologist and software engineer.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "@types/react": "^19.2.0",
+    "@types/three": "^0.186.0",
+    "eslint-config-next": "^16.3.5",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "lucide-react": "^0.551.0",
+    "motion": "^13.2.0",
+    "next": "^16.3.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "eslint": "^9.10.0",
+    "playwright": "^1.63.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

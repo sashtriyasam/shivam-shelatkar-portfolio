@@ -1,8 +1,7 @@
 "use client";
 
-
 import { motion } from "motion/react";
-import { Mail, MapPin, Phone, Activity } from "lucide-react";
+import { Mail, Activity } from "lucide-react";
 
 export default function ContactPage() {
   return (

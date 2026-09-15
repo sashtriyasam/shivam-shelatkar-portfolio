@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   output: "standalone",
-  eslint: { ignoreDuringBuilds: true },
   experimental: {
     optimizePackageImports: ["gsap", "motion", "lenis", "lucide-react"]
   }
