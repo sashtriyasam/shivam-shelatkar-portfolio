@@ -39,25 +39,25 @@ const ingrid = Ingrid_Darling({
 export const metadata: Metadata = {
   metadataBase: new URL("https://shivam.runs-on.dev"),
   title: {
-    default: "Shivam Shelatkar — Product Designer & Engineer",
+    default: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
     template: "%s | Shivam Shelatkar",
   },
   description:
-    "Hi, I'm Shivam Shelatkar — Product Designer & Engineer from Pune. I turn fuzzy ideas into calm, useful products. Explore my immersive portfolio.",
+    "Shivam Shelatkar is the founder of Swarvibhaa, a tabla and piano player from Pune and Mumbai, building music, community and software with code.",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://shivam.runs-on.dev",
     siteName: "Shivam Shelatkar",
-    title: "Hi, I'm Shivam Shelatkar — Product Designer & Engineer",
+    title: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
     description:
-      "Hi, I'm Shivam — Product Designer & Engineer from Pune. I turn fuzzy ideas into calm, useful products. Calm over clever, ships then iterates.",
+      "Founder of Swarvibhaa. Tabla and piano player from Pune and Mumbai, building music, community and software with code.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shivam Shelatkar — Product Designer & Engineer",
+    title: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
     description:
-      "Hi, I'm Shivam — Product Designer & Engineer from Pune. Minimal, friendly, human-first.",
+      "Founder of Swarvibhaa, tabla and piano player, building music, community and software with code.",
   },
 };
 

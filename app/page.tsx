@@ -1,12 +1,11 @@
-"use client";
+﻿'use client';
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, ArrowDown, Mail, Github, Linkedin, Volume2, VolumeX, Sparkles, Activity, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Mail, Github, Linkedin, Volume2, VolumeX } from "lucide-react";
 import { CrowdCanvas } from "@/components/sections/CrowdCanvas";
-import { TiltCard } from "@/components/projects/TiltCard";
 import { InteractiveTerminal } from "@/components/sections/InteractiveTerminal";
 import { SpatialShowcase } from "@/components/sections/SpatialShowcase";
 import { sound } from "@/lib/audio";
@@ -18,108 +17,104 @@ const HeroTerrain = dynamic(
 
 const FEATURED_PROJECTS = [
   {
-    id: "01",
+    id: "swarvibhaa",
     slug: "swarvibhaa",
     title: "Swarvibhaa",
-    subtitle: "Founder · Music Tech + Architecture — 2023—",
-    headline: "Pan-India creative collective where heritage evolves without losing its soul",
-    description: "Not a band, not a troupe — an ecosystem. I founded Swarvibhaa to pause, listen, and revive the timeless across Mumbai, Delhi, Gujarat. I craft its digital presence (Odoo), form its national artist network, and bridge Hindustani + Trinity Western classical with modern audio tech. Every note intentional, every rhythm lived.",
-    tags: ["Swarvibhaa", "Founder", "Odoo", "Hindustani + Western", "Community"],
-    year: "2023—",
-    stats: "Collective · 15+ Artists · Mumbai·Delhi·Gujarat",
+    subtitle: "Founder, music and technology, 2023 to now",
+    headline: "A collective where heritage keeps evolving",
+    description: "I started Swarvibhaa in 2023 to give classical artists a shared home across Mumbai, Delhi, and Gujarat. I run its program, shape its sound, and built its site on Odoo. Hindustani and Western classical meet modern production here, and every performance is deliberate.",
+    tags: ["Founder", "Odoo", "Hindustani and Western", "Community"],
+    year: "2023 to now",
+    stats: "Collective, 15+ artists, Mumbai, Delhi, Gujarat",
     href: "https://swarvibhaa.odoo.com/founders-team",
-    previewImg: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop" // tabla / sitar vibe — replace with @shastriyakid shoot
+    linkLabel: "Visit the founders page",
+    photoNote: "Swarvibhaa photo coming from @shastriyakid"
   },
   {
-    id: "02",
+    id: "raatrani-orchestral",
     slug: "raatrani-orchestral",
     title: "Raatrani (Orchestral)",
-    subtitle: "Swarvibhaa Original · Composer / Producer",
-    headline: "Where melody blooms like the night-flower — strings, ambient textures, cinematic soul",
-    description: "Lush reimagining of our original Raatrani into a cinematic soundscape. From Pandit Mukundraj Deo tabla training (10+ yrs) to Trinity Piano (6 yrs), I weave strings and harmonies that feel larger than life — fearless, limitless, made for Indian cinema's global stage (IMDb nm17605062).",
-    tags: ["Raatrani", "Orchestral", "Composer", "Tabla · Piano", "Cinematic"],
+    subtitle: "Swarvibhaa original, composer and producer",
+    headline: "A night flower, scored for strings",
+    description: "Raatrani began as a Swarvibhaa original and grew into a cinematic piece for strings and ambient textures. Ten years of tabla with Pandit Mukundraj Deo and six years of Trinity piano sit underneath every bar. Written for the stage, and for film.",
+    tags: ["Raatrani", "Orchestral", "Composer", "Tabla and piano"],
     year: "2024",
-    stats: "Original · Cinematic · Swarvibhaa",
+    stats: "Original, cinematic, Swarvibhaa",
     href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10",
-    previewImg: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop" // studio orchestral
+    linkLabel: "Listen to Raatrani",
+    photoNote: "Raatrani artwork coming from @shastriyakid"
   },
   {
-    id: "03",
+    id: "thevita-masthak",
     slug: "thevita-masthak",
     title: "Thevita Masthak Deva",
-    subtitle: "Marathi Bhajan · Ashadi Ekadashi 2025",
-    headline: "A sonic offering to Lord Vitthal — Wari pilgrimage, Varkari soul",
-    description: "Heartfelt bhajan carrying centuries of devotion. Released on Ashadi Ekadashi 2025, with arrangement by Tarang Sashte & me — bridging ancient devotion with contemporary production. Built on indie circuits behind-the-scenes where sonic detail matters most.",
-    tags: ["Varkari", "Bhajan", "Ashadi Ekadashi 2025", "Arrangement", "Devotional"],
+    subtitle: "Marathi bhajan, Ashadi Ekadashi 2025",
+    headline: "An offering for the Wari season",
+    description: "A bhajan for Lord Vitthal, released on Ashadi Ekadashi 2025. Tarang Sashte and I arranged it together, keeping the Varkari devotion intact while producing it for modern ears.",
+    tags: ["Varkari", "Bhajan", "2025", "Arrangement"],
     year: "2025",
-    stats: "Wari · Varkari Heritage",
+    stats: "Wari, Varkari heritage",
     href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/thevita-masthak-deva-tuzha-payi-3",
-    previewImg: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop" // vitthal / wari pilgrimage vibe
+    linkLabel: "Listen to Thevita",
+    photoNote: "Thevita photo coming from @shastriyakid"
   }
 ];
-
 const ARCHIVE_PROJECTS = [
   {
-    id: "04",
-    title: "Saffron सुरावळ",
-    category: "Instrumental · Emotion & Evolution",
-    description: "An instrumental reflection — Indo-Western fusion from slate studio to stage. Minimal, expressive, heritage in motion.",
+    title: "Saffron suraaval",
+    category: "Instrumental, Indo-Western",
+    description: "A quiet instrumental piece about feeling and change. Minimal arrangement, recorded simply, played live with Swarvibhaa.",
     year: "2024",
     href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/saffron-suraaval-9",
-    external: true,
-    tag: "SWARVIBHAA"
+    linkLabel: "Listen on the Swarvibhaa blog"
   },
   {
-    id: "05",
-    title: "Unity & Code — Game Dev",
-    category: "Independent Game Dev · 2017—",
-    description: "Engineer by training, Unity developer since 2017. Building interactive worlds where music meets code — Hindustani rhythm + real-time graphics.",
-    year: "2017—",
+    title: "Unity and code",
+    category: "Independent game development, since 2017",
+    description: "Engineer by training, Unity developer since 2017. I build small interactive worlds, usually with rhythm systems hiding inside them.",
+    year: "Since 2017",
     href: "https://github.com/sashtriyasam",
-    external: true,
-    tag: "ENGINEERING"
+    linkLabel: "Browse on GitHub"
   },
   {
-    id: "06",
-    title: "ABVP · Nation First",
-    category: "Thane District · Education & Activism",
-    description: "ABVP Thane District Technical Education Student Activities Convenor (2023—). Intern of @naradmuniii. Damit. Nation first. Organising, bridging campuses, keeping tradition and technology in dialogue.",
-    year: "2023—",
+    title: "ABVP Thane",
+    category: "Student activities convenor",
+    description: "I convene technical-education student activities for ABVP in Thane district: organising across campuses and keeping tradition and technology in conversation.",
+    year: "2023 to now",
     href: "https://linkedin.com/in/shivam-shelatkar-503305358",
-    external: true,
-    tag: "COMMUNITY"
+    linkLabel: "Connect on LinkedIn"
   }
 ];
 
 const PRINCIPLES = [
   {
-    num: "01",
-    title: "Uncover the why before shaping the how.",
-    body: "Interfaces cluttered with endless knobs usually conceal poorly understood problems. When you isolate the true human bottleneck, the solution crystallizes with striking clarity and minimal UI."
+    title: "Rhythm first.",
+    body: "Ten years of tabla taught me that timing carries everything. I start projects by finding the pulse: what repeats, what breathes, where the pause goes. Structure before decoration."
   },
   {
-    num: "02",
-    title: "Code is a design material, not just an output.",
-    body: "Static mockups cannot simulate network delay, frame pacing, tactile springs, or responsive ergonomics. Designing with live code ensures that craft survives the journey from canvas to production."
+    title: "Tradition into code.",
+    body: "I grew up inside Hindustani classical music and now build software. Both reward the same habits: practice, listening, and knowing which rules to keep. I like work that sits at that crossing."
   },
   {
-    num: "03",
-    title: "Calm interfaces amplify human focus.",
-    body: "Modern tools constantly shout for attention. The highest form of digital craftsmanship is quiet clarity: density without clutter, speed without disorientation, power without anxiety."
+    title: "Quiet tools.",
+    body: "The best instruments disappear in your hands. I build interfaces and systems that stay out of the way: plain language, few controls, nothing blinking for attention."
   }
+];
+
+const LIFE_PHOTOS = [
+  { label: "Photo coming from @shastriyakid", caption: "The house cats, who run the place" },
+  { label: "Photo coming from @shastriyakid", caption: "Tabla practice, ten years with Pandit Mukundraj Deo" },
+  { label: "Photo coming from @shastriyakid", caption: "Piano, six years through Trinity" },
+  { label: "Photo coming from @shastriyakid", caption: "A Swarvibhaa baithak in Mumbai" },
+  { label: "Photo coming from @shastriyakid", caption: "Blue hour, Karwar to Mumbai" },
+  { label: "Photo coming from @shastriyakid", caption: "ABVP work in Thane district" }
 ];
 
 export default function HomePage() {
   const [time, setTime] = useState("--:--");
   const [mounted, setMounted] = useState(false);
   const [soundActive, setSoundActive] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const shouldReduceMotion = useReducedMotion();
-  const [typedAbout, setTypedAbout] = useState("");
-  const fullAbout = "About me — Karwar-born, Mumbai-grown. Tabla 10+ yrs (Pandit Mukundraj Deo) + Trinity Piano 6 yrs → now Founder @Swarvibhaa. I build pan-India for classical artists and code interactive worlds in Unity since 2017. Rooted in tradition. Wired with code. I love cats, blue like real blues, and making heritage feel alive (880+ @shastriyakid).";
-  const ROLES = ["Founder @Swarvibhaa", "Music Technologist", "Engineer · Unity Dev", "Tabla · Trinity Piano"];
-  const [roleIdx, setRoleIdx] = useState(0);
-  const [displayRole, setDisplayRole] = useState(ROLES[0]);
 
   useEffect(() => {
     setMounted(true);
@@ -134,69 +129,8 @@ export default function HomePage() {
     };
     updateTime();
     const interval = setInterval(updateTime, 10000);
-
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({
-        x: Math.round((e.clientX / window.innerWidth) * 100),
-        y: Math.round((e.clientY / window.innerHeight) * 100)
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+    return () => clearInterval(interval);
   }, []);
-
-  // typewriter for about me
-  useEffect(() => {
-    if (!mounted) return;
-    let i = 0;
-    const id = setInterval(() => {
-      i++;
-      setTypedAbout(fullAbout.slice(0, i));
-      if (i >= fullAbout.length) clearInterval(id);
-    }, 14);
-    return () => clearInterval(id);
-  }, [mounted]);
-
-  // scramble role ticker - every 2.8s scramble to next role
-  useEffect(() => {
-    if (!mounted || shouldReduceMotion) return;
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@$%&";
-    let scrambleInterval: any;
-    let holdTimeout: any;
-    const cycle = () => {
-      const nextIdx = (roleIdx + 1) % ROLES.length;
-      let iterations = 0;
-      const target = ROLES[nextIdx];
-      clearInterval(scrambleInterval);
-      scrambleInterval = setInterval(() => {
-        setDisplayRole(
-          target
-            .split("")
-            .map((c, idx) => {
-              if (idx < iterations) return target[idx];
-              if (c === " " || c === "&") return c;
-              return chars[Math.floor(Math.random() * chars.length)];
-            })
-            .join("")
-        );
-        if (iterations >= target.length) {
-          clearInterval(scrambleInterval);
-          setRoleIdx(nextIdx);
-        }
-        iterations += 1.6;
-      }, 32);
-    };
-    const ticker = setInterval(cycle, 3200);
-    return () => {
-      clearInterval(ticker);
-      clearInterval(scrambleInterval);
-      clearTimeout(holdTimeout);
-    };
-  }, [mounted, roleIdx, shouldReduceMotion]);
 
   const toggleAudio = () => {
     const isEnabled = sound.toggle();
@@ -204,11 +138,12 @@ export default function HomePage() {
   };
 
   const easeTransition = [0.16, 1, 0.3, 1] as const;
+  const still = shouldReduceMotion ? undefined : { opacity: 0, y: 12 };
 
   return (
-    <div className="immersive-portfolio-root">
+    <div className="home-root" id="top">
       <style>{`
-        .immersive-portfolio-root {
+        .home-root {
           background-color: #060709;
           color: #f0f2f5;
           font-family: var(--font-body);
@@ -216,1863 +151,947 @@ export default function HomePage() {
           overflow-x: hidden;
           min-height: 100vh;
         }
-
-        .immersive-portfolio-root::before {
-          content: "";
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          z-index: 0;
-          background-image: 
-            linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-          background-size: 64px 64px;
+        
+        .home-root a:focus-visible,
+        .home-root button:focus-visible {
+          outline: 2px solid var(--color-focus);
+          outline-offset: 3px;
+          border-radius: 4px;
         }
 
-        .ambient-glow {
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          z-index: 0;
-          background: radial-gradient(850px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 59, 48, 0.045), rgba(0, 212, 255, 0.02) 40%, transparent 75%);
-          transition: background 0.1s ease-out;
-        }
-
-        .hud-header {
+        .topbar {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 16px;
           padding: 0 clamp(20px, 4.5vw, 72px);
-          height: 56px;
+          min-height: 60px;
           border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(6, 7, 9, 0.88);
-          backdrop-filter: blur(16px);
+          background: rgba(6, 7, 9, 0.9);
           position: sticky;
           top: 0;
           z-index: 60;
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
         }
-
-        .hud-left {
-          display: flex;
-          align-items: center;
-          gap: 1.2rem;
-        }
-
-        .hud-beacon {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: #00f59b;
-          box-shadow: 0 0 10px #00f59b;
-          animation: beaconPulse 2s infinite;
-        }
-
-        @keyframes beaconPulse {
-          0% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(0.85); }
-          100% { opacity: 1; transform: scale(1); }
-        }
-
-        .hud-audio-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.4rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: #f0f2f5;
-          padding: 0.35rem 0.75rem;
-          border-radius: 999px;
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.1em;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .hud-audio-btn:hover {
-          background: rgba(255, 255, 255, 0.12);
-          border-color: #00d4ff;
-          color: #00d4ff;
-        }
-
-        .hud-nav {
-          display: flex;
-          align-items: center;
-          gap: 2rem;
-        }
-
-        .hud-nav a {
-          text-decoration: none;
-          color: rgba(255, 255, 255, 0.7);
-          position: relative;
-          padding: 4px 0;
-          transition: color 0.2s ease;
-        }
-
-        .hud-nav a:hover {
-          color: #fff;
-        }
-
-        .hud-nav a::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -2px;
-          width: 0;
-          height: 1.5px;
-          background: #ff3b30;
-          transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .hud-nav a:hover::after {
-          width: 100%;
-        }
-
-        .hero-shell {
-          min-height: calc(100vh - 56px);
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 4rem clamp(20px, 4.5vw, 72px) 2.5rem;
-          position: relative;
-          z-index: 1;
-        }
-
-        .hero-content {
-          max-width: 1240px;
-          width: 100%;
-          margin: auto 0;
-          position: relative;
-          z-index: 2;
-        }
-
-        .hero-kicker-tag {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.45rem 1rem;
-          border-radius: 999px;
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          background: rgba(12, 14, 20, 0.75);
-          backdrop-filter: blur(10px);
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: #00d4ff;
-          margin-bottom: 2rem;
-        }
-
-        .hero-headline {
-          font-size: clamp(3.2rem, 9vw, 8.8rem);
+        .brand {
           font-weight: 700;
-          line-height: 0.9;
-          letter-spacing: -0.05em;
-          margin: 0;
+          font-size: 16px;
+          letter-spacing: -0.01em;
           color: #fff;
-          text-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+          text-decoration: none;
         }
-
-        .hero-headline .neon-accent {
-          color: #ff3b30;
-          font-family: var(--font-display);
-          font-style: italic;
-          font-weight: 400;
-          letter-spacing: -0.02em;
-          display: inline-block;
-          text-shadow: 0 0 25px rgba(255, 59, 48, 0.4);
+        .topnav {
+          display: flex;
+          align-items: center;
+          gap: 28px;
         }
-
-        .hero-desc {
-          font-size: clamp(1.1rem, 2.2vw, 1.65rem);
-          line-height: 1.5;
-          letter-spacing: -0.02em;
+        .topnav a {
+          color: rgba(255, 255, 255, 0.68);
+          text-decoration: none;
+          font-size: 15px;
+        }
+        .topnav a:hover { color: #fff; }
+        .topmeta {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          font-family: var(--font-mono);
+          font-size: 12px;
+          color: rgba(255, 255, 255, 0.5);
+        }
+        .clock { font-variant-numeric: tabular-nums; }
+        .sound-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.16);
           color: rgba(255, 255, 255, 0.75);
-          max-width: 48ch;
-          margin: 2.2rem 0 2.8rem;
-        }
-
-        .hero-cta-group {
-          display: flex;
-          align-items: center;
-          gap: 1.2rem;
-          flex-wrap: wrap;
-        }
-
-        .btn-neon-primary {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.6rem;
-          background: #ff3b30;
-          color: #fff;
-          padding: 0.9rem 1.8rem;
+          padding: 8px 14px;
           border-radius: 999px;
           font-family: var(--font-mono);
-          font-size: 0.7rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          text-decoration: none;
-          font-weight: 700;
-          box-shadow: 0 10px 30px -5px rgba(255, 59, 48, 0.5);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          font-size: 12px;
+          cursor: pointer;
+          min-height: 36px;
         }
+        .sound-btn:hover { border-color: rgba(255, 255, 255, 0.4); color: #fff; }
 
-        .btn-neon-primary:hover {
-          transform: translateY(-3px) scale(1.02);
-          box-shadow: 0 15px 40px -5px rgba(255, 59, 48, 0.7);
-        }
-
-        .btn-neon-outline {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.6rem;
-          background: rgba(255, 255, 255, 0.04);
-          color: #fff;
-          border: 1px solid rgba(255, 255, 255, 0.18);
-          padding: 0.9rem 1.8rem;
-          border-radius: 999px;
-          font-family: var(--font-mono);
-          font-size: 0.7rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          text-decoration: none;
-          transition: all 0.2s ease;
-        }
-
-        .btn-neon-outline:hover {
-          border-color: #00d4ff;
-          color: #00d4ff;
-          transform: translateY(-2px);
-          background: rgba(0, 212, 255, 0.06);
-        }
-
-        .hero-telemetry-bar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding-top: 2rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: rgba(255, 255, 255, 0.45);
-        }
-
-        .section-wrap {
-          padding: var(--space-4xl) var(--grid-margin);
-          border-top: 1px solid var(--color-border);
-          position: relative;
-          z-index: 1;
-        }
-
-        .section-max {
-          max-width: var(--max-width);
-          margin: 0 auto;
-        }
-
-        .section-header-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          margin-bottom: var(--space-2xl);
-          flex-wrap: wrap;
-          gap: var(--space-lg);
-        }
-
-        .section-badge {
-          font-family: var(--font-mono);
-          font-size: var(--text-xs);
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: var(--color-accent-primary);
-          display: block;
-          margin-bottom: var(--space-sm);
-          font-weight: 700;
-        }
-
-        .section-h2 {
-          font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
-          font-weight: 700;
-          line-height: var(--leading-tight);
-          letter-spacing: var(--tracking-tight);
-          margin: 0;
-          color: var(--color-text-primary);
-        }
-
-        .project-flow {
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-2xl);
-        }
-
-        .project-card-inner {
-          display: grid;
-          grid-template-columns: 1.15fr 1fr;
-          border: 1px solid var(--color-border);
-          border-radius: 16px;
-          overflow: hidden;
-          background: var(--color-surface);
-          box-shadow: 0 16px 48px -16px rgba(0, 0, 0, 0.5);
-          transition: border-color var(--motion-duration-medium) var(--motion-ease-out), box-shadow var(--motion-duration-medium) var(--motion-ease-out), transform var(--motion-duration-medium) var(--motion-ease-out);
-        }
-
-        .project-card-inner:hover {
-          border-color: var(--color-border-strong);
-          box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.7);
-          transform: translateY(-4px);
-        }
-        .project-card-inner:focus-within {
-          border-color: var(--color-focus);
-          box-shadow: 0 0 0 2px rgba(0,212,255,0.2);
-        }
-
-        .project-img-box {
-          position: relative;
-          overflow: hidden;
-          background: #000;
-          min-height: 380px;
-        }
-
-        .project-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          filter: contrast(1.04) brightness(0.88);
-          transition: filter var(--motion-duration-long) var(--motion-ease-out), transform var(--motion-duration-long) var(--motion-ease-out);
-        }
-
-        .project-card-inner:hover .project-img {
-          filter: contrast(1.06) brightness(0.96);
-          transform: scale(1.03);
-        }
-
-        .project-info-pane {
-          padding: var(--space-xl);
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          background: linear-gradient(135deg, rgba(14,16,22,0.96) 0%, rgba(8,10,14,0.98) 100%);
-        }
-
-        .project-meta-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: var(--space-md);
-          font-family: var(--font-mono);
-          font-size: var(--text-xs);
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--color-text-tertiary);
-        }
-
-        .project-title-h3 {
-          font-size: clamp(var(--text-xl), 3vw, var(--text-2xl));
-          font-weight: 700;
-          letter-spacing: var(--tracking-tight);
-          line-height: var(--leading-tight);
-          margin: 0 0 var(--space-sm);
-          color: var(--color-text-primary);
-        }
-
-        .project-headline-p {
-          font-size: var(--text-base);
-          font-weight: 600;
-          line-height: var(--leading-normal);
-          color: var(--color-accent-cyan);
-          margin-bottom: var(--space-sm);
-        }
-
-        .project-body-p {
-          font-size: var(--text-sm);
-          line-height: var(--leading-relaxed);
-          color: var(--color-text-secondary);
-          margin: 0 0 var(--space-lg);
-          max-width: var(--measure);
-        }
-
-        .project-tags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: var(--space-sm);
-          margin-bottom: var(--space-lg);
-        }
-
-        .tag-pill {
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.10em;
-          text-transform: uppercase;
-          padding: var(--space-xs) var(--space-sm);
-          border-radius: 999px;
-          border: 1px solid var(--color-border);
-          color: var(--color-text-secondary);
-          background: rgba(255, 255, 255, 0.03);
-        }
-
-        .project-footer-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding-top: var(--space-md);
-          border-top: 1px solid var(--color-border);
-          gap: var(--space-md);
-        }
-
-        .project-stat-label {
-          font-family: var(--font-mono);
-          font-size: var(--text-xs);
-          font-weight: 700;
-          letter-spacing: 0.06em;
-          color: var(--color-accent-green);
-        }
-
-        .project-cta-link {
-          font-family: var(--font-mono);
-          font-size: var(--text-xs);
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          font-weight: 700;
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-xs);
-          color: var(--color-text-primary);
-        }
-
-        .archive-deck {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: var(--space-lg);
-          margin-top: var(--space-lg);
-        }
-
-        .archive-unit {
-          border: 1px solid var(--color-border);
-          border-radius: 16px;
-          padding: var(--space-lg);
-          background: rgba(12,14,20,0.72);
-          backdrop-filter: blur(10px);
-          text-decoration: none;
-          color: inherit;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          min-height: 220px;
-          transition: all var(--motion-duration-medium) var(--motion-ease-out);
-        }
-
-        .archive-unit:hover, .archive-unit:focus-visible {
-          border-color: var(--color-accent-cyan);
-          transform: translateY(-4px);
-          background: rgba(16,20,30,0.92);
-          outline: none;
-        }
-        .archive-unit:focus-visible {
-          box-shadow: 0 0 0 2px rgba(0,212,255,0.25);
-        }
-
-        .principles-deck {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: var(--space-lg);
-        }
-
-        .principle-box {
-          border: 1px solid var(--color-border);
-          border-radius: 16px;
-          padding: var(--space-xl);
-          background: rgba(12,14,20,0.55);
-          backdrop-filter: blur(12px);
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-md);
-        }
-
-        .about-cockpit {
-          background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
-          border: 1px solid var(--color-border);
-          border-radius: 16px;
-          padding: var(--space-2xl);
-          display: grid;
-          grid-template-columns: 1.15fr 0.85fr;
-          gap: var(--space-2xl);
-          align-items: center;
-          box-shadow: 0 24px 64px -20px rgba(0, 0, 0, 0.6);
-        }
-
-        @media (max-width: 960px) {
-          .project-card-inner {
-            grid-template-columns: 1fr;
-          }
-          .archive-deck, .principles-deck {
-            grid-template-columns: 1fr;
-          }
-          .about-cockpit {
-            grid-template-columns: 1fr;
-            padding: var(--space-xl);
-          }
-          .hud-nav {
-            display: none;
-          }
-          .section-wrap { padding: var(--space-2xl) var(--grid-margin); }
-        }
-
-        /* ——— IMMERSIVE HERO — SYSTEMATISED (visual-hierarchy, spacing-system, motion-system, color-system, a11y) ——— */
-        .immersive-hero {
-          min-height: calc(100vh - 56px);
-          min-height: calc(100dvh - 56px);
+        .hero {
           position: relative;
           overflow: hidden;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: var(--space-xl) var(--grid-margin) var(--space-lg);
+          min-height: calc(100vh - 60px);
+          min-height: calc(100dvh - 60px);
+          padding: 64px clamp(20px, 4.5vw, 72px) 96px;
           isolation: isolate;
-          /* 12-col grid concept: content centered with max 1240, gutters via --grid-margin */
         }
-        .hero-orb {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          z-index: 1;
-          filter: blur(56px);
-          opacity: 0.32; /* reduced from 0.55 — was competing with primary name */
-          mix-blend-mode: screen;
-        }
-        .hero-orb--a {
-          width: 520px; height: 520px;
-          background: radial-gradient(circle at 30% 30%, rgba(255,59,48,0.16), rgba(255,59,48,0) 70%);
-          top: -100px; right: -60px;
-          animation: orbFloatA 10s var(--motion-ease-in-out) infinite;
-        }
-        .hero-orb--b {
-          width: 680px; height: 680px;
-          background: radial-gradient(circle at 50% 50%, rgba(0,212,255,0.10), rgba(0,212,255,0) 70%);
-          bottom: -160px; left: -140px;
-          animation: orbFloatB 12s var(--motion-ease-in-out) infinite;
-        }
-        @keyframes orbFloatA { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-12px,10px) scale(1.03)} }
-        @keyframes orbFloatB { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(16px,-8px) scale(1.02)} }
-
-        .immersive-hero-content {
-          max-width: var(--max-width);
-          width: 100%;
-          margin: 0 auto;
-          position: relative;
-          z-index: 2;
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-xl); /* 32px consistent — was 1.6rem arbitrary */
-          padding-top: var(--space-md);
-          padding-bottom: var(--space-md);
-        }
-        .hero-kicker-row {
-          display: flex;
-          align-items: center;
-          gap: var(--space-md);
-          flex-wrap: wrap;
-          font-family: var(--font-mono);
-          font-size: var(--text-xs);
-          letter-spacing: var(--tracking-wide);
-          text-transform: uppercase;
-          opacity: 0.95; /* de-emphasized — not competing with name */
-        }
-        .hero-kicker-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-sm);
-          padding: var(--space-sm) var(--space-md);
-          border-radius: 999px;
-          border: 1px solid var(--color-border);
-          background: var(--color-surface-overlay);
-          backdrop-filter: blur(12px);
-          color: var(--color-text-primary);
-          font-weight: 600;
-        }
-        .kicker-dot {
-          width: 6px; height: 6px;
-          border-radius: 50%;
-          background: var(--color-accent-green);
-          box-shadow: 0 0 8px var(--color-accent-green);
-          animation: beaconPulse 2s infinite;
-          flex: 0 0 6px;
-        }
-        .kicker-sep { color: var(--color-text-tertiary); }
-        .hero-kicker-sub {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-sm);
-          padding: var(--space-sm) var(--space-md);
-          border-radius: 999px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid var(--color-border);
-          color: var(--color-text-secondary);
-          font-weight: 600;
-        }
-
-        .hero-name-wrap {
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-sm);
-        }
-        .hi-row {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-sm);
-        }
-        .hi-script {
-          font-family: var(--font-mono);
-          font-size: var(--text-xs);
-          font-weight: 700;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: var(--color-text-tertiary);
-          line-height: var(--leading-tight);
-          display: inline-block;
-        }
-        .hi-wave { font-size: 1.1rem; margin-left: var(--space-xs); }
-        .hi-line-decor {
-          width: 56px;
-          height: 1px;
-          background: var(--color-border-strong);
-          margin-left: var(--space-xs);
-        }
-
-        .hero-big-name {
-          margin: 0;
-          line-height: var(--leading-tight);
-          letter-spacing: var(--tracking-tight);
-          font-weight: 700;
-          font-family: var(--font-body);
-          perspective: 600px;
-          transform-style: preserve-3d;
-        }
-        .name-line {
-          display: block;
-          font-size: clamp(3.2rem, 9vw, 8rem); /* 1.5x differential vs role (0.78rem) — hierarchy weight pass */
-          font-weight: 700;
-          letter-spacing: var(--tracking-tight);
-          line-height: 0.92;
-          overflow: visible;
-        }
-        .name-first {
-          color: var(--color-text-primary);
-          text-shadow: 0 8px 24px rgba(0,0,0,0.45);
-        }
-        .name-last {
-          color: var(--color-text-primary);
-          margin-top: var(--space-xs);
-          opacity: 0.98;
-        }
-        .char {
-          display: inline-block;
-          cursor: default;
-          transition: color var(--motion-duration-short) var(--motion-ease-out), transform var(--motion-duration-short) var(--motion-ease-out);
-          will-change: transform;
-        }
-        .char:focus-visible {
-          outline: 2px solid var(--color-focus);
-          outline-offset: 3px;
-          border-radius: 2px;
-        }
-        .char--first:hover, .char--first:focus-visible {
-          color: var(--color-accent-primary) !important;
-        }
-        .char--last:hover, .char--last:focus-visible {
-          color: var(--color-accent-cyan) !important;
-        }
-        .hero-role-row {
-          display: flex;
-          align-items: baseline;
-          gap: var(--space-md);
-          flex-wrap: wrap;
-          font-family: var(--font-mono);
-          margin-top: var(--space-sm);
-          font-size: var(--text-sm);
-          letter-spacing: var(--tracking-wide);
-        }
-        .role-scramble {
-          color: var(--color-accent-cyan);
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          font-size: var(--text-xs);
-          min-width: 22ch;
-          display: inline-block;
-          /* removed text-shadow — was false emphasis competing with name */
-        }
-        .role-divider { color: var(--color-text-tertiary); }
-        .role-hint {
-          color: var(--color-text-secondary);
-          font-family: var(--font-body);
-          letter-spacing: -0.01em;
-          text-transform: none;
-          font-size: var(--text-base);
-          line-height: var(--leading-normal);
-        }
-
-        .hero-about-card {
-          margin-top: var(--space-sm);
-          max-width: var(--measure); /* 65ch — readable-measure */
-          background: linear-gradient(135deg, rgba(18,20,28,0.78) 0%, rgba(10,12,16,0.86) 100%);
-          border: 1px solid var(--color-border);
-          border-radius: 16px; /* was 18 arbitrary — now 16 from token */
-          padding: var(--space-lg);
-          backdrop-filter: blur(14px) saturate(130%);
-          box-shadow: 0 16px 48px -16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
-          position: relative;
-          overflow: hidden;
-        }
-        .hero-about-card::before {
-          content: "";
+        .hero-bg { position: absolute; inset: 0; z-index: 0; }
+        .hero-scrim {
           position: absolute;
           inset: 0;
-          background: radial-gradient(400px 160px at 20% 0%, rgba(255,59,48,0.06), transparent 60%);
+          z-index: 1;
           pointer-events: none;
+          background: linear-gradient(180deg, rgba(6,7,9,0.55) 0%, rgba(6,7,9,0.82) 100%);
         }
-        .hero-about-label {
-          display: flex;
-          align-items: center;
-          gap: var(--space-sm);
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          color: var(--color-accent-green);
-          margin-bottom: var(--space-sm);
-          font-weight: 700;
-        }
-        .about-dot {
-          width: 6px; height: 6px;
-          border-radius: 50%;
-          background: var(--color-accent-green);
-          box-shadow: 0 0 6px var(--color-accent-green);
-        }
-        .about-line {
-          flex: 1;
-          height: 1px;
-          background: linear-gradient(90deg, rgba(0,245,155,0.32), transparent);
-          margin-left: var(--space-sm);
-        }
-        .hero-about-text {
-          margin: 0;
-          font-size: var(--text-base);
-          line-height: var(--leading-relaxed);
-          letter-spacing: -0.015em;
-          color: var(--color-text-primary);
-          font-weight: 400;
+        .hero-inner {
           position: relative;
-          min-height: 3.2em;
-          max-width: var(--measure);
+          z-index: 2;
+          max-width: 1240px;
+          width: 100%;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
         }
-        .type-cursor {
-          display: inline-block;
-          margin-left: 2px;
-          color: var(--color-accent-cyan);
-          font-weight: 300;
-          animation: blink 1s step-end infinite;
-          transform: translateY(1px);
+        .kicker {
+          margin: 0;
+          font-family: var(--font-mono);
+          font-size: 13px;
+          letter-spacing: 0.04em;
+          color: rgba(255, 255, 255, 0.6);
         }
-        @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
-
-        .immersive-cta {
+        .hero-name {
+          margin: 0;
+          font-size: clamp(48px, 8vw, 112px);
+          font-weight: 700;
+          line-height: 0.95;
+          letter-spacing: -0.04em;
+          color: #fff;
+        }
+        .hero-about {
+          margin: 0;
+          font-size: 17px;
+          line-height: 1.7;
+          letter-spacing: -0.01em;
+          color: rgba(255, 255, 255, 0.78);
+          max-width: 65ch;
+        }
+        .hero-ctas {
           display: flex;
           flex-wrap: wrap;
-          gap: var(--space-md);
-          margin-top: var(--space-xs);
-          align-items: center;
+          gap: 12px;
+          margin-top: 8px;
         }
-        .btn-ghost {
+        .btn {
           display: inline-flex;
           align-items: center;
-          gap: var(--space-sm);
-          padding: var(--space-md) var(--space-lg);
+          gap: 8px;
+          padding: 14px 28px;
           border-radius: 999px;
-          font-family: var(--font-mono);
-          font-size: var(--text-xs);
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
+          font-size: 15px;
+          font-weight: 600;
           text-decoration: none;
-          color: var(--color-text-secondary);
-          border: 1px solid transparent;
-          min-height: 44px; /* fitts-law touch target */
-          transition: all var(--motion-duration-short) var(--motion-ease-out);
+          min-height: 48px;
         }
-        .btn-ghost:hover, .btn-ghost:focus-visible {
-          color: var(--color-text-primary);
-          background: rgba(255,255,255,0.06);
-          border-color: var(--color-border-strong);
-          transform: translateY(-1px);
+        .btn-solid { background: #fff; color: #060709; border: 1px solid #fff; }
+        .btn-solid:hover { background: rgba(255, 255, 255, 0.88); }
+        .btn-outline {
+          background: transparent;
+          color: #fff;
+          border: 1px solid rgba(255, 255, 255, 0.28);
         }
-        .btn-ghost:focus-visible, .btn-neon-primary:focus-visible, .btn-neon-outline:focus-visible {
-          outline: 2px solid var(--color-focus);
-          outline-offset: 2px;
-        }
-        .hero-side-label {
-          position: absolute;
-          right: var(--space-lg);
-          top: 50%;
-          transform: translateY(-50%) rotate(90deg);
-          transform-origin: center;
-          display: flex;
-          align-items: center;
-          gap: var(--space-sm);
-          font-family: var(--font-mono);
-          font-size: 0.58rem;
-          letter-spacing: 0.20em;
-          text-transform: uppercase;
-          color: var(--color-text-tertiary);
-          z-index: 3;
-          pointer-events: none;
-          white-space: nowrap;
-          opacity: 0.75;
-        }
-        .hero-side-label .side-line {
-          width: 32px; height: 1px;
-          background: var(--color-border-strong);
-          display: inline-block;
-        }
-        .scroll-explore {
+        .btn-outline:hover { border-color: #fff; }
+        .scroll-hint {
           position: absolute;
           left: 50%;
-          bottom: var(--space-md);
+          bottom: 24px;
           transform: translateX(-50%);
-          z-index: 3;
+          z-index: 2;
+          font-family: var(--font-mono);
+          font-size: 12px;
+          letter-spacing: 0.08em;
+          color: rgba(255, 255, 255, 0.45);
+          text-decoration: none;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: var(--space-sm);
-          text-decoration: none;
-          color: var(--color-text-tertiary);
-          font-family: var(--font-mono);
-          font-size: 0.58rem;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          transition: color var(--motion-duration-short) var(--motion-ease-out);
+          gap: 8px;
         }
-        .scroll-explore:hover, .scroll-explore:focus-visible { color: var(--color-text-primary); outline: none; }
-        .scroll-explore:focus-visible .scroll-wheel { border-color: var(--color-focus); box-shadow: 0 0 0 2px rgba(0,212,255,0.25); }
-        .scroll-wheel {
-          width: 22px; height: 34px;
-          border-radius: 999px;
-          border: 1px solid var(--color-border-strong);
-          display: grid;
-          place-items: start center;
-          padding-top: 5px;
-          background: rgba(255,255,255,0.04);
-          backdrop-filter: blur(6px);
-        }
-        .scroll-dot {
-          width: 4px; height: 4px;
-          border-radius: 50%;
-          background: var(--color-accent-cyan);
-          box-shadow: 0 0 6px var(--color-accent-cyan);
+        .scroll-hint:hover { color: #fff; }
+        .scroll-hint::after {
+          content: "";
           display: block;
+          width: 1px;
+          height: 28px;
+          background: rgba(255, 255, 255, 0.3);
         }
-        .telemetry-hide-mobile { }
-        @media (max-width: 900px) {
-          .hero-side-label { display: none; }
-          .telemetry-hide-mobile { display: none !important; }
-          .immersive-hero-content { gap: var(--space-lg); }
-          .hero-about-card { padding: var(--space-md); }
-          .role-scramble { min-width: unset; }
-          .hero-kicker-row { gap: var(--space-sm); }
-          .immersive-cta { flex-direction: column; align-items: stretch; }
-          .immersive-cta .btn-neon-primary, .immersive-cta .btn-neon-outline { justify-content: center; min-height: 44px; }
-          .btn-ghost { justify-content: center; background: rgba(255,255,255,0.04); border-color: var(--color-border); min-height: 44px; }
-        }
-        @media (max-width: 640px) {
-          .hero-big-name .name-line { font-size: clamp(2.8rem, 13vw, 4.4rem); }
-          .hero-role-row { flex-direction: column; gap: var(--space-xs); align-items: flex-start; }
-          .role-hint { font-size: var(--text-sm); line-height: var(--leading-normal); }
-          .immersive-hero { padding: var(--space-lg) var(--space-md) var(--space-md); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .hero-orb, .kicker-dot, .char, .scroll-dot { animation: none !important; transition: none !important; }
-        }
-
-        /* ——— ABOUT PREVIEW — SYSTEMATISED (law-of-proximity, information-density, type-scale) ——— */
-        .about-preview-wrap {
-          padding: var(--space-4xl) var(--grid-margin);
-          background: radial-gradient(700px 420px at 18% 18%, rgba(0,212,255,0.05), transparent 62%), radial-gradient(600px 360px at 88% 88%, rgba(255,59,48,0.04), transparent 62%), var(--color-bg);
-          border-top: 1px solid var(--color-border);
-          border-bottom: 1px solid var(--color-border);
+        .section {
+          padding: 96px clamp(20px, 4.5vw, 72px);
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
           position: relative;
           z-index: 1;
         }
-        .about-preview-inner {
+        .section-inner { max-width: 1240px; margin: 0 auto; }
+        .eyebrow {
+          display: block;
+          font-family: var(--font-mono);
+          font-size: 13px;
+          letter-spacing: 0.06em;
+          color: rgba(255, 255, 255, 0.5);
+          margin: 0 0 12px;
+        }
+        .h2 {
+          margin: 0 0 16px;
+          font-size: clamp(32px, 4vw, 48px);
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: -0.03em;
+          color: #fff;
+        }
+        .lede {
+          margin: 0 0 40px;
+          font-size: 17px;
+          line-height: 1.7;
+          color: rgba(255, 255, 255, 0.7);
+          max-width: 65ch;
+        }
+        .body-text {
+          margin: 0;
+          font-size: 17px;
+          line-height: 1.75;
+          color: rgba(255, 255, 255, 0.78);
+        }
+        .body-text + .body-text { margin-top: 16px; }
+        .body-text strong { color: #fff; font-weight: 700; }
+        .body-text a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+        .section-head-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          flex-wrap: wrap;
+          gap: 16px;
+          margin-bottom: 40px;
+        }
+        .quiet-link {
+          font-size: 15px;
+          font-weight: 600;
+          color: #fff;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+          padding-bottom: 2px;
+        }
+        .quiet-link:hover { border-bottom-color: #fff; }
+
+        .about-grid {
           display: grid;
-          grid-template-columns: 5fr 7fr; /* 12-col logic: 5/12 vs 7/12 — better than 0.95/1.25 arbitrary */
-          gap: var(--space-2xl);
+          grid-template-columns: 1fr 1fr;
+          gap: 48px;
           align-items: start;
-          max-width: var(--max-width);
-          margin: 0 auto;
         }
-        .about-visual-card {
-          background: linear-gradient(180deg, var(--color-surface) 0%, #090b10 100%);
-          border: 1px solid var(--color-border);
+        .fact-list {
+          list-style: none;
+          margin: 28px 0 0;
+          padding: 0;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          overflow: hidden;
+        }
+        .fact-list li { background: #0c0e14; padding: 18px 20px; }
+        .fact-num { display: block; font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+        .fact-label { display: block; margin-top: 4px; font-size: 13px; color: rgba(255, 255, 255, 0.55); }
+        .about-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+        .life-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+        .life-grid figure { margin: 0; }
+        .photo-placeholder {
+          background: #141820;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          aspect-ratio: 1;
+          display: grid;
+          place-items: center;
+          padding: 24px;
+          text-align: center;
+        }
+        .photo-placeholder span {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.45);
+        }
+        .life-grid figcaption {
+          margin-top: 10px;
+          font-size: 13px;
+          line-height: 1.5;
+          color: rgba(255, 255, 255, 0.65);
+        }
+
+        .work-list { display: flex; flex-direction: column; gap: 24px; }
+        .work-card {
+          display: grid;
+          grid-template-columns: 1fr 1.2fr;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 16px;
-          padding: var(--space-lg);
-          box-shadow: 0 24px 64px -20px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.05);
-          position: relative;
-          overflow: visible;
+          overflow: hidden;
+          background: #0c0e14;
+          text-decoration: none;
+          color: inherit;
         }
-        .about-visual-top {
+        .work-card:hover { border-color: rgba(255, 255, 255, 0.28); }
+        .work-photo {
+          background: #141820;
+          min-height: 320px;
+          display: grid;
+          place-items: center;
+          padding: 32px;
+          text-align: center;
+          border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .work-photo span {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.45);
+        }
+        .work-info { padding: 32px; display: flex; flex-direction: column; gap: 12px; }
+        .work-sub {
+          margin: 0;
+          font-family: var(--font-mono);
+          font-size: 12px;
+          letter-spacing: 0.04em;
+          color: rgba(255, 255, 255, 0.5);
+        }
+        .work-title { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: #fff; }
+        .work-headline { margin: 0; font-size: 17px; font-weight: 600; color: #fff; }
+        .work-desc { margin: 0; font-size: 16px; line-height: 1.7; color: rgba(255, 255, 255, 0.7); max-width: 65ch; }
+        .work-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+        .work-tags span {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          padding: 6px 12px;
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          color: rgba(255, 255, 255, 0.65);
+        }
+        .work-foot {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--color-text-tertiary);
-          margin-bottom: var(--space-lg);
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: auto;
+          padding-top: 20px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .about-visual-badge {
+        .work-stats { font-size: 14px; color: rgba(255, 255, 255, 0.55); }
+        .work-go {
           display: inline-flex;
           align-items: center;
-          gap: var(--space-xs);
-          padding: var(--space-xs) var(--space-sm);
-          border-radius: 999px;
-          background: rgba(0,245,155,0.08);
-          border: 1px solid rgba(0,245,155,0.18);
-          color: var(--color-accent-green);
-          font-weight: 700;
-          font-size: 0.62rem;
-        }
-        .about-avatar-ring {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 1.2;
-          border-radius: 16px;
-          background: radial-gradient(260px 240px at 42% 32%, rgba(255,59,48,0.08), transparent 68%), radial-gradient(300px 220px at 78% 88%, rgba(0,212,255,0.08), transparent 68%), #0a0c10;
-          border: 1px solid var(--color-border);
-          display: grid;
-          place-items: center;
-          overflow: visible;
-          padding: var(--space-lg);
-        }
-        .about-avatar-inner {
-          width: 132px; height: 132px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #1a1d25 0%, #0f1117 100%);
-          border: 1px solid var(--color-border-strong);
-          display: grid;
-          place-items: center;
-          place-content: center;
-          box-shadow: 0 14px 32px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
-          position: relative;
-        }
-        .about-avatar-initials {
-          font-family: var(--font-body);
-          font-size: 2.4rem;
-          font-weight: 800;
-          letter-spacing: var(--tracking-tight);
-          color: var(--color-text-primary);
-          line-height: var(--leading-tight);
-        }
-        .about-avatar-sub {
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--color-text-tertiary);
-          margin-top: var(--space-xs);
-        }
-        .about-float {
-          position: absolute;
-          display: inline-flex;
-          align-items: center;
-          gap: var(--space-xs);
-          padding: var(--space-xs) var(--space-sm);
-          border-radius: 999px;
-          background: rgba(6,7,9,0.92);
-          border: 1px solid var(--color-border);
-          backdrop-filter: blur(10px);
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.10em;
-          text-transform: uppercase;
-          color: var(--color-text-primary);
-          font-weight: 700;
-          box-shadow: 0 8px 20px -10px rgba(0,0,0,0.5);
-          white-space: nowrap;
-          opacity: 0.92; /* reduced emphasis — not competing with title */
-        }
-        .about-float--1 { top: 12px; right: -8px; color: var(--color-text-secondary); border-color: var(--color-border); }
-        .about-float--2 { bottom: 48px; left: -10px; color: var(--color-text-secondary); border-color: var(--color-border); }
-        .about-float--3 { bottom: 12px; right: 16px; color: var(--color-accent-green); border-color: rgba(0,245,155,0.18); background: rgba(6,7,9,0.92); }
-        .about-visual-stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: var(--space-sm);
-          margin-top: var(--space-lg);
-        }
-        .av-stat {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid var(--color-border);
-          border-radius: 12px;
-          padding: var(--space-md) var(--space-sm);
-          text-align: center;
-        }
-        .av-stat-num {
-          display: block;
-          font-family: var(--font-body);
-          font-size: 1.05rem;
-          font-weight: 700;
-          letter-spacing: var(--tracking-tight);
-          color: var(--color-text-primary);
-          line-height: var(--leading-tight);
-        }
-        .av-stat-label {
-          display: block;
-          margin-top: var(--space-xs);
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.45);
-        }
-        .about-visual-caption {
-          margin-top: 0.7rem;
-          text-align: center;
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.35);
-        }
-        .about-preview-copy {
-          display: flex;
-          flex-direction: column;
-          gap: 1.1rem;
-        }
-        .about-preview-title {
-          margin: 0;
-          font-size: clamp(2rem, 3.8vw, 3.25rem);
-          font-weight: 800;
-          letter-spacing: -0.05em;
-          line-height: 0.95;
+          gap: 6px;
+          font-size: 15px;
+          font-weight: 600;
           color: #fff;
         }
-        .about-title-accent {
-          color: #ff3b30;
-          font-weight: 800;
-          letter-spacing: -0.05em;
-        }
-        .about-preview-text {
+
+        .archive-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
+        .archive-sub { margin: 0 0 24px; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #fff; }
+        .archive-card {
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 16px;
+          padding: 28px;
+          background: #0c0e14;
+          text-decoration: none;
+          color: inherit;
           display: flex;
           flex-direction: column;
-          gap: 0.9rem;
-          font-size: 1.02rem;
-          line-height: 1.7;
-          color: rgba(255,255,255,0.82);
+          gap: 10px;
         }
-        .about-preview-text p { margin: 0; }
-        .about-preview-text strong { color: #fff; font-weight: 700; }
-        .about-preview-traits {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.65rem;
-          margin-top: 0.2rem;
-        }
-        .trait {
+        .archive-card:hover { border-color: rgba(255, 255, 255, 0.28); }
+        .archive-cat { margin: 0; font-family: var(--font-mono); font-size: 12px; color: rgba(255, 255, 255, 0.5); }
+        .archive-title { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #fff; }
+        .archive-desc { margin: 0; font-size: 16px; line-height: 1.7; color: rgba(255, 255, 255, 0.65); }
+        .archive-year { margin: 0; font-size: 13px; color: rgba(255, 255, 255, 0.45); }
+        .archive-go {
+          margin-top: auto;
+          padding-top: 16px;
           display: inline-flex;
           align-items: center;
-          gap: 0.45rem;
-          padding: 0.5rem 0.85rem;
-          border-radius: 999px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.10);
-          font-family: var(--font-mono);
-          font-size: 0.66rem;
-          letter-spacing: 0.10em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.72);
+          gap: 6px;
+          font-size: 15px;
           font-weight: 600;
+          color: #fff;
         }
-        .trait-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
-        .about-preview-actions {
+
+        .principles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .principle { border-top: 1px solid rgba(255, 255, 255, 0.16); padding-top: 20px; }
+        .principle h3 { margin: 0 0 10px; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #fff; }
+        .principle p { margin: 0; font-size: 16px; line-height: 1.75; color: rgba(255, 255, 255, 0.7); }
+
+        .terminal-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px; align-items: center; }
+        .terminal-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+        .recruit-box {
+          position: relative;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          overflow: hidden;
+          background: #080a0e;
+          padding: 88px 24px;
+          text-align: center;
+        }
+        .recruit-art { position: absolute; inset: 0; opacity: 0.25; pointer-events: none; }
+        .recruit-inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+        .recruit-inner .h2 { margin: 0; }
+        .recruit-inner .lede { margin: 0; }
+
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1.4fr 1fr;
+          gap: 48px;
+          margin-bottom: 64px;
+        }
+        .email-big {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: 24px;
+          font-size: clamp(20px, 2.6vw, 30px);
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          color: #fff;
+          text-decoration: none;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+          padding-bottom: 6px;
+          overflow-wrap: anywhere;
+        }
+        .email-big:hover { border-bottom-color: #fff; }
+        .channel-label {
+          font-family: var(--font-mono);
+          font-size: 12px;
+          letter-spacing: 0.06em;
+          color: rgba(255, 255, 255, 0.45);
+          margin: 0 0 8px;
+        }
+        .channel-list { display: flex; flex-direction: column; gap: 14px; }
+        .channel-list a {
+          color: #fff;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 16px;
+        }
+        .channel-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+        .footer-base {
+          padding-top: 32px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
           display: flex;
-          gap: 0.9rem;
+          justify-content: space-between;
+          align-items: center;
           flex-wrap: wrap;
-          margin-top: 0.6rem;
+          gap: 16px;
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.45);
         }
+        .to-top {
+          background: transparent;
+          border: 0;
+          padding: 8px 0;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .to-top:hover { text-decoration: underline; text-underline-offset: 3px; }
+
         @media (max-width: 960px) {
-          .about-preview-inner { grid-template-columns: 1fr; gap: 2.2rem; }
-          .about-preview-visual { order: 2; }
-          .about-preview-copy { order: 1; }
-          .about-float--1 { right: 6px; }
-          .about-float--2 { left: 6px; }
+          .topnav { display: none; }
+          .about-grid { grid-template-columns: 1fr; }
+          .life-grid { grid-template-columns: repeat(2, 1fr); }
+          .work-card { grid-template-columns: 1fr; }
+          .work-photo { min-height: 220px; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+          .archive-grid { grid-template-columns: 1fr; }
+          .principles-grid { grid-template-columns: 1fr; }
+          .terminal-grid { grid-template-columns: 1fr; }
+          .footer-grid { grid-template-columns: 1fr; }
+          .section { padding: 64px clamp(20px, 4.5vw, 72px); }
+        }
+        @media (max-width: 560px) {
+          .life-grid { grid-template-columns: 1fr; }
+          .fact-list { grid-template-columns: 1fr 1fr; }
+          .hero { padding-top: 48px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .home-root *, .home-root *::before, .home-root *::after {
+            animation: none !important;
+            transition: none !important;
+          }
         }
       `}</style>
-
-      <div
-        className="ambient-glow"
-        style={{
-          "--mouse-x": `${mousePos.x}%`,
-          "--mouse-y": `${mousePos.y}%`
-        } as any}
-        aria-hidden
-      />
-
-      <header className="hud-header">
-        <div className="hud-left">
-          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
-            <span className="hud-beacon" />
-            <span style={{ color: "#00f59b", fontWeight: 700 }}>SYS: ONLINE</span>
-          </span>
-          <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
-          <span style={{ color: "rgba(255,255,255,0.7)" }}>PUNE 18.52°N 73.85°E</span>
-          <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
-          <span style={{ fontVariantNumeric: "tabular-nums", color: "#00d4ff" }}>
-            {mounted ? time : "--:--"} IST
-          </span>
-        </div>
-
-        <nav className="hud-nav">
-          <a href="#spatial" onMouseEnter={() => sound.playHover()}>Spatial</a>
-          <a href="#work" onMouseEnter={() => sound.playHover()}>Systems</a>
-          <a href="#philosophy" onMouseEnter={() => sound.playHover()}>Philosophy</a>
-          <a href="#terminal" onMouseEnter={() => sound.playHover()}>Console</a>
+      <header className="topbar">
+        <a href="#top" className="brand" onMouseEnter={() => sound.playHover()}>Shivam Shelatkar</a>
+        <nav className="topnav" aria-label="Sections">
+          <a href="#work" onMouseEnter={() => sound.playHover()}>Work</a>
+          <a href="#life" onMouseEnter={() => sound.playHover()}>Life</a>
           <a href="/about" onMouseEnter={() => sound.playHover()}>About</a>
-          <a href="#contact" onMouseEnter={() => sound.playHover()}>Transmit</a>
+          <a href="#contact" onMouseEnter={() => sound.playHover()}>Contact</a>
         </nav>
-
-        <div>
+        <div className="topmeta">
+          <span className="clock">{mounted ? time : "--:--"} IST</span>
           <button
             type="button"
-            className="hud-audio-btn"
+            className="sound-btn"
             onClick={toggleAudio}
-            title="Toggle tactile sound synthesis"
+            aria-pressed={soundActive}
           >
-            {soundActive ? <Volume2 size={13} color="#00f59b" /> : <VolumeX size={13} />}
-            <span>{soundActive ? "AUDIO: ON" : "AUDIO: OFF"}</span>
+            {soundActive ? <Volume2 size={13} /> : <VolumeX size={13} />}
+            <span>{soundActive ? "Sound on" : "Sound off"}</span>
           </button>
         </div>
       </header>
 
-      <section className="hero-shell immersive-hero">
-        <div style={{ position: "absolute", inset: 0, opacity: mounted ? 0.9 : 0, transition: "opacity 1.2s ease", pointerEvents: "all" }}>
+      <section className="hero" aria-label="Introduction">
+        <div className="hero-bg" style={{ opacity: mounted ? 1 : 0, transition: "opacity 1.2s ease" }}>
           <HeroTerrain />
         </div>
+        <div className="hero-scrim" aria-hidden />
 
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "radial-gradient(ellipse 900px 700px at 35% 45%, rgba(6,7,9,0.15) 0%, rgba(6,7,9,0.55) 45%, rgba(6,7,9,0.88) 72%, rgba(6,7,9,0.98) 100%), linear-gradient(180deg, rgba(6,7,9,0.25) 0%, rgba(6,7,9,0.92) 100%)",
-            pointerEvents: "none",
-            zIndex: 1
-          }}
-        />
-
-        {/* floating orbs */}
-        <div aria-hidden className="hero-orb hero-orb--a" />
-        <div aria-hidden className="hero-orb hero-orb--b" />
-
-        <div className="hero-content immersive-hero-content">
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
+        <div className="hero-inner">
+          <motion.p
+            className="kicker"
+            initial={still}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: easeTransition }}
-            className="hero-kicker-row"
+            transition={{ duration: 0.28, ease: easeTransition }}
           >
-            <span className="hero-kicker-pill">
-              <span className="kicker-dot" />
-              <span>Founder @Swarvibhaa — 2023—</span>
-              <span className="kicker-sep">·</span>
-              <span style={{ color: "#00d4ff", fontWeight: 700 }}>Karwar → Mumbai · Pune</span>
-            </span>
-            <span className="hero-kicker-sub">
-              <Sparkles size={11} style={{ opacity: 0.7 }} />
-              <span>IMDb nm17605062 · @shastriyakid</span>
-            </span>
-          </motion.div>
-
-          <div className="hero-name-wrap">
-            <motion.div
-              className="hi-row"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.08, ease: easeTransition }}
-            >
-              <span className="hi-script">Hi, I&rsquo;m</span>
-              <motion.span
-                className="hi-wave"
-                animate={shouldReduceMotion ? {} : { rotate: [0, 18, -12, 18, 0] }}
-                transition={{ duration: 1.8, delay: 1.2, ease: "easeInOut" }}
-                style={{ display: "inline-block", transformOrigin: "70% 70%" }}
-                aria-hidden
-              >
-                👋
-              </motion.span>
-              <span className="hi-line-decor" aria-hidden />
-            </motion.div>
-
-            <h1 className="hero-big-name" aria-label="Shivam Shelatkar">
-              <span className="name-line name-first">
-                {"SHIVAM".split("").map((ch, i) => (
-                  <motion.span
-                    key={`f-${i}`}
-                    className="char char--first"
-                    tabIndex={0}
-                    role="text"
-                    aria-label={`SHIVAM letter ${ch}`}
-                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 32, rotateX: -20 }}
-                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                    transition={{ duration: 0.5, delay: 0.12 + i * 0.04, ease: easeTransition }}
-                    whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.06, color: "#ff3b30" }}
-                    whileFocus={shouldReduceMotion ? {} : { y: -6, scale: 1.06, color: "#ff3b30" }}
-                    style={{ display: "inline-block" }}
-                  >
-                    {ch}
-                  </motion.span>
-                ))}
-              </span>
-              <span className="name-line name-last">
-                {"SHELATKAR".split("").map((ch, i) => (
-                  <motion.span
-                    key={`l-${i}`}
-                    className="char char--last"
-                    tabIndex={0}
-                    role="text"
-                    aria-label={`SHELATKAR letter ${ch}`}
-                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 32, rotateX: -20 }}
-                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                    transition={{ duration: 0.5, delay: 0.30 + i * 0.04, ease: easeTransition }}
-                    whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.04, color: "#00d4ff" }}
-                    whileFocus={shouldReduceMotion ? {} : { y: -4, scale: 1.04, color: "#00d4ff" }}
-                    style={{ display: "inline-block" }}
-                  >
-                    {ch}
-                  </motion.span>
-                ))}
-              </span>
-            </h1>
-
-            <motion.div
-              className="hero-role-row"
-              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.55, ease: easeTransition }}
-            >
-              <span className="role-scramble" aria-live="polite">{displayRole}</span>
-              <span className="role-divider" aria-hidden="true">—</span>
-              <span className="role-hint">Rooted in tradition. Wired with code. — Swarvibhaa · Mumbai</span>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="hero-about-card"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+            Founder @Swarvibhaa — tabla · piano · Unity
+          </motion.p>
+          <motion.h1
+            className="hero-name"
+            initial={still}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.65, ease: easeTransition }}
+            transition={{ duration: 0.28, delay: 0.04, ease: easeTransition }}
           >
-            <div className="hero-about-label">
-              <span className="about-dot" />
-              <span>ABOUT ME</span>
-              <span className="about-line" />
-            </div>
-            <p className="hero-about-text">
-              {mounted ? typedAbout : fullAbout}
-              <span className="type-cursor" aria-hidden>|</span>
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="hero-cta-group immersive-cta"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            Shivam Shelatkar
+          </motion.h1>
+          <motion.p
+            className="hero-about"
+            initial={still}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.05, ease: easeTransition }}
+            transition={{ duration: 0.28, delay: 0.08, ease: easeTransition }}
           >
-            <a
-              href="#about-preview"
-              className="btn-neon-primary btn-magnetic"
-              onMouseEnter={() => sound.playHover()}
-              onClick={() => sound.playClick()}
-            >
-              <span>Meet me in 10 seconds</span>
-              <ArrowDown size={15} />
-            </a>
+            Born in Karwar, grown in Mumbai. I trained in tabla for ten years under Pandit Mukundraj Deo and in piano for six years through Trinity, and now I run Swarvibhaa, a collective for classical artists across Mumbai, Delhi, and Gujarat. I have been building interactive things in Unity since 2017.
+          </motion.p>
+          <motion.div
+            className="hero-ctas"
+            initial={still}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.28, delay: 0.12, ease: easeTransition }}
+          >
             <a
               href="#work"
-              className="btn-neon-outline"
+              className="btn btn-solid"
               onMouseEnter={() => sound.playHover()}
               onClick={() => sound.playClick()}
             >
-              <span>See my work</span>
-              <ArrowUpRight size={14} />
+              <span>See work</span>
             </a>
             <a
-              href="mailto:shelatkarshivam4@gmail.com"
-              className="btn-ghost"
+              href="https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline"
               onMouseEnter={() => sound.playHover()}
               onClick={() => sound.playClick()}
             >
-              <Mail size={14} />
-              <span>shelatkarshivam4@gmail.com</span>
+              <span>Listen to Raatrani</span>
+              <ArrowUpRight size={15} />
             </a>
           </motion.div>
         </div>
 
-        <div className="hero-side-label" aria-hidden>
-          <span>DRAG TO ORBIT · SCROLL TO EXPLORE</span>
-          <span className="side-line" />
-        </div>
-
-        <motion.a
+        <a
           href="#about-preview"
-          className="scroll-explore"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
+          className="scroll-hint"
           onMouseEnter={() => sound.playHover()}
           aria-label="Scroll to about me"
         >
-          <span className="scroll-text">SCROLL</span>
-          <span className="scroll-wheel">
-            <motion.span
-              className="scroll-dot"
-              animate={shouldReduceMotion ? {} : { y: [0, 14, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </span>
-        </motion.a>
-
-        <div className="hero-telemetry-bar">
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <Activity size={12} color="#00f59b" /> Swarvibhaa · Raatrani · Thevita · Saffron — 2023—2025
-          </span>
-          <span className="telemetry-hide-mobile" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <ShieldCheck size={12} color="#00d4ff" /> TABLE 10YRS · PIANO TRINITY 6YRS · UNITY SINCE 2017
-          </span>
-        </div>
+          <span>Scroll</span>
+        </a>
       </section>
-
-      {/* IMMERSIVE ABOUT ME — friendly & human */}
-      <section id="about-preview" className="about-preview-wrap">
-        <div className="section-max about-preview-inner">
+      <section id="about-preview" className="section" aria-label="About me">
+        <div className="section-inner about-grid">
           <motion.div
-            className="about-preview-visual"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30, rotate: -1 }}
-            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+            initial={still}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, ease: easeTransition }}
+            transition={{ duration: 0.28, ease: easeTransition }}
           >
-            <TiltCard maxTilt={7}>
-              <div className="about-visual-card">
-                <div className="about-visual-top">
-                  <span className="about-visual-badge">● OPEN TO NEW IDEAS</span>
-                  <span className="about-visual-year">2026</span>
-                </div>
-
-                <div className="about-avatar-ring">
-                  <div className="about-avatar-inner">
-                    <span className="about-avatar-initials">SS</span>
-                    <span className="about-avatar-sub">Shivam Shelatkar</span>
-                  </div>
-                  <motion.span className="about-float about-float--1" animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }} transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}>
-                    <Sparkles size={12} /> Product Designer
-                  </motion.span>
-                  <motion.span className="about-float about-float--2" animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}>
-                    <Activity size={12} /> & Engineer
-                  </motion.span>
-                  <motion.span className="about-float about-float--3" animate={shouldReduceMotion ? {} : { y: [0, -4, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}>
-                    ✦ Human first
-                  </motion.span>
-                </div>
-
-                <div className="about-visual-stats">
-                  <div className="av-stat">
-                    <span className="av-stat-num">Pune</span>
-                    <span className="av-stat-label">Based in India</span>
-                  </div>
-                  <div className="av-stat">
-                    <span className="av-stat-num">Calm</span>
-                    <span className="av-stat-label">Design ethos</span>
-                  </div>
-                  <div className="av-stat">
-                    <span className="av-stat-num">∞</span>
-                    <span className="av-stat-label">Curiosity</span>
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-
-            <div className="about-visual-caption">
-              <span>↳ Hover & tilt me — I’m interactive</span>
-            </div>
+            <span className="eyebrow">About</span>
+            <h2 className="h2">Rooted in tradition, working in code.</h2>
+            <ul className="fact-list">
+              <li><span className="fact-num">10 yrs</span><span className="fact-label">Tabla, Pandit Mukundraj Deo</span></li>
+              <li><span className="fact-num">6 yrs</span><span className="fact-label">Piano, Trinity College London</span></li>
+              <li><span className="fact-num">2023</span><span className="fact-label">Founded Swarvibhaa</span></li>
+              <li><span className="fact-num">2017</span><span className="fact-label">Building in Unity since</span></li>
+            </ul>
           </motion.div>
 
           <motion.div
-            className="about-preview-copy"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+            initial={still}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, delay: 0.12, ease: easeTransition }}
+            transition={{ duration: 0.28, ease: easeTransition }}
           >
-            <span className="section-badge" style={{ color: "#00f59b" }}>ABOUT ME — KARWAR → MUMBAI · TABLE + PIANO → CODE</span>
-            <h2 className="about-preview-title">
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#00f59b", display: "block", marginBottom: "0.6rem" }}>Rooted in tradition. Wired with code.</span>
-              Quietly building <span className="about-title-accent">art that speaks</span>.
-            </h2>
-            <div className="about-preview-text">
-              <p>
-                Hey — I&apos;m <strong>Shivam Shelatkar</strong> (<a href="https://www.instagram.com/shastriyakid" target="_blank" rel="noopener" style={{ color: "#00d4ff", textDecoration: "underline", textUnderlineOffset: 3 }}>@shastriyakid</a>). Born in Karwar, grown in Mumbai. I love cats, blue like real blues, and Damit — Nation first.
-              </p>
-              <p style={{ color: "rgba(255,255,255,0.68)" }}>
-                I&apos;m Founder of <strong style={{ color: "#fff" }}>Swarvibhaa</strong> — pan-India collective for Hindustani, Western classical, dance &amp; visual art (Mumbai·Delhi·Gujarat). From Pandit Mukundraj Deo — 10 yrs Tabla — to Trinity College London — 6 yrs Piano — I now produce for cinema/theatre/indie behind the scenes where sonic detail matters. Intern of @naradmuniii, ABVP Thane District Convenor.
-              </p>
-              <p style={{ color: "rgba(255,255,255,0.62)" }}>
-                Engineer by training, Unity dev since 2017, I speak English·Hindi·Malayalam·Gujarati·Marathi and build at the crossroads of <em>tradition, technology &amp; storytelling</em> — see IMDb nm17605062, EverybodyWiki, and Swarvibhaa originals Raatrani / Thevita Masthak / Saffron.
-              </p>
-            </div>
-
-            <div className="about-preview-traits">
-              <span className="trait"><span className="trait-dot" style={{ background: "#ff3b30" }} />Tabla 10+ yrs · Piano Trinity</span>
-              <span className="trait"><span className="trait-dot" style={{ background: "#00d4ff" }} />Mumbai · Karwar · Pune</span>
-              <span className="trait"><span className="trait-dot" style={{ background: "#00f59b" }} />Cats · Blue · Tradition → Code</span>
-            </div>
-
-            <div className="about-preview-actions">
-              <Link href="/about" className="btn-neon-primary" onMouseEnter={() => sound.playHover()} onClick={() => sound.playClick()}>
-                <span>Full story & timeline</span>
-                <ArrowUpRight size={14} />
+            <p className="body-text">
+              Hi, I am <strong>Shivam Shelatkar</strong>, known online as <strong>@shastriyakid</strong>. I was born in Karwar and grew up in Mumbai, and I split my days between music and software.
+            </p>
+            <p className="body-text">
+              In 2023 I founded <strong>Swarvibhaa</strong>, a collective for Hindustani and Western classical music, dance, and visual art, now active across Mumbai, Delhi, and Gujarat. I produce Swarvibhaa originals like Raatrani, Thevita Masthak Deva, and Saffron, mostly behind the scenes where the sonic detail lives.
+            </p>
+            <p className="body-text">
+              Outside music I am an engineer working in Unity since 2017. I speak English, Hindi, Malayalam, Gujarati, and Marathi, convene student activities for ABVP in Thane, and hold screen credits on IMDb (nm17605062). I love cats, the colour blue, and work that treats heritage as something alive.
+            </p>
+            <div className="about-actions">
+              <Link
+                href="/about"
+                className="btn btn-solid"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+              >
+                <span>Read the full story</span>
               </Link>
-              <a href="mailto:shelatkarshivam4@gmail.com" className="btn-neon-outline" onMouseEnter={() => sound.playHover()} onClick={() => sound.playClick()}>
-                <Mail size={14} />
-                <span>Say hi</span>
+              <a
+                href="mailto:shelatkarshivam4@gmail.com"
+                className="btn btn-outline"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+              >
+                <Mail size={15} />
+                <span>Email me</span>
               </a>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* — HUMAN FEED — @shastriyakid — real life, not AI — ref: Brittany editorial + Louis muted paper */}
-      <section id="life" className="section-wrap" style={{ background: "#080a0e", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "3.5rem", paddingBottom: "3.5rem" }}>
-        <div className="section-max">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1rem", marginBottom: "1.6rem" }}>
-            <div>
-              <span className="section-badge" style={{ color: "#00d4ff" }}>LIFE — @shastriyakid · 880 followers · Pune ⇄ Mumbai</span>
-              <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.04em", margin: 0, color: "#fff", lineHeight: 1.05 }}>
-                Cats, blue like real blues, and tabla <span style={{ color: "#ff3b30", fontWeight: 400, fontStyle: "italic", fontFamily: "var(--font-display)" }}>at dawn</span>.
-              </h2>
+      <section id="life" className="section" aria-label="Life off stage">
+        <div className="section-inner">
+          <motion.div
+            initial={still}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.28, ease: easeTransition }}
+          >
+            <span className="eyebrow">Life</span>
+            <div className="section-head-row">
+              <h2 className="h2" style={{ margin: 0 }}>Off stage.</h2>
+              <a
+                href="https://www.instagram.com/shastriyakid"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="quiet-link"
+                onMouseEnter={() => sound.playHover()}
+              >
+                <span>Follow @shastriyakid</span>
+                <ArrowUpRight size={14} />
+              </a>
             </div>
-            <a href="https://www.instagram.com/shastriyakid" target="_blank" rel="noopener noreferrer" onMouseEnter={() => sound.playHover()} style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#00d4ff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700 }}>
-              <span>Follow @shastriyakid</span><ArrowUpRight size={14} />
-            </a>
-          </div>
-          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "rgba(255,255,255,0.52)", margin: "0 0 1.4rem", maxWidth: "68ch", lineHeight: 1.6 }}>
-            Real moments, not stock: Intern of @naradmuniii · Damit Nation first · Student of music · I love cats. Replace these Unsplash placeholders with your 50 posts — this grid is built for your real photos (polaroid rotation + tape keeps the human feel — ref. Bruno Simon play + Louis paper texture).
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "0.9rem" }} className="life-grid">
-            {[
-              { url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=600&auto=format&fit=crop", cap: "Cats > code · 2024", rot: "-1.6deg" },
-              { url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=600&auto=format&fit=crop", cap: "Tabla — Pandit Mukundraj Deo", rot: "1.2deg" },
-              { url: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=600&auto=format&fit=crop", cap: "Piano — Trinity 6 yrs", rot: "-0.8deg" },
-              { url: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=600&auto=format&fit=crop", cap: "Swarvibhaa — Mumbai baithak", rot: "1.4deg" },
-              { url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop", cap: "Blue hour — Karwar → Mumbai", rot: "-1.1deg" },
-              { url: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?q=80&w=600&auto=format&fit=crop", cap: "ABVP — Thane District", rot: "0.9deg" },
-            ].map((p, i) => (
-              <div key={i} style={{ background: "#fff", padding: "6px 6px 22px", borderRadius: 2, transform: `rotate(${p.rot})`, boxShadow: "0 10px 28px -12px rgba(0,0,0,0.65)", position: "relative" }}>
-                <div style={{ position: "absolute", top: -6, left: "50%", transform: "translateX(-50%) rotate(1deg)", width: 44, height: 12, background: "rgba(255,255,255,0.72)", border: "1px solid rgba(0,0,0,0.06)", backdropFilter: "blur(2px)" }} aria-hidden />
-                <img src={p.url} alt={p.cap} loading="lazy" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block", filter: "contrast(1.02) saturate(0.95)" }} />
-                <span style={{ display: "block", marginTop: 8, fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.08em", color: "#1a1a18", textAlign: "center" }}>{p.cap}</span>
-              </div>
+            <p className="lede">
+              What I get up to when I am not performing or shipping. The frames below are placeholders, waiting on real photos from @shastriyakid.
+            </p>
+          </motion.div>
+          <div className="life-grid">
+            {LIFE_PHOTOS.map((photo, i) => (
+              <motion.figure
+                key={photo.caption}
+                initial={still}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.28, ease: easeTransition }}
+              >
+                {/* Photo placeholder: replace this div with a real image, e.g. <img src="/photos/filename.jpg" alt="..." style={{ width: "100%", aspectRatio: "1", objectFit: "cover", borderRadius: 12 }} />. Keep the figcaption below as the caption. */}
+                <div className="photo-placeholder">
+                  <span>{photo.label}</span>
+                </div>
+                <figcaption>{photo.caption}</figcaption>
+              </motion.figure>
             ))}
           </div>
-          <style>{`@media(max-width: 900px){ .life-grid{ grid-template-columns: repeat(3,1fr) !important; } } @media(max-width: 560px){ .life-grid{ grid-template-columns: repeat(2,1fr) !important; } }`}</style>
         </div>
       </section>
 
-      <section id="spatial" className="section-wrap" style={{ background: "#040507" }}>
-        <div className="section-max">
+      <section id="spatial" className="section" style={{ background: "#040507" }} aria-label="Spatial showcase">
+        <div className="section-inner">
           <SpatialShowcase />
         </div>
       </section>
-
-      <section id="work" className="section-wrap">
-        <div className="section-max">
-          <div className="section-header-top">
-            <div>
-              <span className="section-badge">01 // PRODUCTION ARTIFACTS</span>
-              <h2 className="section-h2">
-                Flagship Case Studies <span style={{ color: "#ff3b30" }}>.</span>
-              </h2>
-            </div>
-            <Link
-              href="/work"
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.68rem",
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-                color: "#00d4ff",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                fontWeight: 700
-              }}
-              onMouseEnter={() => sound.playHover()}
-              onClick={() => sound.playClick()}
-            >
-              <span>Full System Archive</span>
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
-
-          <div className="project-flow">
-            {FEATURED_PROJECTS.map((project, idx) => (
-              <motion.div
-                key={project.id}
-                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 45 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-70px" }}
-                transition={{ duration: 0.75, delay: idx * 0.09, ease: easeTransition }}
+      <section id="work" className="section" aria-label="Selected work">
+        <div className="section-inner">
+          <motion.div
+            initial={still}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.28, ease: easeTransition }}
+          >
+            <span className="eyebrow">Work</span>
+            <div className="section-head-row">
+              <h2 className="h2" style={{ margin: 0 }}>Selected work.</h2>
+              <Link
+                href="/work"
+                className="quiet-link"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
               >
-                <TiltCard href={project.href} maxTilt={6}>
-                  <div className="project-card-inner">
-                    <div className="project-img-box">
-                      <img
-                        src={project.previewImg}
-                        alt={project.title}
-                        className="project-img"
-                        loading="lazy"
-                      />
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: 18,
-                          left: 18,
-                          background: "rgba(6, 7, 9, 0.85)",
-                          backdropFilter: "blur(8px)",
-                          border: "1px solid rgba(255, 255, 255, 0.2)",
-                          color: "#fff",
-                          padding: "0.35rem 0.8rem",
-                          borderRadius: 999,
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "0.62rem",
-                          letterSpacing: "0.16em",
-                          fontWeight: 700
-                        }}
-                      >
-                        MODULE {project.id}
-                      </div>
-                    </div>
+                <span>All work</span>
+                <ArrowUpRight size={14} />
+              </Link>
+            </div>
+          </motion.div>
 
-                    <div className="project-info-pane">
-                      <div>
-                        <div className="project-meta-row">
-                          <span style={{ color: "#00d4ff" }}>{project.subtitle}</span>
-                          <span style={{ color: "rgba(255,255,255,0.4)" }}>{project.year}</span>
-                        </div>
-                        <h3 className="project-title-h3">{project.title}</h3>
-                        <div className="project-headline-p">{project.headline}</div>
-                        <p className="project-body-p">{project.description}</p>
-                        <div className="project-tags">
-                          {project.tags.map((tag) => (
-                            <span key={tag} className="tag-pill">{tag}</span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="project-footer-row">
-                        <span className="project-stat-label" style={{ color: "#00f59b" }}>
-                          ✦ {project.stats}
-                        </span>
-                        <span className="project-cta-link">
-                          <span>Inspect Deep Dive</span>
-                          <ArrowUpRight size={14} color="#00f59b" />
-                        </span>
-                      </div>
-                    </div>
+          <div className="work-list">
+            {FEATURED_PROJECTS.map((project) => (
+              <motion.a
+                key={project.id}
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="work-card"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+                initial={still}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.28, ease: easeTransition }}
+              >
+                {/* Photo placeholder: replace this div with a real image, e.g. <img src="/photos/filename.jpg" alt="..." style={{ width: "100%", height: "100%", objectFit: "cover" }} />. */}
+                <div className="work-photo">
+                  <span>{project.photoNote}</span>
+                </div>
+                <div className="work-info">
+                  <p className="work-sub">{project.subtitle}</p>
+                  <h3 className="work-title">{project.title}</h3>
+                  <p className="work-headline">{project.headline}</p>
+                  <p className="work-desc">{project.description}</p>
+                  <div className="work-tags">
+                    {project.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
                   </div>
-                </TiltCard>
-              </motion.div>
+                  <div className="work-foot">
+                    <span className="work-stats">{project.stats} · {project.year}</span>
+                    <span className="work-go">
+                      <span>{project.linkLabel}</span>
+                      <ArrowUpRight size={14} />
+                    </span>
+                  </div>
+                </div>
+              </motion.a>
             ))}
           </div>
 
-          <div style={{ marginTop: "6rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.8rem" }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>
-                // RESEARCH ARCHIVE &amp; EXPERIMENTAL PROTOCOLS
-              </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", color: "#ff3b30" }}>
-                04 — 06
-              </span>
-            </div>
-
-            <div className="archive-deck">
+          <div className="archive-grid-wrap" style={{ marginTop: 64 }}>
+            <h3 className="archive-sub">More work.</h3>
+            <div className="archive-grid">
               {ARCHIVE_PROJECTS.map((item) => (
-                <TiltCard key={item.id} href={item.href} maxTilt={8}>
-                  <div className="archive-unit">
-                    <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.8rem" }}>
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#ff3b30", letterSpacing: "0.16em", fontWeight: 700 }}>{item.id}</span>
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", color: "#00f59b" }}>{item.tag}</span>
-                      </div>
-                      <h4 style={{ fontSize: "1.35rem", fontWeight: 700, margin: "0 0 0.5rem", letterSpacing: "-0.03em", color: "#fff" }}>{item.title}</h4>
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "rgba(255,255,255,0.4)", marginBottom: "0.8rem", textTransform: "uppercase" }}>{item.category}</div>
-                      <p style={{ fontSize: "0.88rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0 }}>{item.description}</p>
-                    </div>
-                    <div style={{ marginTop: "1.4rem", fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", display: "inline-flex", alignItems: "center", gap: 5, color: "#00d4ff", fontWeight: 700 }}>
-                      <span>{item.external ? "Open Deployed Platform" : "View Project Overview"}</span>
-                      <ArrowUpRight size={13} />
-                    </div>
-                  </div>
-                </TiltCard>
+                <motion.a
+                  key={item.title}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="archive-card"
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
+                  initial={still}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.28, ease: easeTransition }}
+                >
+                  <p className="archive-cat">{item.category}</p>
+                  <h4 className="archive-title">{item.title}</h4>
+                  <p className="archive-desc">{item.description}</p>
+                  <p className="archive-year">{item.year}</p>
+                  <span className="archive-go">
+                    <span>{item.linkLabel}</span>
+                    <ArrowUpRight size={13} />
+                  </span>
+                </motion.a>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section id="philosophy" className="section-wrap" style={{ background: "#050608" }}>
-        <div className="section-max">
-          <div className="section-header-top">
-            <div>
-              <span className="section-badge">02 // COGNITIVE PHILOSOPHY</span>
-              <h2 className="section-h2">
-                Principles of Extreme Craft <span style={{ color: "#ff3b30" }}>.</span>
-              </h2>
-            </div>
-          </div>
-
-          <div className="principles-deck">
-            {PRINCIPLES.map((item, idx) => (
+      <section id="philosophy" className="section" style={{ background: "#050608" }} aria-label="Principles">
+        <div className="section-inner">
+          <motion.div
+            initial={still}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.28, ease: easeTransition }}
+          >
+            <span className="eyebrow">Principles</span>
+            <h2 className="h2">How I work.</h2>
+            <p className="lede">Three habits from the practice room that run my engineering too.</p>
+          </motion.div>
+          <div className="principles-grid">
+            {PRINCIPLES.map((item) => (
               <motion.div
-                key={item.num}
-                className="principle-box"
-                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 35 }}
+                key={item.title}
+                className="principle"
+                initial={still}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.7, delay: idx * 0.1, ease: easeTransition }}
+                transition={{ duration: 0.28, ease: easeTransition }}
               >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.2em", color: "#ff3b30", fontWeight: 700 }}>{item.num}</span>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff3b30" }} />
-                </div>
-                <h3 style={{ fontSize: "1.35rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.2, margin: 0, color: "#fff" }}>{item.title}</h3>
-                <p style={{ fontSize: "0.94rem", lineHeight: 1.75, color: "rgba(255,255,255,0.65)", margin: 0 }}>{item.body}</p>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="terminal" className="section-wrap">
-        <div className="section-max">
-          <div className="about-cockpit">
-            <div>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#00d4ff", display: "block", marginBottom: "0.8rem", fontWeight: 700 }}>
-                03 // COMMAND CENTER
-              </span>
-              <h2 style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.04em", margin: "0 0 1.5rem", color: "#fff" }}>
-                Interactive Workstation Console.
-              </h2>
-              <p style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "rgba(255,255,255,0.7)", margin: "0 0 2.2rem" }}>
-                Directly execute commands, query architecture parameters, or verify contact channels right from this console. All systems operate in real-time.
-              </p>
-              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                <Link
-                  href="/about"
-                  className="btn-neon-primary"
-                  onMouseEnter={() => sound.playHover()}
-                  onClick={() => sound.playClick()}
-                >
-                  <span>Complete Biography</span>
-                  <ArrowUpRight size={14} />
-                </Link>
-                <a
-                  href="/about"
-                  className="btn-neon-outline"
-                  onMouseEnter={() => sound.playHover()}
-                  onClick={() => sound.playClick()}
-                >
-                  <span>Curriculum Vitae</span>
-                </a>
-              </div>
+      <section id="terminal" className="section" aria-label="Console">
+        <div className="section-inner terminal-grid">
+          <motion.div
+            initial={still}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.28, ease: easeTransition }}
+          >
+            <span className="eyebrow">Console</span>
+            <h2 className="h2">Ask the console.</h2>
+            <p className="body-text">
+              This terminal answers questions about my work, my music, and how to reach me. Type help to see what it knows.
+            </p>
+            <div className="terminal-actions">
+              <Link
+                href="/about"
+                className="btn btn-outline"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+              >
+                <span>More about me</span>
+              </Link>
             </div>
-
-            <div>
-              <InteractiveTerminal />
-            </div>
-          </div>
+          </motion.div>
+          <motion.div
+            initial={still}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.28, ease: easeTransition }}
+          >
+            <InteractiveTerminal />
+          </motion.div>
         </div>
       </section>
-
-      <section className="section-wrap" style={{ padding: "5rem clamp(20px, 4.5vw, 72px)", background: "#050608" }}>
-        <div className="section-max">
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "440px",
-              borderRadius: 24,
-              overflow: "hidden",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              background: "#080a0e",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
+      <section className="section" style={{ background: "#050608" }} aria-label="For recruiters">
+        <div className="section-inner">
+          <motion.div
+            className="recruit-box"
+            initial={still}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.28, ease: easeTransition }}
           >
-            <div style={{ position: "absolute", zIndex: 10, textAlign: "center", pointerEvents: "none", maxWidth: 580, padding: "0 1.5rem" }}>
-              <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#00f59b", marginBottom: "0.8rem", fontWeight: 700 }}>
-                ✦ THE RECRUITER LOBBY
-              </span>
-              <h2 style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)", fontWeight: 700, letterSpacing: "-0.04em", margin: "0 0 1rem", color: "#fff" }}>
-                Skip Automated Line.
-              </h2>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.78rem", lineHeight: 1.6, color: "rgba(255,255,255,0.75)", margin: 0, background: "rgba(6,7,9,0.8)", backdropFilter: "blur(8px)", padding: "0.6rem 1.4rem", borderRadius: 999, border: "1px solid rgba(255,255,255,0.12)" }}>
-                Transmit directly to my primary inbox. I review every single thoughtful message.
-              </p>
-            </div>
-
-            <div style={{ position: "absolute", inset: 0, opacity: 0.35, filter: "grayscale(100%) contrast(1.2)", mixBlendMode: "screen" }}>
+            <div className="recruit-art" aria-hidden>
               <CrowdCanvas src="https://skiper-ui.com/images/peeps/all-peeps.png" rows={15} cols={7} />
             </div>
-          </div>
+            <div className="recruit-inner">
+              <span className="eyebrow" style={{ margin: 0 }}>For recruiters</span>
+              <h2 className="h2">Hiring? Write to me directly.</h2>
+              <p className="lede">No forms, no portals. I read every thoughtful message and reply within a few days.</p>
+              <a
+                href="mailto:shelatkarshivam4@gmail.com"
+                className="btn btn-solid"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+              >
+                <Mail size={15} />
+                <span>Email me</span>
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <footer id="contact" className="section-wrap" style={{ background: "#030304" }}>
-        <div className="section-max">
-          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 0.6fr", gap: "3.5rem", marginBottom: "4.5rem" }}>
+      <footer id="contact" className="section" style={{ background: "#030304" }} aria-label="Contact">
+        <div className="section-inner">
+          <div className="footer-grid">
             <div>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#ff3b30", display: "block", marginBottom: "1.2rem", fontWeight: 700 }}>
-                04 // INITIATE TRANSMISSION
-              </span>
-              <h2 style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.8rem)", fontWeight: 700, lineHeight: 0.95, letterSpacing: "-0.05em", margin: "0 0 1.8rem", color: "#fff" }}>
-                Have a mission worth <br />
-                building? Let&apos;s talk.
-              </h2>
-              <div style={{ marginTop: "2rem" }}>
+              <span className="eyebrow">Contact</span>
+              <h2 className="h2">Have something worth making? Write to me.</h2>
+              <a
+                href="mailto:shelatkarshivam4@gmail.com"
+                className="email-big"
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+              >
+                <span>shelatkarshivam4@gmail.com</span>
+                <ArrowUpRight size={24} />
+              </a>
+            </div>
+            <div>
+              <p className="channel-label">Elsewhere</p>
+              <div className="channel-list">
                 <a
-                  href="mailto:shelatkarshivam4@gmail.com"
+                  href="https://linkedin.com/in/shivam-shelatkar-503305358"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onMouseEnter={() => sound.playHover()}
-                  onClick={() => sound.playClick()}
-                  style={{
-                    fontSize: "clamp(1.3rem, 2.8vw, 2.1rem)",
-                    fontWeight: 700,
-                    color: "#fff",
-                    textDecoration: "none",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.8rem",
-                    borderBottom: "2px solid #ff3b30",
-                    paddingBottom: "6px",
-                    transition: "color 0.2s ease"
-                  }}
                 >
-                  <span>shelatkarshivam4@gmail.com</span>
-                  <ArrowUpRight size={26} color="#ff3b30" />
+                  <Linkedin size={16} /> <span>LinkedIn — Shivam Shelatkar</span>
+                </a>
+                <a
+                  href="https://github.com/sashtriyasam"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => sound.playHover()}
+                >
+                  <Github size={16} /> <span>GitHub — sashtriyasam</span>
+                </a>
+                <a
+                  href="https://www.instagram.com/shastriyakid"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => sound.playHover()}
+                >
+                  <span aria-hidden>@</span> <span>Instagram — @shastriyakid</span>
+                </a>
+                <a
+                  href="https://www.imdb.com/name/nm17605062/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => sound.playHover()}
+                >
+                  <span aria-hidden style={{ fontWeight: 800, fontSize: 12 }}>IMDb</span> <span>IMDb — nm17605062</span>
                 </a>
               </div>
             </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", alignItems: "flex-end" }}>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: "0.5rem" }}>
-                SECURE CHANNELS
-              </div>
-              <a
-                href="https://linkedin.com/in/shivam-shelatkar-503305358"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => sound.playHover()}
-                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
-              >
-                <Linkedin size={16} color="#00d4ff" /> <span>LinkedIn — Shivam Shelatkar</span>
-              </a>
-              <a
-                href="https://github.com/sashtriyasam"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => sound.playHover()}
-                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
-              >
-                <Github size={16} color="#00f59b" /> <span>GitHub — sashtriyasam</span>
-              </a>
-              <a
-                href="https://www.instagram.com/shastriyakid"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => sound.playHover()}
-                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
-              >
-                <span style={{ width: 16, height: 16, display: "grid", placeItems: "center", color: "#ff3b30" }}>◎</span> <span>Instagram — @shastriyakid</span>
-              </a>
-              <a
-                href="https://www.imdb.com/name/nm17605062/"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => sound.playHover()}
-                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
-              >
-                <span style={{ width: 16, height: 16, display: "grid", placeItems: "center", color: "#f5c518", fontWeight: 800, fontSize: 9 }}>IMDb</span> <span>IMDb — nm17605062</span>
-              </a>
-              <a
-                href="/about"
-                onMouseEnter={() => sound.playHover()}
-                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
-              >
-                <span>Curriculum Vitae</span>
-              </a>
-              <a
-                href="/work"
-                onMouseEnter={() => sound.playHover()}
-                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
-              >
-                <span>Full Project Registry</span>
-              </a>
-            </div>
           </div>
 
-          <div
-            style={{
-              paddingTop: "2.5rem",
-              borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.62rem",
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "rgba(255, 255, 255, 0.4)",
-              flexWrap: "wrap",
-              gap: "1.2rem"
-            }}
-          >
-            <div>© {new Date().getFullYear()} SHIVAM SHELATKAR · KARWAR→MUMBAI·PUNE · ALL RIGHTS RESERVED.</div>
-            <div style={{ display: "flex", gap: "1.4rem", flexWrap: "wrap", maxWidth: 420, justifyContent: "flex-end", textAlign: "right" }}>
-              <span style={{ color: "rgba(255,255,255,0.32)", fontSize: "0.58rem" }}>Refs: Brittany Chiang (a11y sidebar) · Louis Cuenot (muted paper #F4F3EC/#221F21) · Bruno Simon (play) — handcrafted in Mumbai</span>
-              <span>NEXT.JS 16 · THREE.JS · WEBGL · ODOO</span>
-              <a
-                href="#top"
-                onClick={(e) => {
-                  e.preventDefault();
-                  sound.playClick();
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                onMouseEnter={() => sound.playHover()}
-                style={{ color: "#00d4ff", textDecoration: "none", fontWeight: 700 }}
-              >
-                RETURN TO APEX ↑
-              </a>
-            </div>
+          <div className="footer-base">
+            <div>© {new Date().getFullYear()} Shivam Shelatkar · Karwar to Mumbai</div>
+            <button
+              type="button"
+              className="to-top"
+              onClick={() => {
+                sound.playClick();
+                window.scrollTo({ top: 0, behavior: shouldReduceMotion ? "auto" : "smooth" });
+              }}
+              onMouseEnter={() => sound.playHover()}
+            >
+              Back to top
+            </button>
           </div>
         </div>
       </footer>
     </div>
   );
 }
+
+
+
+
