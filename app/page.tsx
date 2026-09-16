@@ -127,14 +127,13 @@ export default function HomePage() {
             <span style={{ fontVariantNumeric: "tabular-nums" }}>IN {mounted ? time : "--:--"}</span>
             <span style={{ opacity: 0.35 }}>—</span>
             <span style={{ letterSpacing: "0.18em", fontWeight: 600 }}>PORTFOLIO</span>
-            <span style={{ opacity: 0.35, display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--color-accent)" }} />
+            <span className="hero-dot-pulse" style={{ opacity: 0.35, display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--color-accent)" }} />
           </div>
           <nav className="purvoid-nav" style={{ display: "flex", gap: "1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.14em" }}>
             <a href="#work" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>WORK</a>
             <a href="#about" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>ABOUT</a>
             <a href="#approach" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>BLOG</a>
-            <a href="#contact" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>RESUME</a>
-            <a href="#work" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>VIZ</a>
+            <a href="/about" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>RESUME</a>
             <a href="#contact" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>CONTACT</a>
           </nav>
         </div>
@@ -149,7 +148,7 @@ export default function HomePage() {
         </div>
         <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", padding: "14px clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>
           <span>©2026 SHIVAM SHELATKAR</span>
-          <a href="#intro" style={{ color: "var(--color-ink)", textDecoration: "none", display: "inline-flex", gap: 6, alignItems: "center" }}>↓ SCROLL <span style={{ opacity: 0.4 }}>— hover bloom follows cursor</span></a>
+          <a href="#intro" style={{ color: "var(--color-ink)", textDecoration: "none", display: "inline-flex", gap: 6, alignItems: "center" }}>↓ SCROLL</a>
         </div>
       </section>
       <section id="intro" style={{ background: "var(--color-paper)", color: "var(--color-ink)", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)", borderBottom: "1px solid var(--color-line)" }}>
@@ -164,9 +163,10 @@ export default function HomePage() {
             </div>
           </div>
           <div style={{ marginTop: "2.5rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", border: "1px solid var(--color-line)", padding: "0.35rem 0.7rem", borderRadius: 999 }}>PURVO-ID → SHIV-VOID</span>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-paper)", background: "var(--color-ink)", padding: "0.35rem 0.7rem", borderRadius: 999 }}>LETTER-SCRAMBLE</span>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", border: "1px solid var(--color-line)", padding: "0.35rem 0.7rem", borderRadius: 999 }}>GEIST + GIDEON ROMAN</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ink)", border: "1px solid var(--color-line)", padding: "0.35rem 0.9rem", borderRadius: 999, background: "var(--color-paper)" }}>PRODUCT DESIGN</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-paper)", background: "var(--color-ink)", padding: "0.35rem 0.9rem", borderRadius: 999 }}>FRONTEND ENGINEERING</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ink)", border: "1px solid var(--color-line)", padding: "0.35rem 0.9rem", borderRadius: 999, background: "var(--color-paper)" }}>CREATIVE TECHNOLOGY</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)", border: "1px solid var(--color-line)", padding: "0.35rem 0.9rem", borderRadius: 999 }}>OPEN TO WORK ●</span>
           </div>
         </div>
       </section>
@@ -182,7 +182,7 @@ export default function HomePage() {
           </div>
           <div className="work-grid" style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "1rem", marginTop: "2rem" }}>
             {workList.map((p, i) => (
-              <motion.a key={p.id} href={p.href} className={`work-project-card ${i === 0 ? "work-featured" : ""}`} initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid var(--color-line)", borderRadius: 16, overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
+              <motion.a key={p.id} href={p.href} className={`work-project-card ${i === 0 ? "work-featured" : ""}`} initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} whileHover={shouldReduceMotion ? {} : { y: -4, transition: { duration: 0.2 } }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid var(--color-line)", borderRadius: 16, overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
                 <div style={{ flex: i === 0 ? "0 0 58%" : "1 1 auto", position: "relative", overflow: "hidden", background: "var(--color-paper-2)", minHeight: 260 }}>
                   <img src={p.img} alt={p.kicker} className="work-project-img" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", aspectRatio: "16 / 10" }} loading="lazy" />
                   <span style={{ position: "absolute", top: 14, left: 14, background: "rgba(255,255,255,0.92)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.32rem 0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ink)" }}>{p.id}</span>
@@ -199,10 +199,6 @@ export default function HomePage() {
                 </div>
               </motion.a>
             ))}
-          </div>
-          <div style={{ marginTop: "1.2rem", display: "flex", gap: "0.6rem", flexWrap: "wrap", alignItems: "center" }}>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)" }}>6 project cards • picsum thumbnails • tags • links • hover bloom</span>
-            <span style={{ marginLeft: "auto", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)" }}>PURVOID TOKENS: #fff bg • #242424 text • #d60004 red</span>
           </div>
           {active === "USER EXPERIENCE" && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "0.8rem", marginTop: "1rem", opacity: 0.9 }}>
@@ -241,8 +237,8 @@ export default function HomePage() {
               Pune-based. Obsessed with why before what. DepthWizard → Projection AI → ParkEasy. Same thread: turn complexity into calm, confident interfaces. Purva&apos;s Gideon Roman styling, rebuilt for Shivam.
             </p>
             <div style={{ marginTop: "1.4rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-              <a href="#work" style={{ background: "var(--color-accent)", color: "var(--color-paper)", border: "1px solid #d60004", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>VIEW WORK →</a>
-              <a href="#contact" style={{ border: "1px solid rgba(255,255,255,0.2)", color: "var(--color-paper)", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>SAY HI</a>
+              <motion.a href="#work" whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.15 } }} style={{ background: "var(--color-accent)", color: "var(--color-paper)", border: "1px solid #d60004", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>VIEW WORK →</motion.a>
+              <motion.a href="#contact" whileHover={shouldReduceMotion ? {} : { scale: 1.02, transition: { duration: 0.15 } }} style={{ border: "1px solid rgba(255,255,255,0.25)", color: "var(--color-paper)", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>SAY HI</motion.a>
             </div>
           </motion.div>
         </div>
@@ -251,7 +247,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
             <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>— APPROACH / MANIFESTO</div>
-            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>PERSPECTIVE 1000PX • 6 VIDEOS • TUNNEL</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>03 / THINKING</div>
           </div>
           <motion.blockquote initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} className="gideon" style={{ margin: "2rem 0 0", fontSize: "clamp(1.8rem, 4vw, 3.2rem)", lineHeight: 0.95, letterSpacing: "-0.04em", color: "var(--color-ink)", maxWidth: "22ch", borderLeft: "2px solid #d60004", paddingLeft: "1.2rem" }}>
             &ldquo;A mind that is stretched by a new experience can never go back to its old dimensions.&rdquo;
@@ -277,9 +273,6 @@ export default function HomePage() {
                   </div>
                 </div>
               ))}
-            </div>
-            <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", pointerEvents: "none" }}>
-              <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "rgba(255,255,255,0.7)", background: "rgba(0,0,0,0.55)", padding: "0.45rem 0.9rem", borderRadius: 999, border: "1px solid rgba(255,255,255,0.15)" }}>3D VIDEO TUNNEL — move-3d • 10s linear • 6 Framer mov</span>
             </div>
             <style>{`@media (prefers-reduced-motion: reduce) { .tunnel, .tunnel * { animation: none !important; transition: none !important; } }
         @keyframes tunnelMove { from{ transform: translateZ(-1200px)} to{ transform: translateZ(420px)} }`}</style>
@@ -318,16 +311,15 @@ export default function HomePage() {
                 <span className="ingrid" style={{ display: "block", fontSize: "clamp(3.2rem, 8vw, 6.8rem)", color: "var(--color-accent)", marginTop: "-0.12em", transform: "rotate(-1deg)", lineHeight: 0.9 }}>Talk</span>
               </h2>
               <div style={{ marginTop: "1.6rem", display: "flex", gap: "0.8rem", flexWrap: "wrap" }}>
-                <a href="mailto:shivam@example.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--color-accent)", color: "var(--color-paper)", border: "1px solid #d60004", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", fontWeight: 600 }}>SAY HI → shivam@example.com</a>
-                <a href="/fun-game" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--color-paper)", color: "var(--color-ink)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>WANT TO DO SOMETHING FUN? CLICK HERE →</a>
+                <motion.a href="mailto:shelatkarshivam4@gmail.com" whileHover={shouldReduceMotion ? {} : { scale: 1.02 }} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--color-accent)", color: "var(--color-paper)", border: "1px solid #d60004", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", fontWeight: 600 }}>SAY HI → shelatkarshivam4@gmail.com</motion.a>
+                <motion.a href="/fun-game" whileHover={shouldReduceMotion ? {} : { scale: 1.02 }} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--color-paper)", color: "var(--color-ink)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>SOMETHING FUN? →</motion.a>
               </div>
-              <p style={{ marginTop: "1rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", textTransform: "uppercase" }}>— Purvoid-style contact CTA • mailto + fun-game</p>
             </div>
             <div style={{ display: "grid", placeItems: "center" }}>
               <div style={{ width: "min(200px,68vw)", height: 340, background: "linear-gradient(180deg, var(--color-paper) 0%, var(--color-paper) 100%)", border: "1px solid var(--color-line)", borderRadius: 16, boxShadow: "0 30px 60px -20px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,1)", padding: "1rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.9rem" }}>
                 <div style={{ width: "100%", height: 140, background: "#0b0e10", borderRadius: 12, padding: "0.8rem", color: "#c7f35a", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", lineHeight: 1.5, position: "relative", overflow: "hidden" }}>
-                  <div style={{ opacity: 0.7 }}>Purva&apos;s iPod → Shivam&apos;s Terminal</div>
-                  <div style={{ marginTop: 8, color: "var(--color-paper)" }}>$ why --curiosity<br />&gt; uncovering why beats shipping what<br />$ ls projects --filter=wall<br />&gt; 3 shipped • 1.2k commits</div>
+                  <div style={{ opacity: 0.5, marginBottom: 4 }}>// terminal.sh</div>
+                  <div style={{ color: "var(--color-paper)" }}>$ why --curiosity<br />&gt; uncovering why beats shipping what<br />$ ls projects --filter=shipped<br />&gt; 3 shipped • 1.2k commits</div>
                   <div style={{ marginTop: 8, display: "flex", gap: 6 }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff3b82", display: "inline-block" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffb84d", display: "inline-block" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#c7f35a", display: "inline-block" }} /></div>
                 </div>
                 <div style={{ width: 140, height: 140, borderRadius: "50%", background: "#f0f0f0", border: "1px solid var(--color-line)", display: "grid", placeItems: "center", position: "relative", boxShadow: "inset 0 2px 8px rgba(0,0,0,0.06)" }}>
@@ -337,7 +329,7 @@ export default function HomePage() {
                   <span style={{ position: "absolute", left: 14, fontSize: 10, color: "var(--color-ui)" }}>◀◀</span>
                   <span style={{ position: "absolute", right: 14, fontSize: 10, color: "var(--color-ui)" }}>▶▶</span>
                 </div>
-                <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "var(--color-ui)", letterSpacing: "0.08em" }}>200×340 • WHITE GRADIENT • WHEEL</div>
+                <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "var(--color-ui)", letterSpacing: "0.08em", textAlign: "center" }}>SHIVAM OS — v1.0</div>
               </div>
             </div>
           </div>
@@ -391,35 +383,41 @@ export default function HomePage() {
       <footer style={{ background: "var(--color-paper-2)", color: "var(--color-ink)", padding: "3.5rem clamp(24px, 5vw, 80px) 2rem", borderTop: "1px solid var(--color-line)", position: "relative", overflow: "hidden" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "2rem" }}>
           <div>
-            <div className="gideon" style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", lineHeight: 0.9, letterSpacing: "-0.04em", color: "var(--color-ink)" }}>Thank you <span className="ingrid" style={{ color: "var(--color-accent)", fontSize: "1.2em", transform: "rotate(-2deg)", display: "inline-block" }}>—</span></div>
+            <div className="gideon" style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", lineHeight: 0.9, letterSpacing: "-0.04em", color: "var(--color-ink)" }}>Thank you <span className="ingrid" style={{ color: "var(--color-accent)", fontSize: "1.2em", transform: "rotate(-2deg)", display: "inline-block" }}>✦</span></div>
             <div className="ingrid" style={{ fontSize: "1.9rem", color: "var(--color-accent)", transform: "rotate(-1.5deg)", marginTop: "0.2rem" }}>Keep in touch :]</div>
             <div style={{ display: "flex", gap: "1rem", marginTop: "1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>LinkedIn</a>
+              <a href="https://linkedin.com/in/shivam-shelatkar" target="_blank" rel="noopener noreferrer" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>LinkedIn</a>
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>Instagram</a>
-              <a href="mailto:shivam@example.com" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>Email</a>
+              <a href="mailto:shelatkarshivam4@gmail.com" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>Email</a>
               <a href="#" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>First Website</a>
             </div>
             <div style={{ marginTop: "1.6rem", display: "flex", gap: "1rem", alignItems: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-ui)" }}>
               <span>IN {mounted ? time : "--:--"} — 2026</span>
               <span>•</span>
               <span>© SHIVAM SHELATKAR — PUNE, INDIA</span>
-              <img src="https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif" alt="glitch" width={48} height={32} style={{ width: 48, height: 32, objectFit: "cover", borderRadius: 6, border: "1px solid var(--color-line)", opacity: 0.9 }} loading="lazy" />
-              <span style={{ opacity: 0.6 }}>glitch gif</span>
+              <img src="https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif" alt="hand wave" width={48} height={32} style={{ width: 48, height: 32, objectFit: "cover", borderRadius: 6, border: "1px solid var(--color-line)", opacity: 0.9 }} loading="lazy" />
             </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.8rem", justifyContent: "center" }}>
-            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", textTransform: "uppercase", textAlign: "right" }}>BUILT AS PURVO-ID DITTO<br />FOR SHIVAM SHELATKAR — SHIVVOID</div>
-            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-              <span style={{ background: "var(--color-paper)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#fff bg</span>
-              <span style={{ background: "var(--color-ink)", color: "var(--color-paper)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#242424 text</span>
-              <span style={{ background: "var(--color-paper-2)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#f7f2e6 cream</span>
-              <span style={{ background: "var(--color-accent)", color: "var(--color-paper)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#d60004 red</span>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1rem", justifyContent: "center" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "var(--color-paper)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.5rem 1rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)", textTransform: "uppercase" }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--color-accent)", display: "inline-block", animation: "pulseDot 2s ease-in-out infinite" }} />
+              AVAILABLE FOR WORK
+            </div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", textTransform: "uppercase", textAlign: "right", lineHeight: 1.6 }}>
+              PRODUCT DESIGNER<br />
+              FRONTEND ENGINEER<br />
+              PUNE, INDIA — REMOTE OK
+            </div>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
+              <a href="/work" style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-ink)", textDecoration: "none", border: "1px solid var(--color-line)", padding: "0.4rem 0.75rem", borderRadius: 999, textTransform: "uppercase" }}>Work →</a>
+              <a href="/about" style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-ink)", textDecoration: "none", border: "1px solid var(--color-line)", padding: "0.4rem 0.75rem", borderRadius: 999, textTransform: "uppercase" }}>About →</a>
+              <a href="mailto:shelatkarshivam4@gmail.com" style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-paper)", background: "var(--color-ink)", padding: "0.4rem 0.75rem", borderRadius: 999, textTransform: "uppercase", textDecoration: "none" }}>Hire →</a>
             </div>
           </div>
         </div>
         <div style={{ maxWidth: 1240, margin: "2rem auto 0", paddingTop: "1rem", borderTop: "1px solid var(--color-line)", display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "var(--color-ui)", textTransform: "uppercase" }}>
-          <span>wall-decoded spotlight preserved • hover bloom 0.12 opacity</span>
-          <span>motion/react • spring translateY • Geist + Gideon Roman + Ingrid Darling</span>
+          <span>DESIGNED & BUILT BY SHIVAM SHELATKAR — 2026</span>
+          <span>NEXT.JS · MOTION/REACT · GEIST + GIDEON ROMAN + INGRID DARLING</span>
         </div>
       </footer>
     </div>
