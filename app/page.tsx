@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { sound } from "@/lib/audio";
 import { AnimatedFooter } from "@/components/ui/animated-footer";
+import { VariableFontHover } from "@/components/ui/variable-font-hover";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -524,7 +525,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: EASE }}
             >
-              Shivam
+              <VariableFontHover text="Shivam Shelatkar" />
             </motion.span>
             <motion.span
               className="hero-last"
@@ -532,7 +533,7 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.06, ease: EASE }}
             >
-              Shelatkar, music and code
+              music and code
             </motion.span>
           </h1>
           <motion.p
