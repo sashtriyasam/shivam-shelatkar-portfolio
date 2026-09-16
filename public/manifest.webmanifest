@@ -1,12 +1,14 @@
-{
-  "name": "Shivam Shelatkar — Creative Technologist",
-  "short_name": "Shivam Shelatkar",
-  "description": "Portfolio of Shivam Shelatkar: creative technologist and software engineer building spatial, real-time, and production systems.",
+﻿{
+  "name": "Shivam Shelatkar — Swarvibhaa founder",
+  "short_name": "Shivam",
+  "description": "Shivam Shelatkar, founder of Swarvibhaa — tabla and piano from Thane and Mumbai, building music and code.",
   "start_url": "/",
-  "display": "minimal-ui",
-  "background_color": "#0b0e10",
-  "theme_color": "#0b0e10",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFF8EF",
+  "theme_color": "#060709",
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable any" }
-  ]
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "_todo": "PNG TODO: add 192x192 and 512x512 PNG icons when exported — no binaries invented here."
 }

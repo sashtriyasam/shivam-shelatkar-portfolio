@@ -43,22 +43,36 @@ export const metadata: Metadata = {
     template: "%s | Shivam Shelatkar",
   },
   description:
-    "Shivam Shelatkar is the founder of Swarvibhaa, a tabla and piano player from Pune and Mumbai, building music, community and software with code.",
+    "Shivam Shelatkar, founder of Swarvibhaa from Thane and Mumbai, plays tabla and piano and crafts interactive music tools, lessons and Unity worlds with code.",
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_IN",
     url: "https://shivam.runs-on.dev",
     siteName: "Shivam Shelatkar",
     title: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
     description:
-      "Founder of Swarvibhaa. Tabla and piano player from Pune and Mumbai, building music, community and software with code.",
+      "Shivam Shelatkar, founder of Swarvibhaa from Thane and Mumbai, plays tabla and piano and crafts interactive music tools, lessons and Unity worlds with code.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Shivam Shelatkar — Rooted in tradition. Wired with code.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
     description:
-      "Founder of Swarvibhaa, tabla and piano player, building music, community and software with code.",
+      "Shivam Shelatkar, founder of Swarvibhaa from Thane and Mumbai, plays tabla and piano and crafts interactive music tools, lessons and Unity worlds with code.",
+    images: ["/opengraph-image"],
   },
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/apple-icon.svg",
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {

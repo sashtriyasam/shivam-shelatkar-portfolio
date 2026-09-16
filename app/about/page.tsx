@@ -1,35 +1,58 @@
 ﻿"use client";
 
 import { motion } from "motion/react";
-import { Briefcase, Code2, Lightbulb, Users } from "lucide-react";
+import { Music, Layers, Cpu, Users } from "lucide-react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const viewport = { once: true, margin: "-100px" } as const;
 
-const interests = [
+const cards = [
   {
-    icon: Briefcase,
+    icon: Music,
     index: "01",
-    title: "Product craft",
-    text: "Turning messy requirements into calm, usable experiences.",
+    title: "Lineage",
+    text: "Ten years of tabla with Pandit Mukundraj Deo, six years of Trinity piano. Timing first, decoration last.",
   },
   {
-    icon: Code2,
+    icon: Layers,
     index: "02",
-    title: "Frontend engineering",
-    text: "Building accessible, performant interfaces that hold up at scale.",
+    title: "Swarvibhaa ecosystem",
+    text: "Founder at Swarvibhaa across Mumbai, Delhi and Gujarat. Rooted in tradition. Wired with code. Quietly building art that speaks. Co-founded with Sharvee Kulkarni, a Bharatanatyam dancer. Work lives on kalamahotsaav.com.",
   },
   {
-    icon: Lightbulb,
+    icon: Cpu,
     index: "03",
-    title: "Creative technology",
-    text: "Exploring WebGL, generative art, and interactive storytelling.",
+    title: "Tech and live systems",
+    text: "Unity developer since about 2017. Tech head for NSFF 2026 at Film City. ParkEasy built on Expo, Express, Supabase, Socket, Razorpay and Docker.",
   },
   {
     icon: Users,
     index: "04",
-    title: "Team leadership",
-    text: "Mentoring designers and engineers to build stronger product teams.",
+    title: "Community work",
+    text: "ABVP Thane convenor in a 4M+ organisation, plus live tech for NSFF-type shows where cues, sound and lights have to land together.",
+  },
+];
+
+const timeline = [
+  {
+    year: "Training",
+    title: "Tabla and piano",
+    body: "Ten years tabla, six years piano. Practice room habits that still run my engineering.",
+  },
+  {
+    year: "2023",
+    title: "Swarvibhaa founded",
+    body: "Founder across Mumbai, Delhi and Gujarat. Hindustani meets western classical, built quietly.",
+  },
+  {
+    year: "2026",
+    title: "NSFF tech head",
+    body: "Running live tech at Film City. Cues, projection and sound as one system.",
+  },
+  {
+    year: "Now",
+    title: "Second year engineering",
+    body: "Computer engineering at Mumbai University, based in Thane, Mumbai. Composing and shipping between classes.",
   },
 ];
 
@@ -46,7 +69,7 @@ export default function AboutPage() {
             viewport={viewport}
             transition={{ duration: 0.8, ease }}
           >
-            Designer by instinct. Engineer by practice.
+            Namaste, I am Shivam. Composer and builder.
           </motion.h1>
         </header>
 
@@ -58,21 +81,21 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease }}
           >
             <p className="about__lead">
-I help teams turn ambiguous problems into products that feel
-               inevitable — from the first sketch to the final commit.
+              Music composer and Unity developer from Thane, Mumbai. Second
+              year computer engineering at Mumbai University, founder at
+              Swarvibhaa.
             </p>
             <p className="about__copy">
-              Over the last decade I&apos;ve worked with startups, agencies, and
-              research labs across geospatial intelligence, fintech, and civic
-              tech. I care about systems that are as functional as they are
-              beautiful, and I enjoy getting my hands dirty with the code that
-              ships them.
+              I write for film, theatre and indie releases, and I build
+              interactive systems to stage them. Swarvibhaa is the home for
+              that work across Mumbai, Delhi and Gujarat. Rooted in
+              tradition. Wired with code. Quietly building art that speaks.
             </p>
-<aside className="about__facts" aria-label="Snapshot">
-               <span className="about__fact">10+ years</span>
-               <span className="about__fact">Remote</span>
-               <span className="about__fact">Full-time</span>
-             </aside>
+            <aside className="about__facts" aria-label="Snapshot">
+              <span className="about__fact">Thane, Mumbai</span>
+              <span className="about__fact">Mumbai University</span>
+              <span className="about__fact">Founder at Swarvibhaa</span>
+            </aside>
           </motion.div>
 
           <motion.div
@@ -81,12 +104,12 @@ I help teams turn ambiguous problems into products that feel
             viewport={viewport}
             transition={{ duration: 0.8, delay: 0.1, ease }}
           >
-            <h2 className="about__subtitle">What I do</h2>
+            <h2 className="about__subtitle">Training</h2>
             <ul className="about__list">
-              <li>Product strategy and interaction design</li>
-              <li>Design systems and frontend architecture</li>
-              <li>Prototyping with code and motion</li>
-              <li>Collaborating with engineers and researchers</li>
+              <li>Tabla, ten years with Pandit Mukundraj Deo</li>
+              <li>Piano, six years Trinity College London</li>
+              <li>Unity, building since about 2017</li>
+              <li>Live tech, NSFF 2026 at Film City</li>
             </ul>
           </motion.div>
         </div>
@@ -99,15 +122,15 @@ I help teams turn ambiguous problems into products that feel
             viewport={viewport}
             transition={{ duration: 0.7, ease }}
           >
-            <h2 className="about__subtitle">What I&apos;m exploring</h2>
+            <h2 className="about__subtitle">What I do</h2>
             <p className="about__interests-kicker">
               <span className="about__kicker-line" />
-              <span>04 / artifacts in motion</span>
+              <span>04 / music, systems, stage</span>
             </p>
           </motion.div>
 
           <div className="about__cards">
-            {interests.map((item, i) => {
+            {cards.map((item, i) => {
               const Icon = item.icon;
               return (
                 <motion.div
@@ -140,7 +163,7 @@ I help teams turn ambiguous problems into products that feel
             viewport={viewport}
             transition={{ duration: 0.7, ease }}
           >
-            <h2 className="about__subtitle">How I think</h2>
+            <h2 className="about__subtitle">Languages</h2>
             <span className="about__tools-line" aria-hidden="true" />
           </motion.div>
           <motion.p
@@ -150,10 +173,43 @@ I help teams turn ambiguous problems into products that feel
             viewport={viewport}
             transition={{ duration: 0.7, delay: 0.1, ease }}
           >
-            Figma, Next.js, React, TypeScript, Tailwind CSS, Three.js, Lenis, Motion for React, Storybook, and a growing list of experimental
-            frameworks. I also keep a sketchbook nearby for ideas that don&apos;t
-            fit on a screen yet.
+            English, Marathi, Hindi and Malayalam, with elementary Gujarati.
+            I write and rehearse across these languages for stage and screen.
           </motion.p>
+        </section>
+
+        <section className="about__interests" aria-label="Timeline">
+          <motion.div
+            className="about__interests-head"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewport}
+            transition={{ duration: 0.7, ease }}
+          >
+            <h2 className="about__subtitle">Timeline</h2>
+            <p className="about__interests-kicker">
+              <span className="about__kicker-line" />
+              <span>04 / where it stands</span>
+            </p>
+          </motion.div>
+          <div className="about__cards">
+            {timeline.map((t, i) => (
+              <motion.div
+                key={t.title}
+                className="about__card"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={viewport}
+                transition={{ duration: 0.7, delay: i * 0.08, ease }}
+              >
+                <span className="about__card-index" aria-hidden="true">
+                  {t.year}
+                </span>
+                <h3 className="about__card-title">{t.title}</h3>
+                <p className="about__card-text">{t.body}</p>
+              </motion.div>
+            ))}
+          </div>
         </section>
       </div>
     </div>

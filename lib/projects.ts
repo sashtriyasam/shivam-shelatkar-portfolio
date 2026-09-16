@@ -1,4 +1,4 @@
-﻿export interface Project {
+export interface Project {
   slug: string;
   title: string;
   subtitle: string;
@@ -8,6 +8,8 @@
   stack: string[];
   status: string;
   year: string;
+  role: string;
+  photoNote: string;
   links: { label: string; href: string }[];
   visual: "grid" | "wave" | "orbit" | "dots" | "bars" | "terrain";
   visualAccent?: string;
@@ -22,100 +24,176 @@
 
 export const projects: Project[] = [
   {
-    slug: "depthwizard",
-    title: "DepthWizard",
-    subtitle: "ISRO-DEPTHWIZ",
+    slug: "thevita-masthak",
+    title: "Thevita mastak deva tuzha payi",
+    subtitle: "Marathi devotional to Lord Vitthal · Ashadi Ekadashi 2025",
     description:
-      "An AI-powered geospatial intelligence platform that fuses satellite imagery, terrain models, and mission data into a unified operational picture for defense and research missions.",
+      "A Marathi devotional to Lord Vitthal, released on Ashadi Ekadashi 2025-07-13.",
     summary:
-      "Led end-to-end product design and engineering for a geospatial intelligence platform used by mission teams to plan, analyze, and act on satellite and terrain data in real time.",
-    tags: ["Product Design", "Frontend Engineering", "Geospatial", "AI", "Satellite"],
-    stack: [
-      "Next.js",
-      "TypeScript",
-      "React",
-      "Mapbox",
-      "Three.js",
-      "Tailwind CSS",
-      "Motion for React",
-    ],
-    status: "Shipped",
-    year: "2024",
+      "Composed and edited a Marathi bhajan to Lord Vitthal for Ashadi Ekadashi, released across streaming and video.",
+    tags: ["marathi devotional", "bhajan", "lord vitthal", "ashadi ekadashi"],
+    stack: ["composition", "vocal editing", "mix", "streaming release"],
+    status: "Released",
+    year: "2025",
+    role: "Composer / Editor",
+    photoNote: "Artwork photo coming from @shastriyakid",
     links: [
-      { label: "Case study", href: "https://depthwizard.example.com" },
-      { label: "Live demo", href: "https://depthwizard.example.com/demo" },
+      {
+        label: "Release notes",
+        href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/thevita-masthak-deva-tuzha-payi-3",
+      },
+      {
+        label: "Spotify",
+        href: "https://open.spotify.com/track/6KtDa0u1kpOpV33Gm2htrh",
+      },
+      {
+        label: "JioSaavn song",
+        href: "https://www.jiosaavn.com/song/thevita-masthak-deva-tuzha-payi/OispfyBvR1s",
+      },
+      {
+        label: "JioSaavn album",
+        href: "https://www.jiosaavn.com/album/thevita-masthak-deva-tuzha-payi/RO5EoZH7b-8_",
+      },
+      {
+        label: "YouTube",
+        href: "https://www.youtube.com/watch?v=sKIO2TBTjbc",
+      },
     ],
+    visual: "wave",
+    visualAccent: "#ffb347",
+    visualSecondary: "#c7f35a",
+    visualTertiary: "#ff7a4d",
+    body: {
+      challenge:
+        "A Marathi bhajan to Lord Vitthal had to be finished, mixed, and delivered in time for Ashadi Ekadashi on 2025-07-13, across audio streaming and video.",
+      solution:
+        "Composed and edited a vocal-led devotional arrangement, prepared the streaming masters, cut the video edit, and published release notes on the Swarvibhaa blog.",
+      outcome:
+        "Released on 2025-07-13 on Spotify, JioSaavn, and YouTube, with the story documented on the Swarvibhaa blog.",
+    },
+  },
+  {
+    slug: "saffron-suraaval",
+    title: "Saffron suraaval EP",
+    subtitle: "Indian fusion instrumental · 5 tracks · 12 min",
+    description:
+      "A five-track Indian fusion instrumental EP, released 2025-10-04.",
+    summary:
+      "Composed a 12-minute, five-track Indian fusion EP — Calling Bhisma, Maula's last stand, Clue or mirage, Lost train to fort, Burning green chauni.",
+    tags: ["indian fusion", "instrumental", "ep", "composer"],
+    stack: ["composition", "arrangement", "mix", "ep mastering"],
+    status: "Released",
+    year: "2025",
+    role: "Composer",
+    photoNote: "Cover photo coming from @shastriyakid",
+    links: [
+      {
+        label: "Release notes",
+        href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/saffron-suraaval-9",
+      },
+      {
+        label: "Spotify album",
+        href: "https://open.spotify.com/album/03Wk7XtRyvM0kMOeyBmqNC",
+      },
+      {
+        label: "JioSaavn album",
+        href: "https://www.jiosaavn.com/album/saffron-suraaval/S4gMTJUoSKY_",
+      },
+    ],
+    visual: "bars",
+    visualAccent: "#ff7a4d",
+    visualSecondary: "#c7f35a",
+    visualTertiary: "#66e3ff",
+    body: {
+      challenge:
+        "An instrumental fusion EP had to hold five distinct pieces — from Calling Bhisma to Burning green chauni — together in about twelve minutes without losing its Indian classical core.",
+      solution:
+        "Composed and arranged five tracks (Calling Bhisma, Maula's last stand, Clue or mirage, Lost train to fort, Burning green chauni) as one EP arc, mixed for streaming.",
+      outcome:
+        "Released 2025-10-04 on Spotify and JioSaavn, with release notes on the Swarvibhaa blog.",
+    },
+  },
+  {
+    slug: "raatrani-orchestral",
+    title: "Raatrani orchestral",
+    subtitle: "Marathi cinematic · orchestral arrangement",
+    description:
+      "An orchestral take on the Marathi cinematic piece Raatrani, released 2025-12-14.",
+    summary:
+      "Arranged and orchestrated the Marathi cinematic piece Raatrani (original by Anshul Bopardikar) for an orchestral palette.",
+    tags: ["marathi cinematic", "orchestration", "strings", "arranger"],
+    stack: ["arrangement", "orchestration", "strings", "mix"],
+    status: "Released",
+    year: "2025",
+    role: "Arranger / Orchestrator (original by Anshul Bopardikar)",
+    photoNote: "Artwork photo coming from @shastriyakid",
+    links: [
+      {
+        label: "Release notes",
+        href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10",
+      },
+      {
+        label: "JioSaavn song",
+        href: "https://www.jiosaavn.com/song/raatrani/CkVaBEZqWHQ",
+      },
+    ],
+    visual: "orbit",
+    visualAccent: "#a855f7",
+    visualSecondary: "#66e3ff",
+    visualTertiary: "#c7f35a",
+    body: {
+      challenge:
+        "The Marathi cinematic piece Raatrani needed an orchestral setting that kept its night-flower mood while giving strings and quiet textures room to breathe.",
+      solution:
+        "Arranged and orchestrated the piece from Anshul Bopardikar's original, voicing strings and support around the lead line and mixing for streaming.",
+      outcome:
+        "Released 2025-12-14 on JioSaavn, with release notes on the Swarvibhaa blog.",
+    },
+  },
+  {
+    slug: "nsff-2026",
+    title: "NSFF 2026",
+    subtitle: "Festival site + on-site tech · Film City Mumbai · 28 Feb–1 Mar 2026",
+    description:
+      "Designer, developer, and on-site technical head for the national student film festival at Film City Mumbai.",
+    summary:
+      "Designed and built nsff.in and ran on-site tech for the festival at Film City Mumbai, 28 Feb–1 Mar 2026, with Univ Mumbai, ABP, IIM Mumbai, SNDT, and ABVP.",
+    tags: ["web design", "frontend build", "on-site tech", "film festival"],
+    stack: ["site design", "frontend build", "on-site technical direction"],
+    status: "Live",
+    year: "2026",
+    role: "Designer / Developer + on-site technical head",
+    photoNote: "Festival photo coming from @shastriyakid",
+    links: [{ label: "Live site", href: "https://nsff.in" }],
     visual: "terrain",
     visualAccent: "#c7f35a",
     visualSecondary: "#66e3ff",
     visualTertiary: "#ff7a4d",
     body: {
       challenge:
-        "Mission planners were switching between disconnected maps, spreadsheets, and imagery archives to understand a single operational area, leading to delays and fragmented situational awareness.",
+        "A student film festival at Film City Mumbai on 28 Feb–1 Mar 2026 needed one site for programme, partners, and entries, plus dependable on-site tech across screenings and stage.",
       solution:
-        "I unified the workflow into a single canvas where satellite layers, terrain meshes, and mission markers update together in real time, with AI-assisted annotation and filtering.",
+        "Designed and developed nsff.in and headed the on-site technical setup, coordinating playback, schedule, and partner presence (Univ Mumbai, ABP, IIM Mumbai, SNDT, ABVP).",
       outcome:
-        "The platform reduced average mission-planning time by 40% and became the standard operational picture for field teams across multiple agencies.",
+        "Festival ran live at Film City Mumbai with the site as its public home and technical front door.",
     },
   },
   {
-    slug: "projection-ai",
-    title: "Projection AI",
-    subtitle: "Predictive Revenue Engine",
-    description:
-      "A machine-learning dashboard that turns fragmented revenue signals into clear forecasts and actionable growth recommendations for strategy and finance teams.",
-    summary:
-      "Designed the data-visualization system and frontend architecture for a predictive revenue platform serving strategy and finance teams, with interactive scenario modeling.",
-    tags: ["Data Visualization", "Dashboard", "AI", "Machine Learning"],
-    stack: [
-      "Next.js",
-      "TypeScript",
-      "D3.js",
-      "Recharts",
-      "Shadcn/ui",
-      "Tailwind CSS",
-    ],
-    status: "Shipped",
-    year: "2023",
-    links: [
-      { label: "Case study", href: "https://projectionai.example.com" },
-      { label: "Live demo", href: "https://projectionai.example.com/demo" },
-    ],
-    visual: "wave",
-    visualAccent: "#ff7a4d",
-    visualSecondary: "#c7f35a",
-    visualTertiary: "#a855f7",
-    body: {
-      challenge:
-        "Finance leaders were making decisions with stale spreadsheets and static charts that hid important trend changes, resulting in missed opportunities and over-optimization.",
-      solution:
-        "I designed an interactive forecast workspace with animated scenarios, confidence bands, and drill-downs that update as assumptions change, with real-time collaboration features.",
-      outcome:
-        "Forecast accuracy improved by 22% and the dashboard reduced manual reporting work by 60% across three business units.",
-    },
-  },
-  {
-    slug: "park-easy",
+    slug: "parkeasy",
     title: "ParkEasy",
-    subtitle: "Urban Parking OS",
+    subtitle: "Smart parking · Expo + Supabase · Jan 2026",
     description:
-      "A real-time parking operating system that helps drivers find spots and helps operators optimize space utilization in dense urban centers.",
+      "A realtime smart-parking app with live availability, reservations, and payments.",
     summary:
-      "Built the user-facing product and internal tools for a smart-parking startup operating across dense urban centers, with real-time availability and reservation flows.",
-    tags: ["UX Design", "Mobile Web", "IoT", "Smart Cities"],
-    stack: [
-      "React",
-      "TypeScript",
-      "Mapbox",
-      "PWA",
-      "Tailwind CSS",
-      "Firebase",
-    ],
+      "Built ParkEasy with Expo React Native, Express, Supabase, Socket.io, and Razorpay — live spots, booking, and payments.",
+    tags: ["expo app", "smart parking", "realtime", "payments"],
+    stack: ["Expo", "React Native", "Express", "Supabase", "Socket.io", "Razorpay"],
     status: "Shipped",
-    year: "2022",
+    year: "2026",
+    role: "Designer / Developer",
+    photoNote: "App photo coming from @shastriyakid",
     links: [
-      { label: "Case study", href: "https://parkeasy.example.com" },
-      { label: "Live demo", href: "https://parkeasy.example.com/demo" },
+      { label: "GitHub", href: "https://github.com/sashtriyasam/ParkEasy" },
     ],
     visual: "dots",
     visualAccent: "#66e3ff",
@@ -123,11 +201,38 @@ export const projects: Project[] = [
     visualTertiary: "#ff7a4d",
     body: {
       challenge:
-        "Drivers in dense cities spent an average of 15 minutes circling for parking, increasing congestion and emissions, with no real-time visibility into spot availability.",
+        "Drivers lose time circling for parking with no live view of spots, booking, or payment in one place.",
       solution:
-        "I designed a real-time availability map and reservation flow, paired with an operator console that optimizes pricing and space allocation dynamically based on demand patterns.",
+        "Built an Expo app on Express + Supabase with Socket.io live availability and Razorpay checkout, shipped 2026-01-31.",
       outcome:
-        "Pilot cities saw a 30% reduction in parking search time and a 15% increase in lot utilization for participating operators.",
+        "Working app with realtime spots, reservations, and payments, open-sourced on GitHub.",
+    },
+  },
+  {
+    slug: "kalamahotsav",
+    title: "Kalamahotsav 2026",
+    subtitle: "Festival site · designer / developer",
+    description:
+      "Designer and developer for the Kalamahotsav 2026 festival site.",
+    summary:
+      "Designed and developed kalamahotsaav.com, the 2026 festival home for programme, artists, and updates.",
+    tags: ["web design", "frontend build", "festival"],
+    stack: ["site design", "frontend build"],
+    status: "Live",
+    year: "2026",
+    role: "Designer / Developer",
+    photoNote: "Festival photo coming from @shastriyakid",
+    links: [{ label: "Live site", href: "https://kalamahotsaav.com" }],
+    visual: "terrain",
+    visualAccent: "#ffb347",
+    visualSecondary: "#66e3ff",
+    visualTertiary: "#c7f35a",
+    body: {
+      challenge:
+        "The 2026 festival needed a single public home for its programme, artists, and updates.",
+      solution:
+        "Designed and developed kalamahotsaav.com as a fast, readable festival site.",
+      outcome: "Live site carrying the 2026 edition.",
     },
   },
 ];
@@ -135,4 +240,3 @@ export const projects: Project[] = [
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
-

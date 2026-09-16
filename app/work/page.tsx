@@ -17,7 +17,7 @@ export default function WorkPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            Products with purpose.
+            Work — music + builds
           </motion.h1>
           <motion.p
             className="work__intro"
@@ -26,8 +26,8 @@ export default function WorkPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            A few projects where research, design, and engineering came together
-            to solve real problems for real people.
+            Music releases and web builds from Thane·Mumbai — devotional songs,
+            fusion EPs, orchestral arrangements, festival sites, and apps.
           </motion.p>
         </header>
 
@@ -65,8 +65,8 @@ export default function WorkPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          Interested in working together? Let&apos;s talk about your next
-          project.
+          Want to build or score something together? Write to
+          shelatkarshivam4@gmail.com.
         </motion.p>
       </div>
     </div>

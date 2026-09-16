@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect } from "react";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 import { useMobileMenu } from "./MobileMenuProvider";
 
 const links = [
-  { href: "/#work", label: "Work" },
+  { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -75,10 +75,10 @@ export function MobileMenu() {
 
           <div className="mobile-menu__bottom">
             <a
-              href="mailto:hello@shivam.runs-on.dev"
+              href="mailto:shelatkarshivam4@gmail.com"
               className="mobile-menu__contact"
             >
-              hello@shivam.runs-on.dev
+              shelatkarshivam4@gmail.com
             </a>
           </div>
         </motion.div>

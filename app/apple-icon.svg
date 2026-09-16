@@ -1,0 +1,18 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="SS monogram for Shivam Shelatkar">
+  <rect width="180" height="180" fill="#FFF8EF"/>
+  <rect x="8" y="8" width="164" height="164" rx="36" fill="none" stroke="#1A1512" stroke-opacity="0.14" stroke-width="3"/>
+  <circle cx="131" cy="47" r="19" fill="none" stroke="#1A1512" stroke-width="4.5"/>
+  <circle cx="131" cy="47" r="12.5" fill="none" stroke="#E4572E" stroke-width="4"/>
+  <circle cx="131" cy="47" r="6" fill="#1A1512"/>
+  <text x="84" y="115" text-anchor="middle" font-family="Georgia, &#39;Times New Roman&#39;, serif" font-size="74" font-weight="700" letter-spacing="-3" fill="#1A1512">SS</text>
+  <rect x="42" y="123" width="80" height="9" rx="4.5" fill="#E4572E"/>
+  <g>
+    <rect x="40" y="139" width="92" height="24" rx="5" fill="#1A1512"/>
+    <rect x="43.5" y="142.5" width="18.5" height="17" rx="2" fill="#FFF8EF"/>
+    <rect x="63.5" y="142.5" width="18.5" height="17" rx="2" fill="#FFF8EF"/>
+    <rect x="87" y="142.5" width="18.5" height="17" rx="2" fill="#FFF8EF"/>
+    <rect x="111" y="142.5" width="17.5" height="17" rx="2" fill="#FFF8EF"/>
+    <rect x="60.5" y="142.5" width="8.5" height="10.5" rx="1.5" fill="#1A1512"/>
+    <rect x="84" y="142.5" width="8.5" height="10.5" rx="1.5" fill="#1A1512"/>
+  </g>
+</svg>

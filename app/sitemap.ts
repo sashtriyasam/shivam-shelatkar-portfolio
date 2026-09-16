@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { projects } from "@/lib/projects";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = "https://Shivam.runs-on.dev";
+  const base = "https://shivam.runs-on.dev";
   const projectRoutes = projects.map((project) => ({
     url: `${base}/work/${project.slug}`,
     lastModified: new Date(),

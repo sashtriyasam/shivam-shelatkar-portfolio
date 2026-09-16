@@ -1,0 +1,33 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Shivam Shelatkar — Rooted in tradition. Wired with code.">
+  <rect width="1200" height="630" fill="#FFF8EF"/>
+  <rect width="1200" height="14" fill="#E4572E"/>
+  <rect y="616" width="1200" height="14" fill="#1A1512"/>
+  <g>
+    <rect x="80" y="80" width="104" height="104" rx="24" fill="#FFF8EF" stroke="#1A1512" stroke-opacity="0.16" stroke-width="2.5"/>
+    <circle cx="160" cy="104" r="11" fill="none" stroke="#1A1512" stroke-width="2.5"/>
+    <circle cx="160" cy="104" r="7" fill="none" stroke="#E4572E" stroke-width="2.2"/>
+    <circle cx="160" cy="104" r="3.4" fill="#1A1512"/>
+    <text x="122" y="162" text-anchor="middle" font-family="Georgia, &#39;Times New Roman&#39;, serif" font-size="42" font-weight="700" letter-spacing="-1" fill="#1A1512">SS</text>
+    <rect x="104" y="168" width="56" height="5" rx="2.5" fill="#E4572E"/>
+  </g>
+  <text x="80" y="320" font-family="Georgia, &#39;Times New Roman&#39;, serif" font-size="96" font-weight="700" letter-spacing="-1.5" fill="#1A1512">Shivam Shelatkar</text>
+  <text x="82" y="380" font-family="system-ui, -apple-system, &#39;Segoe UI&#39;, sans-serif" font-size="36" font-weight="500" fill="#1A1512">founder of Swarvibhaa — tabla and piano, building with code</text>
+  <rect x="80" y="412" width="120" height="6" rx="3" fill="#E4572E"/>
+  <text x="80" y="470" font-family="Georgia, &#39;Times New Roman&#39;, serif" font-style="italic" font-size="38" fill="#1A1512">Rooted in tradition. Wired with code.</text>
+  <text x="80" y="552" font-family="system-ui, -apple-system, &#39;Segoe UI&#39;, sans-serif" font-size="28" letter-spacing="0.5" fill="#1A1512" opacity="0.78">shivam.runs-on.dev · Thane · Mumbai</text>
+  <g opacity="0.96">
+    <circle cx="1010" cy="270" r="110" fill="none" stroke="#1A1512" stroke-width="6"/>
+    <circle cx="1010" cy="270" r="72" fill="none" stroke="#E4572E" stroke-width="7"/>
+    <circle cx="1010" cy="270" r="34" fill="#1A1512"/>
+    <g>
+      <rect x="920" y="420" width="180" height="52" rx="10" fill="#1A1512"/>
+      <rect x="927" y="427" width="33" height="38" rx="4" fill="#FFF8EF"/>
+      <rect x="963" y="427" width="33" height="38" rx="4" fill="#FFF8EF"/>
+      <rect x="999" y="427" width="33" height="38" rx="4" fill="#FFF8EF"/>
+      <rect x="1035" y="427" width="31" height="38" rx="4" fill="#FFF8EF"/>
+      <rect x="957" y="427" width="16" height="23" rx="3" fill="#1A1512"/>
+      <rect x="993" y="427" width="16" height="23" rx="3" fill="#1A1512"/>
+    </g>
+    <circle cx="890" cy="150" r="10" fill="#E4572E"/>
+  </g>
+</svg>

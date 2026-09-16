@@ -40,6 +40,9 @@ export default function ProjectSlugPage({
           <div className="project-page__header">
             <p className="eyebrow">{project.subtitle}</p>
             <h1 className="project-page__title display">{project.title}</h1>
+            <p className="project-page__text">
+              {project.role} · {project.year} · {project.status}
+            </p>
             <div className="project-page__stack">
               {project.tags.map((tag) => (
                 <span key={tag} className="tag">
@@ -93,6 +96,16 @@ export default function ProjectSlugPage({
             <p className="project-page__status">
               {project.status} / {project.year}
             </p>
+          </section>
+
+          <section className="project-page__section">
+            <p className="eyebrow">Role</p>
+            <p className="project-page__status">{project.role}</p>
+          </section>
+
+          <section className="project-page__section">
+            <p className="eyebrow">Artwork</p>
+            <p className="project-page__text">{project.photoNote}</p>
           </section>
 
           {related.length > 0 && (

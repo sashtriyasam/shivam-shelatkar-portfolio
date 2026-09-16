@@ -1,7 +1,23 @@
-"use client";
+﻿"use client";
 
 import { motion } from "motion/react";
-import { Mail, Activity } from "lucide-react";
+import { Mail, Users, ArrowUpRight } from "lucide-react";
+
+const availability = [
+  "Swarvibhaa commissions across Mumbai, Delhi and Gujarat",
+  "Film, theatre and indie scores and arrangements",
+  "Unity and interactive builds for stage and screen",
+  "NSFF-type live tech, cues, sound and projection",
+];
+
+const socials = [
+  { label: "Swarvibhaa founders team", href: "https://swarvibhaa.odoo.com/" },
+  { label: "IMDb nm17605062", href: "https://www.imdb.com/name/nm17605062/" },
+  { label: "LinkedIn, Shivam Shelatkar", href: "https://linkedin.com/in/shivam-shelatkar-503305358" },
+  { label: "GitHub, sashtriyasam", href: "https://github.com/sashtriyasam" },
+  { label: "JioSaavn, Shivam Shelatkar", href: "https://www.jiosaavn.com/search/artist/shivam+shelatkar" },
+  { label: "Spotify, Shivam Shelatkar", href: "https://open.spotify.com/search/Shivam%20Shelatkar" },
+];
 
 export default function ContactPage() {
   return (
@@ -16,7 +32,7 @@ export default function ContactPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            Let&apos;s build something.
+            Write to me, I reply myself.
           </motion.h1>
         </header>
 
@@ -28,22 +44,30 @@ export default function ContactPage() {
             transition={{ duration: 0.8 }}
           >
             <p className="contact__copy">
-              Whether you have a brief, a prototype, or just an idea, I&apos;d
-              love to hear about it. I usually reply within two business days.
+              Based in Thane, Mumbai. For scores, builds and live tech, email
+              is the fastest way to reach me.
             </p>
 
-<div className="contact__links" style={{ marginTop: "2rem" }}>
-               <a href="mailto:hello@shivam.runs-on.dev" className="contact__link">
-                 <span className="contact__link-icon">
-                   <Mail size={18} />
-                 </span>
-                 <span className="contact__link-text">
-                   <strong>Email</strong>
-                   <span>hello@shivam.runs-on.dev</span>
-                 </span>
-               </a>
-               {/* Phone and location removed for privacy - use email for contact */}
-             </div>
+            <div className="contact__links" style={{ marginTop: "2rem" }}>
+              <a href="mailto:shelatkarshivam4@gmail.com" className="contact__link">
+                <span className="contact__link-icon">
+                  <Mail size={18} />
+                </span>
+                <span className="contact__link-text">
+                  <strong>Email me</strong>
+                  <span>shelatkarshivam4@gmail.com</span>
+                </span>
+              </a>
+              <a href="mailto:swarvibhaa@gmail.com" className="contact__link">
+                <span className="contact__link-icon">
+                  <Users size={18} />
+                </span>
+                <span className="contact__link-text">
+                  <strong>Swarvibhaa collective</strong>
+                  <span>swarvibhaa@gmail.com</span>
+                </span>
+              </a>
+            </div>
           </motion.div>
 
           <motion.div
@@ -52,19 +76,34 @@ export default function ContactPage() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            <div className="contact__link" style={{ marginBottom: "1rem" }}>
-              <span className="contact__link-icon">
-                <Activity size={18} />
-              </span>
-              <span className="contact__link-text">
-                <strong>Currently</strong>
-                <span>Open to new collaborations</span>
-              </span>
+            <h2 className="about__subtitle">Currently taking on</h2>
+            <ul className="about__list" style={{ marginBottom: "2rem" }}>
+              {availability.map((a) => (
+                <li key={a}>{a}</li>
+              ))}
+            </ul>
+
+            <h2 className="about__subtitle">Elsewhere</h2>
+            <div className="contact__links">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact__link"
+                >
+                  <span className="contact__link-text">
+                    <strong>{s.label}</strong>
+                  </span>
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </a>
+              ))}
             </div>
 
-            <div className="contact__signal">
+            <div className="contact__signal" style={{ marginTop: "2rem" }}>
               <span className="contact__signal-dot" />
-              <span>Available for freelance and full-time roles</span>
+              <span>Based in Thane, Mumbai. Working across Mumbai, Delhi and Gujarat.</span>
             </div>
           </motion.div>
         </div>

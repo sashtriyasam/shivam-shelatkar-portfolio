@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -17,10 +17,10 @@ export function SiteFooter() {
           <div>
             <p className="eyebrow">Ready to build?</p>
             <Link
-              href="/contact"
+              href="mailto:shelatkarshivam4@gmail.com"
               className="site-footer__title link-underline"
             >
-              Let&apos;s work together.
+              shelatkarshivam4@gmail.com
             </Link>
           </div>
 
@@ -37,13 +37,13 @@ export function SiteFooter() {
           </div>
         </div>
 
-<p className="site-footer__tech" aria-label="Site version 2.0">
+        <p className="site-footer__tech" aria-label="Site version 2.0">
           v2.0
         </p>
 
         <div className="site-footer__meta">
           <span>&copy; {year} Shivam Shelatkar</span>
-          <span>Product designer &amp; frontend engineer</span>
+          <span>Founder at Swarvibhaa, tabla, piano, Unity</span>
         </div>
       </div>
     </footer>

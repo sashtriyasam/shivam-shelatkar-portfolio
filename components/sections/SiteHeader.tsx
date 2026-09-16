@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useMobileMenu } from "@/components/layout/MobileMenuProvider";
@@ -12,7 +12,7 @@ import {
 } from "motion/react";
 
 const navLinks = [
-  { href: "/#work", label: "Work" },
+  { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
@@ -60,7 +60,7 @@ export function SiteHeader() {
             </Link>
           ))}
           <Link
-            href="/work"
+            href="mailto:shelatkarshivam4@gmail.com"
             className="btn btn--accent site-header__cta"
           >
             Start a project
