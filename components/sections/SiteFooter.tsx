@@ -1,8 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { AnimatedFooter } from "@/components/ui/animated-footer";
+
+const LEFT_LINKS = [
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+const RIGHT_LINKS = [
+  { label: "LinkedIn", href: "https://linkedin.com/in/shivam-shelatkar-503305358" },
+  { label: "GitHub", href: "https://github.com/sashtriyasam" },
+  { label: "Instagram", href: "https://www.instagram.com/shastriyakid" },
+  { label: "IMDb", href: "https://www.imdb.com/name/nm17605062/" },
+  { label: "Swarvibhaa", href: "https://swarvibhaa.odoo.com/" },
+];
 
 export function SiteFooter() {
   const pathname = usePathname();
@@ -23,29 +37,18 @@ export function SiteFooter() {
               shelatkarshivam4@gmail.com
             </Link>
           </div>
-
-          <div className="site-footer__links">
-            <Link href="/work" className="link-external site-footer__nav-link">
-              Work <ArrowUpRight size={14} />
-            </Link>
-            <Link href="/about" className="link-external site-footer__nav-link">
-              About <ArrowUpRight size={14} />
-            </Link>
-            <Link href="/contact" className="link-external site-footer__nav-link">
-              Contact <ArrowUpRight size={14} />
-            </Link>
-          </div>
         </div>
 
         <p className="site-footer__tech" aria-label="Site version 2.0">
           v2.0
         </p>
 
-        <div className="site-footer__meta">
-          <span>&copy; {year} Shivam Shelatkar</span>
-          <span>Founder at Swarvibhaa, tabla, piano, Unity</span>
-          <a className="link-external" href="https://www.imdb.com/name/nm17605062/">IMDb nm17605062</a>
-        </div>
+        <AnimatedFooter
+          leftLinks={LEFT_LINKS}
+          rightLinks={RIGHT_LINKS}
+          copyrightText={`© ${year} Shivam Shelatkar · Thane·Mumbai — Founder @Swarvibhaa`}
+          barCount={23}
+        />
       </div>
     </footer>
   );

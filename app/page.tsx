@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { sound } from "@/lib/audio";
+import { AnimatedFooter } from "@/components/ui/animated-footer";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -81,6 +82,20 @@ const SOCIALS = [
 ];
 
 const CONTACT_LINES = ["Make", "something", "worth keeping."];
+
+const HOME_FOOTER_LEFT = [
+  { label: "Work", href: "/work" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+const HOME_FOOTER_RIGHT = [
+  { label: "LinkedIn", href: "https://linkedin.com/in/shivam-shelatkar-503305358" },
+  { label: "GitHub", href: "https://github.com/sashtriyasam" },
+  { label: "Instagram", href: "https://www.instagram.com/shastriyakid" },
+  { label: "IMDb", href: "https://www.imdb.com/name/nm17605062/" },
+  { label: "Swarvibhaa", href: "https://swarvibhaa.odoo.com/" },
+];
 
 // Magnetic pull for the primary CTA: 6-12px toward the cursor (clamped to
 // 10px at a 0.2 follow ratio), easing back over 300ms. Enabled for fine
@@ -835,6 +850,12 @@ export default function HomePage() {
               Back to top
             </button>
           </div>
+          <AnimatedFooter
+            leftLinks={HOME_FOOTER_LEFT}
+            rightLinks={HOME_FOOTER_RIGHT}
+            copyrightText={`© ${new Date().getFullYear()} Shivam Shelatkar · Thane·Mumbai — Founder @Swarvibhaa`}
+            barCount={23}
+          />
         </div>
       </footer>
     </div>
