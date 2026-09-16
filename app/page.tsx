@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { sound } from "@/lib/audio";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -57,13 +58,85 @@ const CAPS = [
   },
 ];
 
+const TIMELINE = [
+  {
+    title: "Karwar, born",
+    body: "Coastal roots, first rhythms, long train rides north.",
+  },
+  {
+    title: "Mumbai, grown",
+    body: "Tabla, piano, and engineering. Cats at home, blue everywhere.",
+  },
+  {
+    title: "Swarvibhaa, 2023",
+    body: "Founder. Mumbai, Delhi, Gujarat. Hindustani meets Western classical.",
+  },
+];
+
+const SOCIALS = [
+  { href: "https://www.instagram.com/shastriyakid", label: "Instagram, @shastriyakid" },
+  { href: "https://linkedin.com/in/shivam-shelatkar-503305358", label: "LinkedIn, Shivam Shelatkar" },
+  { href: "https://github.com/sashtriyasam", label: "GitHub, sashtriyasam" },
+  { href: "https://www.imdb.com/name/nm17605062/", label: "IMDb, nm17605062" },
+];
+
+const CONTACT_LINES = ["Make", "something", "worth keeping."];
+
+// Magnetic pull for the primary CTA: 6-12px toward the cursor (clamped to
+// 10px at a 0.2 follow ratio), easing back over 300ms. Enabled for fine
+// pointers without touch only; reduced-motion renders the resting state.
+function Magnetic({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [canMagnet, setCanMagnet] = useState(false);
+
+  useEffect(() => {
+    if (disabled) {
+      setCanMagnet(false);
+      return;
+    }
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    setCanMagnet(fine && !coarse && !hasTouch);
+  }, [disabled]);
+
+  const handleMove = (e: { clientX: number; clientY: number }) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width / 2);
+    const dy = e.clientY - (r.top + r.height / 2);
+    const max = 10;
+    setPos({
+      x: Math.max(-max, Math.min(max, dx * 0.2)),
+      y: Math.max(-max, Math.min(max, dy * 0.2)),
+    });
+  };
+
+  const handleLeave = () => setPos({ x: 0, y: 0 });
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={canMagnet ? handleMove : undefined}
+      onMouseLeave={canMagnet ? handleLeave : undefined}
+      animate={{ x: canMagnet ? pos.x : 0, y: canMagnet ? pos.y : 0 }}
+      transition={{ duration: 0.3, ease: EASE }}
+      style={{ display: "inline-flex" }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function HomePage() {
   const shouldReduceMotion = useReducedMotion();
-  const still = shouldReduceMotion ? undefined : { opacity: 0, y: 12 };
+  const reduced = Boolean(shouldReduceMotion);
 
   const toTop = () => {
     sound.playClick();
-    window.scrollTo({ top: 0, behavior: shouldReduceMotion ? "auto" : "smooth" });
+    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
   };
 
   return (
@@ -109,7 +182,21 @@ export default function HomePage() {
           text-decoration: none;
           font-size: 15px;
         }
-        .topnav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+        .topnav a { position: relative; padding-bottom: 2px; }
+        .topnav a:hover { text-decoration: none; }
+        .topnav a::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -2px;
+          height: 1px;
+          width: 100%;
+          background: currentColor;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .topnav a:hover::after { transform: scaleX(1); }
         .wrap { max-width: 1120px; margin: 0 auto; }
         .section {
           padding: 120px clamp(20px, 4vw, 40px);
@@ -187,7 +274,7 @@ export default function HomePage() {
           min-height: 48px;
           border: 1px solid #1A1512;
         }
-        .btn-primary { background: #E4572E; border-color: #E4572E; color: #FFF8EF; }
+        .btn-primary { background: #E4572E; border-color: #E4572E; color: #FFF8EF; transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease; will-change: transform; }
         .btn-primary:hover { background: #1A1512; border-color: #1A1512; color: #FFF8EF; }
         .btn-outline { background: transparent; color: #1A1512; }
         .btn-outline:hover { border-color: #E4572E; color: #E4572E; }
@@ -206,9 +293,11 @@ export default function HomePage() {
           background: #FFFEFA;
           text-decoration: none;
           color: inherit;
-          transition: transform 300ms ease;
+          transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease;
         }
-        .work-card:hover { transform: scale(1.03); border-color: #1A1512; }
+        .work-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26, 21, 18, 0.12); border-color: #1A1512; }
+        .work-reveal { display: flex; min-width: 0; }
+        .work-reveal > .work-card { flex: 1 1 auto; width: 100%; }
         .work-media {
           background: #141820;
           aspect-ratio: 4 / 3;
@@ -216,19 +305,26 @@ export default function HomePage() {
           place-items: center;
           padding: 24px;
           text-align: center;
+          overflow: hidden;
         }
         .work-media span {
+          display: block;
           font-family: var(--font-mono);
           font-size: 12px;
           line-height: 1.6;
           color: rgba(255, 255, 255, 0.55);
+          transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: transform;
         }
+        .work-card:hover .work-media span { transform: scale(1.05); }
         .work-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 0; }
         .work-title { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
         .work-medium { margin: 6px 0 0; font-family: var(--font-mono); font-size: 12px; color: #7A7168; }
         .work-desc { margin: 12px 0 0; font-size: 15px; line-height: 1.65; }
         .work-link { margin-top: 14px; font-size: 14px; font-weight: 700; display: inline-flex; gap: 6px; align-items: center; }
         .work-link i { font-style: normal; color: #E4572E; }
+        .work-arrow { display: inline-block; color: #E4572E; transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
+        .work-card:hover .work-arrow { transform: translateX(10px); }
         .thesis {
           font-family: Georgia, "Times New Roman", serif;
           font-size: clamp(28px, 4vw, 44px);
@@ -246,6 +342,7 @@ export default function HomePage() {
           padding: 28px;
           background: #FFFEFA;
         }
+        .cap-num { display: block; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: #E4572E; margin-bottom: 10px; }
         .cap h3 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
         .cap-meta { margin: 6px 0 0; font-family: var(--font-mono); font-size: 12px; color: #7A7168; }
         .cap p:last-child { margin: 12px 0 0; font-size: 15px; line-height: 1.65; }
@@ -259,6 +356,18 @@ export default function HomePage() {
           margin-top: 40px;
         }
         .strip div { padding: 24px; }
+        .timeline-cell { position: relative; }
+        .strip .timeline-rule {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 2px;
+          margin: 0;
+          padding: 0;
+          background: #E4572E;
+          transform-origin: top;
+        }
         .strip div + div { border-left: 1px solid #EADDCB; }
         .strip strong { display: block; font-size: 16px; letter-spacing: -0.01em; }
         .strip span { display: block; margin-top: 6px; font-size: 14px; line-height: 1.6; color: #7A7168; }
@@ -293,6 +402,7 @@ export default function HomePage() {
           font-weight: 800;
         }
         .email-big {
+          position: relative;
           display: inline-block;
           margin-top: 32px;
           font-size: clamp(18px, 2.5vw, 28px);
@@ -305,6 +415,24 @@ export default function HomePage() {
           overflow-wrap: anywhere;
         }
         .email-big:hover { background: #E4572E; color: #FFF8EF; border-bottom-color: #E4572E; }
+        .email-big::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -2px;
+          height: 2px;
+          background: #1A1512;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .email-big:hover::after { transform: scaleX(1); }
+        @keyframes drift {
+          from { transform: translateY(-4px); }
+          to { transform: translateY(4px); }
+        }
+        .float-idle { display: inline-block; animation: drift 3.5s ease-in-out infinite alternate; will-change: transform; }
         .socials { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; font-size: 15px; }
         .socials a { color: #1A1512; text-decoration: none; border-bottom: 1px solid transparent; width: fit-content; }
         .socials a:hover { border-bottom-color: #1A1512; }
@@ -368,35 +496,44 @@ export default function HomePage() {
         <div className="wrap">
           <motion.p
             className="eyebrow"
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.28, ease: EASE }}
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
           >
             Founder at Swarvibhaa, Karwar to Mumbai
           </motion.p>
-          <motion.h1
-            className="hero-name"
-            initial={still}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.28, delay: 0.04, ease: EASE }}
-          >
-            <span className="hero-first">Shivam</span>
-            <span className="hero-last">Shelatkar, music and code</span>
-          </motion.h1>
+          <h1 className="hero-name">
+            <motion.span
+              className="hero-first"
+              initial={reduced ? undefined : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE }}
+            >
+              Shivam
+            </motion.span>
+            <motion.span
+              className="hero-last"
+              initial={reduced ? undefined : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.06, ease: EASE }}
+            >
+              Shelatkar, music and code
+            </motion.span>
+          </h1>
           <motion.p
             className="hero-intro"
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.28, delay: 0.08, ease: EASE }}
+            transition={{ duration: 0.6, delay: 0.26, ease: EASE }}
           >
             Karwar-born, Mumbai-grown. Ten years of tabla with Pandit Mukundraj Deo,
             six years of piano through Trinity, founder of Swarvibhaa in 2023,
             building small worlds in Unity since 2017.
           </motion.p>
           <motion.div
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.28, delay: 0.12, ease: EASE }}
+            transition={{ duration: 0.6, delay: 0.32, ease: EASE }}
           >
             <div className="pills" aria-label="Focus areas">
               {PILLS.map((p) => (
@@ -404,16 +541,20 @@ export default function HomePage() {
               ))}
             </div>
             <div className="hero-ctas">
-              <a
-                href="https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-                onMouseEnter={() => sound.playHover()}
-                onClick={() => sound.playClick()}
-              >
-                <span>Listen to Raatrani</span>
-              </a>
+              <Magnetic disabled={reduced}>
+                <motion.a
+                  href="https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
+                  whileHover={reduced ? undefined : { scale: 1.02, transition: { duration: 0.2, ease: EASE } }}
+                  whileTap={reduced ? undefined : { scale: 0.97, transition: { duration: 0.15, ease: EASE } }}
+                >
+                  <span>Listen to Raatrani</span>
+                </motion.a>
+              </Magnetic>
               <a
                 href="#work"
                 className="btn btn-outline"
@@ -430,42 +571,46 @@ export default function HomePage() {
       <section id="work" className="section" aria-label="Selected work">
         <div className="wrap">
           <motion.div
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
             <span className="eyebrow">Selected work</span>
             <h2 className="h2">Three pieces I keep returning to.</h2>
             <p className="lede">Film, bhajan, and one quiet instrumental. Each one taught me something about restraint.</p>
           </motion.div>
           <div className="work-grid">
-            {WORK.map((w) => (
-              <motion.a
+            {WORK.map((w, i) => (
+              <motion.div
                 key={w.title}
-                href={w.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="work-card"
-                onMouseEnter={() => sound.playHover()}
-                onClick={() => sound.playClick()}
-                initial={still}
+                className="work-reveal"
+                initial={reduced ? undefined : { opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.28, ease: EASE }}
-                aria-label={`${w.title}, ${w.medium}`}
+                viewport={{ once: true, amount: 0.2, margin: "-10%" }}
+                transition={{ duration: 0.65, delay: i * 0.1, ease: EASE }}
               >
+                <a
+                  href={w.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="work-card"
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
+                  aria-label={`${w.title}, ${w.medium}`}
+                >
                 {/* Real photo goes here: replace the div below with <img src="/photos/<name>.jpg" alt="..." style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} /> from @shastriyakid */}
                 <div className="work-media" aria-hidden="true">
                   <span>{w.note}</span>
                 </div>
-                <div className="work-body">
-                  <h3 className="work-title">{w.title}</h3>
-                  <p className="work-medium">{w.medium}</p>
-                  <p className="work-desc">{w.desc}</p>
-                  <span className="work-link"><span>{w.cta}</span></span>
-                </div>
-              </motion.a>
+                  <div className="work-body">
+                    <h3 className="work-title">{w.title}</h3>
+                    <p className="work-medium">{w.medium}</p>
+                    <p className="work-desc">{w.desc}</p>
+                    <span className="work-link"><span>{w.cta}</span><span className="work-arrow" aria-hidden="true">→</span></span>
+                  </div>
+                </a>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -475,10 +620,10 @@ export default function HomePage() {
         <div className="wrap">
           <motion.p
             className="thesis"
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.3, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
             Heritage stays alive<br />when it is <em>played</em> and built with care.
           </motion.p>
@@ -488,25 +633,26 @@ export default function HomePage() {
       <section id="philosophy" className="section" aria-label="Capabilities">
         <div className="wrap">
           <motion.div
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
             <span className="eyebrow">Capabilities</span>
             <h2 className="h2">What I do well.</h2>
             <p className="lede">Practice room habits that run my engineering too.</p>
           </motion.div>
           <div className="cap-grid">
-            {CAPS.map((c) => (
+            {CAPS.map((c, i) => (
               <motion.div
                 key={c.title}
                 className="cap"
-                initial={still}
+                initial={reduced ? undefined : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.28, ease: EASE }}
+                viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: EASE }}
               >
+                <span className="cap-num" aria-hidden="true">0{i + 1}</span>
                 <h3>{c.title}</h3>
                 <p className="cap-meta">{c.meta}</p>
                 <p>{c.body}</p>
@@ -519,41 +665,45 @@ export default function HomePage() {
       <section id="life" className="section" aria-label="Story">
         <div className="wrap">
           <motion.div
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
             <span className="eyebrow">Story</span>
             <h2 className="h2">Karwar to Mumbai.</h2>
             <p className="lede">Born on the coast, grown in the city, now working across three states.</p>
           </motion.div>
-          <motion.div
-            className="strip"
-            initial={still}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.28, ease: EASE }}
-          >
-            <div>
-              <strong>Karwar, born</strong>
-              <span>Coastal roots, first rhythms, long train rides north.</span>
-            </div>
-            <div>
-              <strong>Mumbai, grown</strong>
-              <span>Tabla, piano, and engineering. Cats at home, blue everywhere.</span>
-            </div>
-            <div>
-              <strong>Swarvibhaa, 2023</strong>
-              <span>Founder. Mumbai, Delhi, Gujarat. Hindustani meets Western classical.</span>
-            </div>
-          </motion.div>
+          <div className="strip">
+            {TIMELINE.map((t, i) => (
+              <motion.div
+                key={t.title}
+                className="timeline-cell"
+                initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+                transition={{ duration: 0.55, delay: i * 0.08, ease: EASE }}
+              >
+                <motion.span
+                  className="timeline-rule"
+                  aria-hidden="true"
+                  initial={reduced ? undefined : { opacity: 0, scaleY: 0 }}
+                  whileInView={{ opacity: 1, scaleY: 1 }}
+                  viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+                  transition={{ duration: 0.55, delay: i * 0.08, ease: EASE }}
+                  style={{ transformOrigin: "top" }}
+                />
+                <strong>{t.title}</strong>
+                <span>{t.body}</span>
+              </motion.div>
+            ))}
+          </div>
           <motion.p
             className="life-note"
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.55, ease: EASE }}
           >
             Outside music I convene student activities for ABVP in Thane, speak English,
             Hindi, Malayalam, Gujarati, and Marathi, and share work as
@@ -566,10 +716,10 @@ export default function HomePage() {
         <div className="wrap">
           <motion.div
             className="quiet-row"
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.6, ease: EASE }}
           >
             <div>
               <span className="eyebrow">Spatial</span>
@@ -594,10 +744,10 @@ export default function HomePage() {
         <div className="wrap">
           <motion.div
             className="quiet-row"
-            initial={still}
+            initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.6, ease: EASE }}
           >
             <div>
               <span className="eyebrow">Terminal</span>
@@ -618,34 +768,67 @@ export default function HomePage() {
 
       <footer id="contact" className="section" aria-label="Contact">
         <div className="wrap">
-          <motion.div
-            initial={still}
+          <motion.span
+            className="eyebrow"
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.28, ease: EASE }}
+            viewport={{ once: true, amount: 0.3, margin: "-10%" }}
+            transition={{ duration: 0.6, ease: EASE }}
           >
-            <span className="eyebrow">Contact</span>
-            <h2 className="contact-words">
-              <span>Make</span>
-              <span>something</span>
-              <span>worth keeping.</span>
-            </h2>
-            <a
-              href="mailto:shelatkarshivam4@gmail.com"
-              className="email-big"
-              onMouseEnter={() => sound.playHover()}
-              onClick={() => sound.playClick()}
-            >
-              shelatkarshivam4@gmail.com
-            </a>
-            <div className="socials">
-              <a href="https://www.instagram.com/shastriyakid" target="_blank" rel="noopener noreferrer" onMouseEnter={() => sound.playHover()}>Instagram, @shastriyakid</a>
-              <a href="https://linkedin.com/in/shivam-shelatkar-503305358" target="_blank" rel="noopener noreferrer" onMouseEnter={() => sound.playHover()}>LinkedIn, Shivam Shelatkar</a>
-              <a href="https://github.com/sashtriyasam" target="_blank" rel="noopener noreferrer" onMouseEnter={() => sound.playHover()}>GitHub, sashtriyasam</a>
-              <a href="https://www.imdb.com/name/nm17605062/" target="_blank" rel="noopener noreferrer" onMouseEnter={() => sound.playHover()}>IMDb, nm17605062</a>
-            </div>
-            <p className="thanks">Thanks for stopping by, I read every note and reply within a few days.</p>
-          </motion.div>
+            Contact
+          </motion.span>
+          <h2 className="contact-words">
+            {CONTACT_LINES.map((line, i) => (
+              <motion.span
+                key={line}
+                initial={reduced ? undefined : { opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3, margin: "-10%" }}
+                transition={{ duration: 0.7, delay: i * 0.09, ease: EASE }}
+              >
+                {line}
+              </motion.span>
+            ))}
+          </h2>
+          <motion.a
+            href="mailto:shelatkarshivam4@gmail.com"
+            className="email-big"
+            onMouseEnter={() => sound.playHover()}
+            onClick={() => sound.playClick()}
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3, margin: "-10%" }}
+            transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
+          >
+            shelatkarshivam4@gmail.com
+          </motion.a>
+          <div className="socials">
+            {SOCIALS.map((s, i) => (
+              <motion.a
+                key={s.href}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => sound.playHover()}
+                initial={reduced ? undefined : { opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+                transition={{ duration: 0.4, delay: 0.35 + i * 0.06, ease: EASE }}
+                style={{ transformOrigin: "left center" }}
+              >
+                {i < 2 && !reduced ? <span className="float-idle">{s.label}</span> : s.label}
+              </motion.a>
+            ))}
+          </div>
+          <motion.p
+            className="thanks"
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+          >
+            Thanks for stopping by, I read every note and reply within a few days.
+          </motion.p>
           <div className="footer-base">
             <div>{new Date().getFullYear()} Shivam Shelatkar, Karwar to Mumbai</div>
             <button type="button" className="to-top" onClick={toTop} onMouseEnter={() => sound.playHover()}>
