@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CrowdCanvas } from "@/components/sections/CrowdCanvas";
+import { ScrollStroke } from "@/components/sections/ScrollStroke";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState, useRef } from "react";
@@ -338,8 +339,11 @@ export default function HomePage() {
               </a>
             ))}
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+
+        <ScrollStroke />
+
       <section id="crowd" style={{ position: "relative", width: "100%", height: "450px", overflow: "hidden", background: "var(--color-paper)", borderTop: "1px solid var(--color-line)", display: "flex", alignItems: "center", justifyContent: "center" }}>
         
         <div style={{ position: "absolute", top: "2rem", left: "50%", transform: "translateX(-50%)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "var(--color-ui)", letterSpacing: "0.14em", textTransform: "uppercase", zIndex: 10 }}>
