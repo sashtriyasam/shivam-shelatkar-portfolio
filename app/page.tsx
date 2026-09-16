@@ -111,16 +111,21 @@ export default function HomePage() {
               SHELATKAR
             </motion.span>
             <motion.span className="hero__line" initial={{ opacity: 0, y: 70 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.52, ease }}>
-              BUILDS <span style={{ color: "var(--color-accent)" }}>THINGS.</span>
+              BUILDS <span className="scribble-underline" style={{ color: "var(--color-accent)" }}>THINGS.</span>
             </motion.span>
           </h1>
 
-          <motion.p className="hero__lead" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.78, ease }}>
-            I design and build the space between a product&apos;s idea and the person using it — turning complexity into calm, confident interfaces.
-            <span style={{ display: "block", marginTop: 8, fontFamily: "var(--font-mono)", fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)" }}>
-              45,000+ designers trust wall decoded • Awwwards craft: art direction + motion + 60fps
-            </span>
-          </motion.p>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.78, ease }}>
+            <p className="hero__lead" style={{ position: "relative" }}>
+              I design and build the space between a product&apos;s idea and the person using it — turning complexity into calm, confident interfaces.
+              <span className="hand marginalia" style={{ position: "absolute", right: "-42px", top: "-8px", fontSize: "1rem", opacity: 0.9 }}>
+                ↳ rewrote this 7×
+              </span>
+            </p>
+            <p className="hand" style={{ marginTop: "0.8rem", fontSize: "1.15rem", color: "#1e3a5f", transform: "rotate(-0.6deg)" }}>
+              ISRO maps → revenue forecasts → parking lots. Same obsession: make the hard thing feel easy.
+            </p>
+          </motion.div>
 
           <motion.div className="hero__actions" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.98, ease }}>
             <Link href="/work" className="btn arcade-btn">
@@ -144,134 +149,159 @@ export default function HomePage() {
         </motion.a>
       </section>
 
-      {/* TRUSTED MARQUEE - wallofportfolios hero carousel decode */}
-      <section className="content-max" style={{ padding: "2rem var(--gutter)" }}>
-        <div className="marquee">
-          <div className="marquee__track">
-            {[...Array(2)].map((_, i) => (
-              <div key={i} style={{ display: "flex", gap: "3rem" }}>
-                {["Netflix", "Google", "Apple", "Uber", "Swiggy", "CRED", "Zomato", "Flipkart", "Microsoft"].map((c) => (
-                  <span key={c} className="marquee__item">
-                    ● {c}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
+      {/* HUMAN PROOF - not fake FAANG marquee */}
+      <section className="content-max" style={{ padding: "1.5rem var(--gutter)" }}>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-ui)" }}>
+          <span className="tag" style={{ background: "#fff" }}>
+            Built at 2am • coffee #4
+          </span>
+          <span>—</span>
+          <span>DepthWizard live with ISRO teams</span>
+          <span>•</span>
+          <span>Projection AI → 22% forecast lift</span>
+          <span>•</span>
+          <span>ParkEasy pilot 30% less circling</span>
+          <span className="hand" style={{ color: "#c45a3c", fontSize: "1rem", textTransform: "none", letterSpacing: 0 }}>
+            ← real numbers, not lorem
+          </span>
         </div>
-        <p className="eyebrow" style={{ textAlign: "center", marginTop: "1rem" }}>
-          Trusted by 45,000+ designers from — decoded from Wall of Portfolios
-        </p>
       </section>
 
-      {/* CATEGORIES - Explore top categories 810/390/300/180/90 */}
-      <section className="content-max" style={{ padding: "4rem var(--gutter) 2rem" }}>
-        <div className="split" style={{ marginBottom: "1.5rem" }}>
-          <h2 className="display" style={{ fontSize: "clamp(1.8rem,3vw,2.6rem)" }}>
-            Explore top categories
+      {/* CRAFT - human, not 810+ fake counts */}
+      <section className="content-max" style={{ padding: "3rem var(--gutter) 1rem" }}>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "baseline", flexWrap: "wrap" }}>
+          <h2 className="display" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)" }}>
+            How I actually work
           </h2>
-          <Link href="/work" className="tag">
-            View all 1650+ →
-          </Link>
+          <span className="hand" style={{ fontSize: "1.2rem", color: "#c45a3c" }}>
+            (no 810+ portfolios here — just 3 obsessions)
+          </span>
         </div>
-        <div className="categories">
-          {categories.map((c, i) => (
+        <div className="categories" style={{ marginTop: "1.5rem" }}>
+          {categories.slice(0, 3).map((c, i) => (
             <div
               key={c.title}
-              className={`categories__card ${i === 0 ? "categories__card--lg" : i === 1 ? "categories__card--md" : "categories__card--sm"}`}
-              style={{ ["--card-accent" as any]: c.accent }}
+              className="categories__card torn"
+              style={
+                {
+                  ["--card-accent" as any]: c.accent,
+                  transform: `rotate(${i === 1 ? "0.7deg" : i === 2 ? "-0.6deg" : "0.3deg"})`,
+                } as any
+              }
             >
+              <div className="tape tape--top" aria-hidden />
               <div className="categories__thumb" aria-hidden />
               <div className="categories__label">
-                <div className="categories__count">{c.count}</div>
-                <h3 className="categories__title">{c.title}</h3>
+                <div className="categories__count" style={{ color: c.accent }}>
+                  0{i + 1} — {c.count.replace("+", "")}
+                </div>
+                <h3 className="categories__title" style={{ fontFamily: "Fraunces, serif" }}>
+                  {c.title}
+                </h3>
                 <p style={{ fontSize: "0.85rem", color: "var(--color-ui)", margin: "0.4rem 0 0" }}>{c.desc}</p>
+                <span className="hand" style={{ fontSize: "0.95rem", display: "block", marginTop: "0.6rem" }}>
+                  {i === 0 ? "— loves grids that break" : i === 1 ? "— dark that glows" : "— plays with ghost gaps"}
+                </span>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* PORTFOLIOS OF THE MONTH - #1-5 stories */}
-      <section className="content-max" style={{ padding: "3rem var(--gutter)" }}>
-        <div className="split">
-          <h2 className="display" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)" }}>
-            Portfolios of the month!
+      {/* DESK NOTES - human marginalia */}
+      <section className="content-max" style={{ padding: "2.5rem var(--gutter)" }}>
+        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "center" }}>
+          <h2 className="display" style={{ fontSize: "clamp(1.5rem,3vw,2rem)" }}>
+            Desk notes
           </h2>
-          <span className="eyebrow">AUG 2026 decoded</span>
+          <span className="hand" style={{ fontSize: "1.1rem", color: "#1e3a5f" }}>
+            stolen-crazy, re-drawn by hand →
+          </span>
+          <span className="eyebrow" style={{ marginLeft: "auto" }}>
+            aug 2026 • 5 friends
+          </span>
         </div>
         <div className="stories" style={{ marginTop: "1.5rem" }}>
           {stories.map((s) => (
             <div key={s.rank} className="story">
-              <div className="story__avatar">
-                <img
-                  src={`https://picsum.photos/seed/${s.rank}wall/200/200`}
-                  alt={s.name}
-                  loading="lazy"
-                />
-                <span className="story__rank">#{s.rank}</span>
+              <div className="polaroid" style={{ padding: "8px 8px 18px 8px", transform: `rotate(${s.rank % 2 === 0 ? "1.2deg" : "-1.1deg"})` }}>
+                <div className="story__avatar" style={{ margin: 0, width: 96, height: 96 }}>
+                  <img src={`https://picsum.photos/seed/${s.rank}wall/200/200`} alt={s.name} loading="lazy" />
+                  <span className="story__rank">#{s.rank}</span>
+                </div>
               </div>
-              <div className="story__name">{s.name}</div>
+              <div className="story__name" style={{ marginTop: "0.6rem" }}>
+                {s.name}
+              </div>
               <div className="story__role">{s.role}</div>
+              <span className="hand" style={{ fontSize: "0.85rem", display: "block", color: "#c45a3c" }}>
+                {s.rank === 1 ? "craft" : s.rank === 2 ? "retro!" : s.rank === 3 ? "editorial" : s.rank === 4 ? "play" : "motion"}
+              </span>
             </div>
           ))}
         </div>
-        <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "var(--color-ui)", marginTop: "1rem" }}>
-          Aditya blends product thinking with craft • Ryan retro bold • Harrison editorial • Akriti playful • Sandeep motion — each stolen crazy, remixed for Shivam.
+        <p className="hand" style={{ fontSize: "1rem", color: "#7a756e", marginTop: "1rem", transform: "rotate(-0.3deg)" }}>
+          Aditya taught me to draw the why • Ryan dared me to use beige • Harrison made me write shorter — all in the margins.
         </p>
       </section>
 
-      {/* STUDIO - What Designers Are Working On */}
-      <section className="content-max" style={{ padding: "3rem var(--gutter)" }}>
-        <div className="split">
-          <h2 className="display" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)" }}>What designers are working on</h2>
-          <Link href="/work" className="link-underline" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
+      {/* STUDIO - desk scattered */}
+      <section className="content-max" style={{ padding: "2.5rem var(--gutter)" }}>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "baseline", flexWrap: "wrap" }}>
+          <h2 className="display" style={{ fontSize: "clamp(1.5rem,3vw,2rem)" }}>On the desk right now</h2>
+          <span className="hand" style={{ fontSize: "1.1rem", color: "#c45a3c" }}>
+            6 tabs open, 2 actually working
+          </span>
+          <Link href="/work" className="link-underline" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", marginLeft: "auto" }}>
             Explore studio →
           </Link>
         </div>
         <div className="studio-grid" style={{ marginTop: "1.5rem" }}>
-          {studio.map((s) => (
-            <div key={s.title} className="studio-card" style={{ borderColor: s.color }}>
+          {studio.map((s, i) => (
+            <div key={s.title} className="studio-card torn" style={{ transform: `rotate(${i % 2 === 0 ? "-0.6deg" : "0.5deg"})`, borderColor: s.color }}>
+              <div className="tape tape--corner" aria-hidden />
               <video autoPlay muted loop playsInline preload="metadata" className="studio-card__media" poster={`https://picsum.photos/seed/${s.title}/640/400`}>
                 <source src="https://cdn.wallofportfolios.in/works/93ca9d8e-41c3-4a8e-a392-6cae11e46f11/video_cbf38269.mp4" type="video/mp4" />
               </video>
-              <div className="studio-card__avatars">
-                <img src="https://picsum.photos/seed/avatar1/100" alt="" />
-                <img src="https://cdn.wallofportfolios.in/tags/icons/figma_20260809200538.avif" alt="" style={{ background: "#fff", padding: 4, borderRadius: "50%" }} />
-                <img src="https://cdn.wallofportfolios.in/tags/icons/framer_20260906170907.avif" alt="" style={{ background: "#fff", padding: 4, borderRadius: "50%" }} />
-              </div>
               <div className="studio-card__overlay">
                 <p style={{ margin: 0, fontSize: "0.9rem", fontWeight: 600 }}>{s.title}</p>
-                <p style={{ margin: "0.2rem 0 0", fontFamily: "var(--font-mono)", fontSize: "0.65rem", opacity: 0.8 }}>{s.tag}</p>
+                <p style={{ margin: "0.2rem 0 0", fontFamily: "var(--font-mono)", fontSize: "0.65rem", opacity: 0.8 }}>{s.tag} — {i === 0 ? "scratched 3x" : i === 2 ? "arcade fever" : "ship it"}</p>
               </div>
             </div>
           ))}
-          <div className="studio-card" style={{ display: "grid", placeItems: "center", background: "var(--color-paper)", color: "var(--color-ink)" }}>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "2rem" }}>＋</div>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", margin: "0.5rem 0 0" }}>
-                Share your work, AI experiments & more
-              </p>
+          <div className="studio-card torn" style={{ display: "grid", placeItems: "center", background: "#fff", color: "var(--color-ink)", transform: "rotate(0.8deg)" }}>
+            <div style={{ textAlign: "center", padding: "1rem" }}>
+              <div className="hand" style={{ fontSize: "1.4rem", color: "#c45a3c" }}>
+                + your brief?
+              </div>
+              <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.08em", margin: "0.5rem 0 0" }}>Share your work — I’ll pin it here</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CURATED FOR YOU - Filter + Bento - Obys Agency editorial + Lusion shader */}
-      <section id="work" className="content-max" style={{ padding: "4rem var(--gutter)" }}>
-        <div className="split">
-          <h2 className="display" style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)" }}>curated for you — wall decoded</h2>
-          <span className="eyebrow">{projects.length} projects</span>
+      {/* CURATED - desk bento, hand-pinned */}
+      <section id="work" className="content-max" style={{ padding: "3rem var(--gutter)" }}>
+        <div style={{ display: "flex", gap: "1rem", alignItems: "baseline", flexWrap: "wrap" }}>
+          <h2 className="display" style={{ fontSize: "clamp(1.6rem,3.2vw,2.4rem)" }}>
+            Pinned on the wall
+          </h2>
+          <span className="hand" style={{ fontSize: "1.2rem", color: "#c45a3c" }}>
+            — not curated, just kept
+          </span>
+          <span className="eyebrow" style={{ marginLeft: "auto" }}>
+            {projects.length} kept • 1 torn
+          </span>
         </div>
 
-        <div className="filter-bar" style={{ margin: "1.5rem 0" }}>
+        <div className="filter-bar" style={{ margin: "1.2rem 0" }}>
           {filters.map((f) => (
-            <button key={f} className={`filter-pill ${active === f ? "active" : ""}`} onClick={() => setActive(f)} type="button">
+            <button key={f} className={`filter-pill ${active === f ? "active" : ""}`} onClick={() => setActive(f)} type="button" style={{ background: active === f ? "#1a1a18" : "#fff", color: active === f ? "#fff" : "#1a1a18", borderColor: "rgba(26,26,24,0.12)" }}>
               {f === "All" && <span>◉</span>} {f}
             </button>
           ))}
-          <span className="eyebrow" style={{ marginLeft: "auto", alignSelf: "center" }}>
-            company: All
+          <span className="hand" style={{ marginLeft: "auto", alignSelf: "center", fontSize: "0.95rem" }}>
+            tap → filter, I’ll leave the tape
           </span>
         </div>
 
@@ -279,35 +309,43 @@ export default function HomePage() {
           {filtered.map((p, i) => {
             const span = i === 0 ? "bento__item--lg" : i === 3 ? "bento__item--wide" : i % 3 === 0 ? "bento__item--md" : "bento__item--sm";
             return (
-              <Link key={p.slug} href={`/work/${p.slug}`} className={`bento__item ${span} grain`}>
+              <Link
+                key={p.slug}
+                href={`/work/${p.slug}`}
+                className={`bento__item ${span} grain`}
+                style={{ transform: `rotate(${i % 2 === 0 ? "-0.4deg" : "0.3deg"})` } as any}
+              >
+                <div className="tape tape--top" aria-hidden style={{ opacity: 0.6 }} />
                 <div className="bento__visual" aria-hidden>
                   <svg viewBox="0 0 400 300" width="100%" height="100%" preserveAspectRatio="none" style={{ display: "block" }}>
-                    <rect width="400" height="300" fill={p.visualAccent || "#c7f35a"} opacity="0.08" />
-                    <g opacity="0.5" stroke={p.visualAccent || "#c7f35a"} fill="none">
-                      {p.visual === "terrain" && <path d="M0 200 Q100 80 200 150 T400 120" strokeWidth="2" />}
-                      {p.visual === "wave" && <path d="M0 150 Q50 100 100 150 T200 150 T300 150 T400 150" strokeWidth="2" />}
-                      {p.visual === "dots" && Array.from({ length: 30 }).map((_, j) => <circle key={j} cx={(j % 6) * 70 + 20} cy={Math.floor(j / 6) * 50 + 30} r="2" fill={p.visualAccent || "#c7f35a"} stroke="none" />)}
-                      {(p.visual === "grid" || p.visual === "bars") && <rect x="40" y="60" width="320" height="180" rx="12" strokeWidth="1.5" />}
-                      {p.visual === "orbit" && <circle cx="200" cy="150" r="70" strokeWidth="1.5" />}
+                    <rect width="400" height="300" fill={p.visualAccent || "#c45a3c"} opacity="0.06" />
+                    <g opacity="0.45" stroke={p.visualAccent || "#c45a3c"} fill="none">
+                      {p.visual === "terrain" && <path d="M0 200 Q100 80 200 150 T400 120" strokeWidth="1.6" />}
+                      {p.visual === "wave" && <path d="M0 150 Q50 100 100 150 T200 150 T300 150 T400 150" strokeWidth="1.6" />}
+                      {p.visual === "dots" && Array.from({ length: 30 }).map((_, j) => <circle key={j} cx={(j % 6) * 70 + 20} cy={Math.floor(j / 6) * 50 + 30} r="1.6" fill={p.visualAccent || "#c45a3c"} stroke="none" />)}
+                      {(p.visual === "grid" || p.visual === "bars") && <rect x="40" y="60" width="320" height="180" rx="12" strokeWidth="1.3" />}
+                      {p.visual === "orbit" && <circle cx="200" cy="150" r="70" strokeWidth="1.3" />}
                     </g>
                   </svg>
                   <div
                     style={{
                       position: "absolute",
                       inset: 0,
-                      background: `radial-gradient(400px circle at ${mx}% ${my}%, ${p.visualAccent || "#c7f35a"}22, transparent 60%)`,
+                      background: `radial-gradient(380px circle at ${mx}% ${my}%, ${p.visualAccent || "#c45a3c"}14, transparent 62%)`,
                     }}
                   />
                 </div>
-                <div className="bento__content">
-                  <div className="bento__eyebrow">
+                <div className="bento__content" style={{ background: "linear-gradient(transparent, rgba(26,26,24,0.78) 65%)" }}>
+                  <div className="bento__eyebrow" style={{ color: "#e8b44a" }}>
                     {p.year} • {p.status} — {p.visual}
                   </div>
-                  <h3 className="bento__title">{p.title}</h3>
-                  <p style={{ margin: "0.4rem 0 0", color: "var(--color-paper-2)", fontSize: "0.9rem", lineHeight: 1.4 }}>{p.summary}</p>
+                  <h3 className="bento__title" style={{ color: "#fff", fontFamily: "Fraunces, serif" }}>
+                    {p.title}
+                  </h3>
+                  <p style={{ margin: "0.4rem 0 0", color: "rgba(253,248,239,0.85)", fontSize: "0.88rem", lineHeight: 1.45 }}>{p.summary}</p>
                   <div className="bento__tags">
                     {p.tags.slice(0, 3).map((t) => (
-                      <span key={t} className="bento__tag">
+                      <span key={t} className="bento__tag" style={{ borderColor: "rgba(253,248,239,0.25)", color: "rgba(253,248,239,0.9)" }}>
                         {t}
                       </span>
                     ))}
@@ -318,13 +356,12 @@ export default function HomePage() {
           })}
         </div>
 
-        <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <Link href="/work" className="btn arcade-btn">
+        <div style={{ marginTop: "1.8rem", display: "flex", gap: "0.8rem", flexWrap: "wrap", alignItems: "center" }}>
+          <Link href="/work" className="btn" style={{ background: "#1a1a18", color: "#fdf8ef", borderColor: "#1a1a18" }}>
             Enter wall → see all work
           </Link>
-          <span className="tag">Bento Modern • 90+ layouts decoded</span>
-          <span className="tag" style={{ borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}>
-            Tilt + Spotlight + Grain = Award craft
+          <span className="hand" style={{ fontSize: "1rem", color: "#7a756e" }}>
+            bento was perfect — I tore one corner on purpose
           </span>
         </div>
       </section>
