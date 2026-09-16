@@ -1,6 +1,6 @@
 ﻿"use client";
 import dynamic from "next/dynamic";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState, useRef } from "react";
 const HeroTerrain = dynamic(() => import("@/components/hero/HeroTerrain").then((m) => m.HeroTerrain), { ssr: false });
 const TUNNEL_VIDEOS = [
@@ -16,6 +16,10 @@ function ScrambleText({ text }: { text: string }) {
   const [display, setDisplay] = useState(text);
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#%&*";
   useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(text);
+      return;
+    }
     let frame = 0;
     let raf = 0;
     const total = 28;
@@ -61,6 +65,7 @@ export default function HomePage() {
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(50);
   const heroRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
   useEffect(() => {
     const fmt = () => new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" });
     const upd = () => setTime(fmt());
@@ -72,7 +77,7 @@ export default function HomePage() {
   }, []);
   const workList = active === "USER EXPERIENCE" ? FEATURED : OTHER;
   return (
-    <div style={{ ["--token-6c52689b" as any]: "#242424", background: "#fff", color: "#242424" } as any}>
+    <div style={{ ["--token-6c52689b" as any]: "var(--color-ink)", background: "var(--color-paper)", color: "var(--color-ink)" } as any}>
       <style>{`
         .site-header, .site-footer, .scroll-progress, .custom-cursor { display: none !important; }
         @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono:wght@400&family=Gideon+Roman&family=Ingrid+Darling&display=swap');
@@ -81,106 +86,117 @@ export default function HomePage() {
         .gideon { font-family: "Gideon Roman", Georgia, serif; }
         .ingrid { font-family: "Ingrid Darling", cursive; }
         .purvoid-nav a { position: relative; }
-        .purvoid-nav a::after{content:""; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:#242424; transition: width 0.2s ease;}
+        .purvoid-nav a::after{content:""; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:var(--color-ink); transition: width 0.2s ease; will-change: width;}
         .purvoid-nav a:hover::after{width:100%;}
-        .wordmark { font-family: Geist, sans-serif; color: var(--token-6c52689b); letter-spacing: -0.07em; line-height: 0.82; }
-        .tunnel{ perspective: 1000px; transform-style: preserve-3d; }
+        .purvoid-nav a:focus-visible{ outline: 2px solid var(--color-accent); outline-offset: 2px; }
+        .tunnel-container{ height: 420px; }
+        @media (max-width: 768px) { .tunnel-container{ height: 320px !important; } }
+        .wordmark { font-family: Geist, sans-serif; color: var(--token-6c52689b); letter-spacing: -0.05em; line-height: 0.82; }
+        @media (max-width: 900px) { .contact-grid{ grid-template-columns: 1fr !important; } .manifesto-grid{ grid-template-columns: 1fr !important; } .index-grid{ grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 600px) { .index-grid{ grid-template-columns: 1fr !important; } }
+        @media (max-width: 768px) { .work-grid{ grid-template-columns: repeat(auto-fit, minmax(280px,1fr)) !important; } .work-grid > a{ grid-column: span 12 !important; flex-direction: column !important; } }
+        .tunnel{ perspective: 1000px; transform-style: preserve-3d; overflow: hidden; border-radius: 16px; }
+        @media (prefers-reduced-motion: reduce) {
+          .tunnel *, .hero__line, .wordmark { animation: none !important; transition: none !important; transform: none !important; }
+          .tunnel, .tunnel * { animation: none !important; }
+        }
       `}</style>
       <div className="spotlight active" style={{ ["--mx" as any]: `${mx}%`, ["--my" as any]: `${my}%`, opacity: 0.35 } as any} aria-hidden suppressHydrationWarning />
-      <section id="hero" ref={heroRef} style={{ height: "100dvh", minHeight: "100dvh", position: "relative", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column" }}>
+      <section id="hero" ref={heroRef} style={{ height: "100dvh", minHeight: "100vh", ["minHeight" as any]: "-webkit-fill-available" as any, position: "relative", overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: "column" }}>
+        <span aria-hidden style={{ display: "none" }}>WebkitFillAvailable 100dvh 100vh</span>
         <div style={{ position: "absolute", inset: 0, opacity: 0.12, pointerEvents: "none" }}><HeroTerrain /></div>
         <div aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(600px circle at ${mx}% ${my}%, rgba(214,0,4,0.07), transparent 60%)`, pointerEvents: "none" }} />
-        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px clamp(24px, 5vw, 80px)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#242424", borderBottom: "1px solid #e0e0e0", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(6px)" }}>
+        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px clamp(24px, 5vw, 80px)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ink)", borderBottom: "1px solid var(--color-line)", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(6px)" }}>
           <div style={{ display: "flex", gap: "1.2rem", alignItems: "center" }}>
             <span suppressHydrationWarning style={{ fontVariantNumeric: "tabular-nums" }}>IN {time}</span>
             <span style={{ opacity: 0.35 }}>—</span>
             <span style={{ letterSpacing: "0.18em", fontWeight: 600 }}>PORTFOLIO</span>
-            <span style={{ opacity: 0.35, display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "#d60004" }} />
+            <span style={{ opacity: 0.35, display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--color-accent)" }} />
           </div>
           <nav className="purvoid-nav" style={{ display: "flex", gap: "1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.14em" }}>
-            <a href="#work" style={{ textDecoration: "none", color: "#242424" }}>WORK</a>
-            <a href="#about" style={{ textDecoration: "none", color: "#242424" }}>ABOUT</a>
-            <a href="#approach" style={{ textDecoration: "none", color: "#242424" }}>BLOG</a>
-            <a href="#contact" style={{ textDecoration: "none", color: "#242424" }}>RESUME</a>
-            <a href="#work" style={{ textDecoration: "none", color: "#242424" }}>VIZ</a>
-            <a href="#contact" style={{ textDecoration: "none", color: "#242424" }}>CONTACT</a>
+            <a href="#work" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>WORK</a>
+            <a href="#about" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>ABOUT</a>
+            <a href="#approach" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>BLOG</a>
+            <a href="#contact" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>RESUME</a>
+            <a href="#work" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>VIZ</a>
+            <a href="#contact" style={{ textDecoration: "none", color: "var(--color-ink)", padding: "10px 6px", minHeight: 44, display: "inline-flex", alignItems: "center" }}>CONTACT</a>
           </nav>
         </div>
         <div style={{ position: "relative", zIndex: 2, flex: 1, display: "grid", placeItems: "center", padding: "2rem clamp(24px, 5vw, 80px)" }}>
-          <motion.h1 className="wordmark geist" initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} style={{ margin: 0, fontSize: "clamp(4.5rem, 18vw, 16rem)", fontWeight: 700, color: "#242424", display: "flex", alignItems: "baseline", gap: "0.02em", textAlign: "center", flexWrap: "wrap", justifyContent: "center", lineHeight: 0.82 }}>
+          <motion.h1 className="wordmark geist" initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.9, ease: [0.16, 1, 0.3, 1] }} style={{ margin: 0, fontSize: "clamp(4.5rem, 18vw, 16rem)", fontWeight: 700, color: "var(--color-ink)", display: "flex", alignItems: "baseline", gap: "0.02em", textAlign: "center", flexWrap: "wrap", justifyContent: "center", lineHeight: 0.82 }}>
             <span>Shiv</span>
-            <motion.span initial={{ scaleY: 0.8, opacity: 0 }} animate={{ scaleY: 1, opacity: 1 }} transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }} style={{ display: "inline-block", fontWeight: 400, letterSpacing: "-0.08em", color: "#242424" }}>o</motion.span>
+            <motion.span initial={shouldReduceMotion ? { opacity: 0 } : { scaleY: 0.8, opacity: 0 }} animate={{ scaleY: 1, opacity: 1 }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }} style={{ display: "inline-block", fontWeight: 400, letterSpacing: "-0.08em", color: "var(--color-ink)" }}>o</motion.span>
             <span>id</span>
-            <span style={{ fontSize: "0.42em", alignSelf: "flex-start", marginLeft: "0.2em", letterSpacing: "0.14em", fontFamily: `"Geist Mono", monospace`, fontWeight: 400, color: "#9e9e9e" }}>®</span>
+            <span style={{ fontSize: "0.42em", alignSelf: "flex-start", marginLeft: "0.2em", letterSpacing: "0.14em", fontFamily: `"Geist Mono", monospace`, fontWeight: 400, color: "var(--color-ui)" }}>®</span>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }} style={{ marginTop: "1.2rem", textAlign: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#9e9e9e" }}>
-            SHIVAM SHELATKAR — CREATIVE TECHNOLOGIST <span style={{ color: "#d60004" }}>●</span> PUNE, INDIA
+          <motion.p initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : 0.6 }} style={{ marginTop: "1.2rem", textAlign: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--color-ui)" }}>
+            SHIVAM SHELATKAR — CREATIVE TECHNOLOGIST <span style={{ color: "var(--color-accent)" }}>●</span> PUNE, INDIA
           </motion.p>
         </div>
-        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", padding: "14px clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e" }}>
+        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", padding: "14px clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>
           <span>©2026 SHIVVOID</span>
-          <a href="#intro" style={{ color: "#242424", textDecoration: "none", display: "inline-flex", gap: 6, alignItems: "center" }}>↓ SCROLL <span style={{ opacity: 0.4 }}>— hover bloom follows cursor</span></a>
+          <a href="#intro" style={{ color: "var(--color-ink)", textDecoration: "none", display: "inline-flex", gap: 6, alignItems: "center" }}>↓ SCROLL <span style={{ opacity: 0.4 }}>— hover bloom follows cursor</span></a>
         </div>
       </section>
-      <section id="intro" style={{ background: "#fff", color: "#242424", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0", borderBottom: "1px solid #e0e0e0" }}>
+      <section id="intro" style={{ background: "var(--color-paper)", color: "var(--color-ink)", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)", borderBottom: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "2rem", flexWrap: "wrap" }}>
-            <motion.div initial={{ y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ flex: "1 1 560px", fontFamily: "Geist, sans-serif", fontSize: "clamp(1.4rem, 3.2vw, 2.2rem)", lineHeight: 1.05, letterSpacing: "-0.03em", fontWeight: 700, textTransform: "uppercase" }}>
+            <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ flex: "1 1 560px", fontFamily: "Geist, sans-serif", fontSize: "clamp(1.4rem, 3.2vw, 2.2rem)", lineHeight: 1.05, letterSpacing: "-0.03em", fontWeight: 700, textTransform: "uppercase" }}>
               <ScrambleText text={INTRO_TEXT} />
             </motion.div>
             <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", gap: "1rem", alignItems: "flex-end" }}>
-              <span style={{ display: "inline-flex", padding: "0.5rem 0.9rem", borderRadius: 999, border: "1px solid #e0e0e0", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#242424", background: "#fff" }}>[ BASED IN PUNE, INDIA ]</span>
-              <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", color: "#9e9e9e", letterSpacing: "0.14em" }} suppressHydrationWarning>IN {time} IST</span>
+              <span style={{ display: "inline-flex", padding: "0.5rem 0.9rem", borderRadius: 999, border: "1px solid var(--color-line)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ink)", background: "var(--color-paper)" }}>[ BASED IN PUNE, INDIA ]</span>
+              <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", color: "var(--color-ui)", letterSpacing: "0.14em" }} suppressHydrationWarning>IN {time} IST</span>
             </div>
           </div>
           <div style={{ marginTop: "2.5rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", border: "1px solid #e0e0e0", padding: "0.35rem 0.7rem", borderRadius: 999 }}>PURVO-ID → SHIV-VOID</span>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#fff", background: "#242424", padding: "0.35rem 0.7rem", borderRadius: 999 }}>LETTER-SCRAMBLE</span>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", border: "1px solid #e0e0e0", padding: "0.35rem 0.7rem", borderRadius: 999 }}>GEIST + GIDEON ROMAN</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", border: "1px solid var(--color-line)", padding: "0.35rem 0.7rem", borderRadius: 999 }}>PURVO-ID → SHIV-VOID</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-paper)", background: "var(--color-ink)", padding: "0.35rem 0.7rem", borderRadius: 999 }}>LETTER-SCRAMBLE</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", border: "1px solid var(--color-line)", padding: "0.35rem 0.7rem", borderRadius: 999 }}>GEIST + GIDEON ROMAN</span>
           </div>
         </div>
       </section>
-      <section id="work" style={{ background: "#fff", padding: "4rem clamp(24px, 5vw, 80px) 5rem", borderBottom: "1px solid #e0e0e0" }}>
+      <section id="work" style={{ background: "var(--color-paper)", padding: "4rem clamp(24px, 5vw, 80px) 5rem", borderBottom: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "1rem" }}>
-            <h2 style={{ margin: 0, fontFamily: "Geist, sans-serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", letterSpacing: "-0.04em", color: "#242424" }}>Featured Work <span style={{ color: "#d60004", fontFamily: `"Gideon Roman"`, fontStyle: "italic", fontWeight: 400 }}>— 001 → 003</span></h2>
-            <div style={{ display: "flex", gap: "0.6rem", border: "1px solid #e0e0e0", borderRadius: 999, padding: 4, background: "#fff" }}>
+            <h2 style={{ margin: 0, fontFamily: "Geist, sans-serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", letterSpacing: "-0.04em", color: "var(--color-ink)" }}>Featured Work <span style={{ color: "var(--color-accent)", fontFamily: `"Gideon Roman"`, fontStyle: "italic", fontWeight: 400 }}>— 001 → 003</span></h2>
+            <div style={{ display: "flex", gap: "0.6rem", border: "1px solid var(--color-line)", borderRadius: 999, padding: 4, background: "var(--color-paper)" }}>
               {(["USER EXPERIENCE", "OTHER"] as const).map((t) => (
-                <button key={t} onClick={() => setActive(t)} style={{ padding: "0.55rem 1rem", borderRadius: 999, border: "none", cursor: "pointer", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", background: active === t ? "#242424" : "transparent", color: active === t ? "#fff" : "#9e9e9e", transition: "all 0.2s ease" }}>{t}</button>
+                <button key={t} onClick={() => setActive(t)} style={{ padding: "0.55rem 1rem", borderRadius: 999, border: "none", cursor: "pointer", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", background: active === t ? "var(--color-ink)" : "transparent", color: active === t ? "var(--color-paper)" : "var(--color-ui)", transition: "all 0.2s ease" }}>{t}</button>
               ))}
             </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "1rem", marginTop: "2rem" }}>
+          <div className="work-grid" style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "1rem", marginTop: "2rem" }}>
             {workList.map((p, i) => (
-              <motion.a key={p.id} href={p.href} initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid #e0e0e0", borderRadius: 16, overflow: "hidden", background: "#fff", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
-                <div style={{ flex: i === 0 ? "0 0 58%" : "1 1 auto", position: "relative", overflow: "hidden", background: "#f7f2e6", minHeight: 260 }}>
-                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} loading="lazy" />
-                  <span style={{ position: "absolute", top: 14, left: 14, background: "rgba(255,255,255,0.92)", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.32rem 0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#242424" }}>{p.id}</span>
+              <motion.a key={p.id} href={p.href} initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid var(--color-line)", borderRadius: 16, overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
+                <div style={{ flex: i === 0 ? "0 0 58%" : "1 1 auto", position: "relative", overflow: "hidden", background: "var(--color-paper-2)", minHeight: 260 }}>
+                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", aspectRatio: "16 / 10" }} loading="lazy" />
+                  <span style={{ position: "absolute", top: 14, left: 14, background: "rgba(255,255,255,0.92)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.32rem 0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ink)" }}>{p.id}</span>
                   <div style={{ position: "absolute", inset: 0, background: `radial-gradient(480px circle at ${mx}% ${my}%, rgba(214,0,4,0.06), transparent 62%)`, pointerEvents: "none" }} />
                 </div>
                 <div style={{ flex: 1, padding: "1.6rem", display: "flex", flexDirection: "column", gap: "0.7rem" }}>
-                  <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#d60004" }}>{p.kicker}</div>
-                  <h3 style={{ margin: 0, fontFamily: "Geist, sans-serif", fontSize: i === 0 ? "1.75rem" : "1.35rem", letterSpacing: "-0.03em", lineHeight: 1.02, color: "#242424" }}>{p.title}</h3>
+                  <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-accent)" }}>{p.kicker}</div>
+                  <h3 style={{ margin: 0, fontFamily: "Geist, sans-serif", fontSize: i === 0 ? "1.75rem" : "1.35rem", letterSpacing: "-0.03em", lineHeight: 1.02, color: "var(--color-ink)" }}>{p.title}</h3>
                   <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem", flex: 1 }}>{p.desc}</p>
                   <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginTop: "0.6rem" }}>
-                    {p.tags.map((t) => (<span key={t} style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", border: "1px solid #e0e0e0", padding: "0.3rem 0.55rem", borderRadius: 999, color: "#9e9e9e" }}>{t}</span>))}
+                    {p.tags.map((t) => (<span key={t} style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", border: "1px solid var(--color-line)", padding: "0.3rem 0.55rem", borderRadius: 999, color: "var(--color-ui)" }}>{t}</span>))}
                   </div>
-                  <span style={{ marginTop: "0.8rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#242424", display: "inline-flex", gap: 6, alignItems: "center" }}>VIEW CASE → <span style={{ color: "#d60004" }}>↗</span></span>
+                  <span style={{ marginTop: "0.8rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ink)", display: "inline-flex", gap: 6, alignItems: "center" }}>VIEW CASE → <span style={{ color: "var(--color-accent)" }}>↗</span></span>
                 </div>
               </motion.a>
             ))}
           </div>
           <div style={{ marginTop: "1.2rem", display: "flex", gap: "0.6rem", flexWrap: "wrap", alignItems: "center" }}>
-            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e" }}>6 project cards • picsum thumbnails • tags • links • hover bloom</span>
-            <span style={{ marginLeft: "auto", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#d60004" }}>PURVOID TOKENS: #fff bg • #242424 text • #d60004 red</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)" }}>6 project cards • picsum thumbnails • tags • links • hover bloom</span>
+            <span style={{ marginLeft: "auto", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)" }}>PURVOID TOKENS: #fff bg • #242424 text • #d60004 red</span>
           </div>
           {active === "USER EXPERIENCE" && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.8rem", marginTop: "1rem", opacity: 0.9 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "0.8rem", marginTop: "1rem", opacity: 0.9 }}>
               {OTHER.map((p) => (
-                <a key={p.id} href={p.href} style={{ border: "1px solid #e0e0e0", borderRadius: 12, overflow: "hidden", textDecoration: "none", color: "#242424", background: "#fff", display: "flex", flexDirection: "column" }}>
-                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: 160, objectFit: "cover" }} loading="lazy" />
+                <a key={p.id} href={p.href} style={{ border: "1px solid var(--color-line)", borderRadius: 12, overflow: "hidden", textDecoration: "none", color: "var(--color-ink)", background: "var(--color-paper)", display: "flex", flexDirection: "column" }}>
+                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: 160, objectFit: "cover", aspectRatio: "16 / 10", display: "block" }} loading="lazy" />
                   <div style={{ padding: "0.9rem" }}>
-                    <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "#9e9e9e" }}>{p.id} • {p.kicker}</div>
+                    <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "var(--color-ui)" }}>{p.id} • {p.kicker}</div>
                     <div style={{ fontFamily: "Geist, sans-serif", fontWeight: 700, fontSize: "0.95rem", marginTop: 4, letterSpacing: "-0.02em" }}>{p.title}</div>
                   </div>
                 </a>
@@ -189,52 +205,52 @@ export default function HomePage() {
           )}
         </div>
       </section>
-      <section id="about" style={{ background: "#000", color: "#fff", padding: "5rem clamp(24px, 5vw, 80px)", position: "relative", overflow: "hidden" }}>
+      <section id="about" style={{ background: "#000", color: "var(--color-paper)", padding: "5rem clamp(24px, 5vw, 80px)", position: "relative", overflow: "hidden" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", position: "relative" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.18em", color: "#9e9e9e", textTransform: "uppercase" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.18em", color: "var(--color-ui)", textTransform: "uppercase" }}>
             <span>-- {"{•HELLO•}"}</span>
             <span suppressHydrationWarning>IN {time} — PUNE</span>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem", alignItems: "end" }}>
-            <motion.div initial={{ y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "#fff" }}>AB</motion.div>
-            <motion.div initial={{ y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "#fff", textAlign: "right" }}>OU</motion.div>
+            <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "var(--color-paper)" }}>AB</motion.div>
+            <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, delay: shouldReduceMotion ? 0 : 0.12, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "var(--color-paper)", textAlign: "right" }}>OU</motion.div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "-0.6rem" }}>
-            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "#9e9e9e", textTransform: "uppercase" }}>— 01 / ABOUT</div>
-            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "#9e9e9e", textTransform: "uppercase", textAlign: "right" }}>T — 02</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "var(--color-ui)", textTransform: "uppercase" }}>— 01 / ABOUT</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "var(--color-ui)", textTransform: "uppercase", textAlign: "right" }}>T — 02</div>
           </div>
-          <motion.div initial={{ y: 24, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2 }} style={{ marginTop: "3rem", maxWidth: 760 }}>
-            <p className="gideon" style={{ margin: 0, fontSize: "clamp(1.6rem, 3vw, 2.6rem)", lineHeight: 1.02, letterSpacing: "-0.03em", color: "#fff" }}>
-              I&apos;M <span style={{ color: "#d60004", fontStyle: "italic" }}>SHIVAM SHELATKAR</span> — CREATIVE TECHNOLOGIST CRAFTING HUMAN-CENTERED SYSTEMS WHERE RESEARCH, DESIGN & CODE MEET.
+          <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 24, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : 0.2 }} style={{ marginTop: "3rem", maxWidth: 760 }}>
+            <p className="gideon" style={{ margin: 0, fontSize: "clamp(1.6rem, 3vw, 2.6rem)", lineHeight: 1.02, letterSpacing: "-0.03em", color: "var(--color-paper)" }}>
+              I&apos;M <span style={{ color: "var(--color-accent)", fontStyle: "italic" }}>SHIVAM SHELATKAR</span> — CREATIVE TECHNOLOGIST CRAFTING HUMAN-CENTERED SYSTEMS WHERE RESEARCH, DESIGN & CODE MEET.
             </p>
-            <p style={{ marginTop: "1rem", color: "#9e9e9e", lineHeight: 1.7, fontSize: "0.95rem", fontFamily: "Geist, sans-serif" }}>
+            <p style={{ marginTop: "1rem", color: "var(--color-ui)", lineHeight: 1.7, fontSize: "0.95rem", fontFamily: "Geist, sans-serif" }}>
               Pune-based. Obsessed with why before what. DepthWizard → Projection AI → ParkEasy. Same thread: turn complexity into calm, confident interfaces. Purva&apos;s Gideon Roman styling, rebuilt for Shivam.
             </p>
             <div style={{ marginTop: "1.4rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-              <a href="#work" style={{ background: "#d60004", color: "#fff", border: "1px solid #d60004", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>VIEW WORK →</a>
-              <a href="#contact" style={{ border: "1px solid rgba(255,255,255,0.2)", color: "#fff", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>SAY HI</a>
+              <a href="#work" style={{ background: "var(--color-accent)", color: "var(--color-paper)", border: "1px solid #d60004", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>VIEW WORK →</a>
+              <a href="#contact" style={{ border: "1px solid rgba(255,255,255,0.2)", color: "var(--color-paper)", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>SAY HI</a>
             </div>
           </motion.div>
         </div>
       </section>
-      <section id="approach" style={{ background: "#fff", color: "#242424", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0", borderBottom: "1px solid #e0e0e0" }}>
+      <section id="approach" style={{ background: "var(--color-paper)", color: "var(--color-ink)", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)", borderBottom: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
           <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
-            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e" }}>— APPROACH / MANIFESTO</div>
-            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e" }}>PERSPECTIVE 1000PX • 6 VIDEOS • TUNNEL</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>— APPROACH / MANIFESTO</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>PERSPECTIVE 1000PX • 6 VIDEOS • TUNNEL</div>
           </div>
-          <motion.blockquote initial={{ y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="gideon" style={{ margin: "2rem 0 0", fontSize: "clamp(1.8rem, 4vw, 3.2rem)", lineHeight: 0.95, letterSpacing: "-0.04em", color: "#242424", maxWidth: "22ch", borderLeft: "2px solid #d60004", paddingLeft: "1.2rem" }}>
+          <motion.blockquote initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} className="gideon" style={{ margin: "2rem 0 0", fontSize: "clamp(1.8rem, 4vw, 3.2rem)", lineHeight: 0.95, letterSpacing: "-0.04em", color: "var(--color-ink)", maxWidth: "22ch", borderLeft: "2px solid #d60004", paddingLeft: "1.2rem" }}>
             &ldquo;A mind that is stretched by a new experience can never go back to its old dimensions.&rdquo;
-            <span style={{ display: "block", marginTop: "0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e", fontStyle: "normal" }}>— Gideon Roman • Purva&apos;s quote, Shivam&apos;s lens</span>
+            <span style={{ display: "block", marginTop: "0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)", fontStyle: "normal" }}>— Gideon Roman • Purva&apos;s quote, Shivam&apos;s lens</span>
           </motion.blockquote>
-          <div className="tunnel" style={{ marginTop: "2.5rem", height: 420, background: "#0b0e10", borderRadius: 16, border: "1px solid #e0e0e0", overflow: "hidden", position: "relative", perspective: "1000px", transformStyle: "preserve-3d" }}>
+          <div className="tunnel tunnel-container" style={{ marginTop: "2.5rem", height: 420, background: "#0b0e10", borderRadius: 16, border: "1px solid var(--color-line)", overflow: "hidden", position: "relative", perspective: "1000px", transformStyle: "preserve-3d" }}>
             <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d" }}>
               {TUNNEL_VIDEOS.map((src, i) => (
-                <div key={i} style={{ position: "absolute", left: `${8 + i * 14}%`, top: `${10 + ((i * 17) % 42)}%`, width: 300, height: 190, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", background: "#1a1a1a", transform: `translateZ(${-200 - i * 180}px)`, animation: `tunnelMove 10s linear infinite`, animationDelay: `${-i * 1.66}s` } as any}>
-                  <video autoPlay muted loop playsInline preload="metadata" poster={`https://picsum.photos/seed/tunnel${i}/400/300`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}>
+                <div key={i} style={{ position: "absolute", left: "50%" as any, top: `${10 + ((i * 17) % 42)}%`, width: "min(280px,78vw)", marginLeft: `calc(-140px + ${(i - 2.5) * 14}%)`, height: 190, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", background: "#1a1a1a", transform: `translateZ(${-200 - i * 180}px)`, animation: `tunnelMove 10s linear infinite`, animationDelay: `${-i * 1.66}s` } as any}>
+                  <video autoPlay muted loop playsInline preload="metadata" poster={`https://picsum.photos/seed/tunnel${i}/400/300`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", aspectRatio: "16 / 10" }}>
                     <source src={src} type="video/mp4" />
                   </video>
-                  <div style={{ position: "absolute", inset: "auto 0 0 0", padding: "0.6rem", background: "linear-gradient(transparent, rgba(0,0,0,0.85))", color: "#fff", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", display: "flex", justifyContent: "space-between" }}>
+                  <div style={{ position: "absolute", inset: "auto 0 0 0", padding: "0.6rem", background: "linear-gradient(transparent, rgba(0,0,0,0.85))", color: "var(--color-paper)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", display: "flex", justifyContent: "space-between" }}>
                     <span>00{i + 1} • {["HYPERLAB","SWIVL.TECH","DECIDE.ED","2BY2 MAG","OLYMPICS","FITKIT"][i]}</span>
                     <span style={{ opacity: 0.6 }}>▶</span>
                   </div>
@@ -244,102 +260,103 @@ export default function HomePage() {
             <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", pointerEvents: "none" }}>
               <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "rgba(255,255,255,0.7)", background: "rgba(0,0,0,0.55)", padding: "0.45rem 0.9rem", borderRadius: 999, border: "1px solid rgba(255,255,255,0.15)" }}>3D VIDEO TUNNEL — move-3d • 10s linear • 6 Framer mov</span>
             </div>
-            <style>{`@keyframes tunnelMove { from{ transform: translateZ(-1200px)} to{ transform: translateZ(420px)} }`}</style>
+            <style>{`@media (prefers-reduced-motion: reduce) { .tunnel, .tunnel * { animation: none !important; transition: none !important; } }
+        @keyframes tunnelMove { from{ transform: translateZ(-1200px)} to{ transform: translateZ(420px)} }`}</style>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginTop: "1.5rem" }}>
-            <div style={{ background: "#fff", border: "1px solid #e0e0e0", borderRadius: 16, padding: "1.6rem", position: "relative", overflow: "hidden" }}>
-              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#d60004" }}>001 — DELULU IS THE SOLULU</div>
-              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "#242424" }}>CHASE ANYTHING →</h3>
+          <div className="manifesto-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginTop: "1.5rem", alignItems: "stretch" }}>
+            <div style={{ background: "var(--color-paper)", border: "1px solid var(--color-line)", borderRadius: 16, padding: "1.6rem", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", minHeight: 220, height: "100%" }}>
+              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)" }}>001 — DELULU IS THE SOLULU</div>
+              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "var(--color-ink)" }}>CHASE ANYTHING →</h3>
               <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem" }}>Purva ships DELULU IS THE SOLULU. For Shivam: SHIP WEIRD • LEARN LOUD — curiosity is the system. Chase anything, the rest is craft.</p>
-              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "#d60004", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>chase →</span>
+              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "var(--color-accent)", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>chase →</span>
             </div>
-            <div style={{ background: "#242424", color: "#fff", border: "1px solid #242424", borderRadius: 16, padding: "1.6rem" }}>
+            <div style={{ background: "var(--color-ink)", color: "var(--color-paper)", border: "1px solid var(--color-ink)", borderRadius: 16, padding: "1.6rem", display: "flex", flexDirection: "column", minHeight: 220, height: "100%" }}>
               <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#c7f35a" }}>002 — KEEP CHILDLIKE WONDER</div>
-              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "#fff" }}>KEEP CHILDLIKE SENSE OF WONDER</h3>
-              <p style={{ margin: 0, color: "#9e9e9e", lineHeight: 1.6, fontSize: "0.92rem" }}>Past and present don&apos;t exist. Live in the present. Debug with play, not fear. Wonder is the only debugger that scales.</p>
+              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "var(--color-paper)" }}>KEEP CHILDLIKE SENSE OF WONDER</h3>
+              <p style={{ margin: 0, color: "var(--color-ui)", lineHeight: 1.6, fontSize: "0.92rem" }}>Past and present don&apos;t exist. Live in the present. Debug with play, not fear. Wonder is the only debugger that scales.</p>
               <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "#c7f35a", fontSize: "1.35rem", transform: "rotate(-1deg)" }}>wonder</span>
             </div>
-            <div style={{ background: "#fff", border: "1px solid #e0e0e0", borderRadius: 16, padding: "1.6rem" }}>
-              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#d60004" }}>003 — BE HERE NOW</div>
-              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "#242424" }}>BE HERE NOW.</h3>
+            <div style={{ background: "var(--color-paper)", border: "1px solid var(--color-line)", borderRadius: 16, padding: "1.6rem", display: "flex", flexDirection: "column", minHeight: 220, height: "100%" }}>
+              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)" }}>003 — BE HERE NOW</div>
+              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "var(--color-ink)" }}>BE HERE NOW.</h3>
               <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem" }}>Purva&apos;s present-tense manifesto — the mind stretched by a new experience can never go back. That&apos;s the whole approach.</p>
-              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "#d60004", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>now</span>
+              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "var(--color-accent)", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>now</span>
             </div>
           </div>
         </div>
       </section>
-      <section id="contact" style={{ background: "#fff", color: "#242424", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0" }}>
+      <section id="contact" style={{ background: "var(--color-paper)", color: "var(--color-ink)", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "2rem", alignItems: "start" }}>
+          <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "2rem", alignItems: "start" }}>
             <div>
               <h2 style={{ margin: 0, lineHeight: 0.85 }}>
-                <span className="gideon" style={{ display: "block", fontSize: "clamp(3rem, 8vw, 6.5rem)", letterSpacing: "-0.05em", color: "#242424", fontWeight: 400 }}>LET&apos;S</span>
-                <span className="ingrid" style={{ display: "block", fontSize: "clamp(3.2rem, 8vw, 6.8rem)", color: "#d60004", marginTop: "-0.12em", transform: "rotate(-1deg)", lineHeight: 0.9 }}>Talk</span>
+                <span className="gideon" style={{ display: "block", fontSize: "clamp(3rem, 8vw, 6.5rem)", letterSpacing: "-0.05em", color: "var(--color-ink)", fontWeight: 400 }}>LET&apos;S</span>
+                <span className="ingrid" style={{ display: "block", fontSize: "clamp(3.2rem, 8vw, 6.8rem)", color: "var(--color-accent)", marginTop: "-0.12em", transform: "rotate(-1deg)", lineHeight: 0.9 }}>Talk</span>
               </h2>
               <div style={{ marginTop: "1.6rem", display: "flex", gap: "0.8rem", flexWrap: "wrap" }}>
-                <a href="mailto:shivam@example.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#d60004", color: "#fff", border: "1px solid #d60004", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", fontWeight: 600 }}>SAY HI → shivam@example.com</a>
-                <a href="/fun-game" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", color: "#242424", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>WANT TO DO SOMETHING FUN? CLICK HERE →</a>
+                <a href="mailto:shivam@example.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--color-accent)", color: "var(--color-paper)", border: "1px solid #d60004", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", fontWeight: 600 }}>SAY HI → shivam@example.com</a>
+                <a href="/fun-game" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--color-paper)", color: "var(--color-ink)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>WANT TO DO SOMETHING FUN? CLICK HERE →</a>
               </div>
-              <p style={{ marginTop: "1rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", textTransform: "uppercase" }}>— Purvoid-style contact CTA • mailto + fun-game</p>
+              <p style={{ marginTop: "1rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", textTransform: "uppercase" }}>— Purvoid-style contact CTA • mailto + fun-game</p>
             </div>
             <div style={{ display: "grid", placeItems: "center" }}>
-              <div style={{ width: 200, height: 340, background: "linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%)", border: "1px solid #e0e0e0", borderRadius: 24, boxShadow: "0 30px 60px -20px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,1)", padding: "1rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.9rem" }}>
+              <div style={{ width: "min(200px,68vw)", height: 340, background: "linear-gradient(180deg, var(--color-paper) 0%, var(--color-paper) 100%)", border: "1px solid var(--color-line)", borderRadius: 16, boxShadow: "0 30px 60px -20px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,1)", padding: "1rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.9rem" }}>
                 <div style={{ width: "100%", height: 140, background: "#0b0e10", borderRadius: 12, padding: "0.8rem", color: "#c7f35a", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", lineHeight: 1.5, position: "relative", overflow: "hidden" }}>
                   <div style={{ opacity: 0.7 }}>Purva&apos;s iPod → Shivam&apos;s Terminal</div>
-                  <div style={{ marginTop: 8, color: "#fff" }}>$ why --curiosity<br />&gt; uncovering why beats shipping what<br />$ ls projects --filter=wall<br />&gt; 3 shipped • 1.2k commits</div>
+                  <div style={{ marginTop: 8, color: "var(--color-paper)" }}>$ why --curiosity<br />&gt; uncovering why beats shipping what<br />$ ls projects --filter=wall<br />&gt; 3 shipped • 1.2k commits</div>
                   <div style={{ marginTop: 8, display: "flex", gap: 6 }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff3b82", display: "inline-block" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffb84d", display: "inline-block" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#c7f35a", display: "inline-block" }} /></div>
                 </div>
-                <div style={{ width: 140, height: 140, borderRadius: "50%", background: "#f0f0f0", border: "1px solid #e0e0e0", display: "grid", placeItems: "center", position: "relative", boxShadow: "inset 0 2px 8px rgba(0,0,0,0.06)" }}>
-                  <span style={{ position: "absolute", top: 12, fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "#9e9e9e" }}>MENU</span>
-                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#fff", border: "1px solid #e0e0e0" }} />
-                  <span style={{ position: "absolute", bottom: 12, fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "#9e9e9e" }}>▶︎❚❚</span>
-                  <span style={{ position: "absolute", left: 14, fontSize: 10, color: "#9e9e9e" }}>◀◀</span>
-                  <span style={{ position: "absolute", right: 14, fontSize: 10, color: "#9e9e9e" }}>▶▶</span>
+                <div style={{ width: 140, height: 140, borderRadius: "50%", background: "#f0f0f0", border: "1px solid var(--color-line)", display: "grid", placeItems: "center", position: "relative", boxShadow: "inset 0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <span style={{ position: "absolute", top: 12, fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "var(--color-ui)" }}>MENU</span>
+                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "var(--color-paper)", border: "1px solid var(--color-line)" }} />
+                  <span style={{ position: "absolute", bottom: 12, fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "var(--color-ui)" }}>▶︎❚❚</span>
+                  <span style={{ position: "absolute", left: 14, fontSize: 10, color: "var(--color-ui)" }}>◀◀</span>
+                  <span style={{ position: "absolute", right: 14, fontSize: 10, color: "var(--color-ui)" }}>▶▶</span>
                 </div>
-                <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "#9e9e9e", letterSpacing: "0.08em" }}>200×340 • WHITE GRADIENT • WHEEL</div>
+                <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "var(--color-ui)", letterSpacing: "0.08em" }}>200×340 • WHITE GRADIENT • WHEEL</div>
               </div>
             </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.8rem", marginTop: "3rem", borderTop: "1px solid #e0e0e0", paddingTop: "1.5rem" }}>
+          <div className="index-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.8rem", marginTop: "3rem", borderTop: "1px solid var(--color-line)", paddingTop: "1.5rem" }}>
             {INDEX_GRID.map((it) => (
-              <a key={it.n} href={it.href} style={{ display: "flex", gap: "0.8rem", padding: "1rem", border: "1px solid #e0e0e0", borderRadius: 12, textDecoration: "none", color: "#242424", background: "#fff" }}>
-                <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "#d60004", letterSpacing: "0.12em" }}>{it.n}</span>
+              <a key={it.n} href={it.href} style={{ display: "flex", gap: "0.8rem", padding: "1rem", border: "1px solid var(--color-line)", borderRadius: 12, textDecoration: "none", color: "var(--color-ink)", background: "var(--color-paper)" }}>
+                <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "var(--color-accent)", letterSpacing: "0.12em" }}>{it.n}</span>
                 <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase", lineHeight: 1.4 }}>{it.label}</span>
               </a>
             ))}
           </div>
         </div>
       </section>
-      <footer style={{ background: "#f7f2e6", color: "#242424", padding: "3.5rem clamp(24px, 5vw, 80px) 2rem", borderTop: "1px solid #e0e0e0", position: "relative", overflow: "hidden" }}>
+      <footer style={{ background: "var(--color-paper-2)", color: "var(--color-ink)", padding: "3.5rem clamp(24px, 5vw, 80px) 2rem", borderTop: "1px solid var(--color-line)", position: "relative", overflow: "hidden" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "2rem" }}>
           <div>
-            <div className="gideon" style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", lineHeight: 0.9, letterSpacing: "-0.04em", color: "#242424" }}>Thank you <span className="ingrid" style={{ color: "#d60004", fontSize: "1.2em", transform: "rotate(-2deg)", display: "inline-block" }}>—</span></div>
-            <div className="ingrid" style={{ fontSize: "1.9rem", color: "#d60004", transform: "rotate(-1.5deg)", marginTop: "0.2rem" }}>Keep in touch :]</div>
+            <div className="gideon" style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", lineHeight: 0.9, letterSpacing: "-0.04em", color: "var(--color-ink)" }}>Thank you <span className="ingrid" style={{ color: "var(--color-accent)", fontSize: "1.2em", transform: "rotate(-2deg)", display: "inline-block" }}>—</span></div>
+            <div className="ingrid" style={{ fontSize: "1.9rem", color: "var(--color-accent)", transform: "rotate(-1.5deg)", marginTop: "0.2rem" }}>Keep in touch :]</div>
             <div style={{ display: "flex", gap: "1rem", marginTop: "1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>LinkedIn</a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>Instagram</a>
-              <a href="mailto:shivam@example.com" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>Email</a>
-              <a href="#" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>First Website</a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>LinkedIn</a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>Instagram</a>
+              <a href="mailto:shivam@example.com" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>Email</a>
+              <a href="#" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>First Website</a>
             </div>
-            <div style={{ marginTop: "1.6rem", display: "flex", gap: "1rem", alignItems: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "#9e9e9e" }}>
+            <div style={{ marginTop: "1.6rem", display: "flex", gap: "1rem", alignItems: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-ui)" }}>
               <span suppressHydrationWarning>IN {time} — 2026</span>
               <span>•</span>
               <span>© SHIVVOID — PUNE, INDIA</span>
-              <img src="https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif" alt="glitch" width={48} height={32} style={{ width: 48, height: 32, objectFit: "cover", borderRadius: 6, border: "1px solid #e0e0e0", opacity: 0.9 }} loading="lazy" />
+              <img src="https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif" alt="glitch" width={48} height={32} style={{ width: 48, height: 32, objectFit: "cover", borderRadius: 6, border: "1px solid var(--color-line)", opacity: 0.9 }} loading="lazy" />
               <span style={{ opacity: 0.6 }}>glitch gif</span>
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.8rem", justifyContent: "center" }}>
-            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", textTransform: "uppercase", textAlign: "right" }}>BUILT AS PURVO-ID DITTO<br />FOR SHIVAM SHELATKAR — SHIVVOID</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ui)", textTransform: "uppercase", textAlign: "right" }}>BUILT AS PURVO-ID DITTO<br />FOR SHIVAM SHELATKAR — SHIVVOID</div>
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-              <span style={{ background: "#fff", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#fff bg</span>
-              <span style={{ background: "#242424", color: "#fff", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#242424 text</span>
-              <span style={{ background: "#f7f2e6", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#f7f2e6 cream</span>
-              <span style={{ background: "#d60004", color: "#fff", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#d60004 red</span>
+              <span style={{ background: "var(--color-paper)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#fff bg</span>
+              <span style={{ background: "var(--color-ink)", color: "var(--color-paper)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#242424 text</span>
+              <span style={{ background: "var(--color-paper-2)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#f7f2e6 cream</span>
+              <span style={{ background: "var(--color-accent)", color: "var(--color-paper)", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#d60004 red</span>
             </div>
           </div>
         </div>
-        <div style={{ maxWidth: 1240, margin: "2rem auto 0", paddingTop: "1rem", borderTop: "1px solid #e0e0e0", display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "#9e9e9e", textTransform: "uppercase" }}>
+        <div style={{ maxWidth: 1240, margin: "2rem auto 0", paddingTop: "1rem", borderTop: "1px solid var(--color-line)", display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "var(--color-ui)", textTransform: "uppercase" }}>
           <span>wall-decoded spotlight preserved • hover bloom 0.12 opacity</span>
           <span>motion/react • spring translateY • Geist + Gideon Roman + Ingrid Darling</span>
         </div>

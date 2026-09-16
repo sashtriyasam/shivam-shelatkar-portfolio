@@ -14,11 +14,9 @@
   --color-accent: #d60004;
   --color-accent-warm: #f21317;
   --color-violet: #9e9e9e;
-  --color-cyan: #e0e0e0;
-  --color-amber: #9e9e9e;
   --color-ui: #9e9e9e;
   --color-line: #e0e0e0;
-  --color-line-2: #e0e0e0;
+  --color-line-2: rgba(36, 36, 36, 0.08);
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-micro: 160ms;
@@ -28,11 +26,11 @@
 
   --max-width: 1240px;
   --gutter: clamp(24px, 5vw, 80px);
-  --radius: 8px;
-  --focus-ring: 2px solid #d60004;
+  --radius: 16px;
+  --focus-ring: 2px solid var(--color-accent);
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     --color-ink: #1a1a18;
     --color-paper: #fdf8ef;
@@ -53,16 +51,20 @@ body {
   color: var(--color-ink);
   font-family: var(--font-body);
   font-feature-settings: "ss01" on, "ss03" on, "loc" on;
+  letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   position: relative;
-  isolation: isolate;
 }
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-paper);
+  color: #fff;
+}
+::-moz-selection {
+  background: var(--color-accent);
+  color: #fff;
 }
 
 /* Paper fiber + subtle grain - human desk */
@@ -70,7 +72,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: -1;
   pointer-events: none;
   opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -215,6 +217,7 @@ body::after {
   width: 0%;
   background: var(--color-accent);
   transition: width var(--duration-micro) var(--ease);
+  will-change: width;
 }
 
 .link-underline:hover::after,
@@ -243,6 +246,7 @@ body::after {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: 4rem;
 }
 
 .grid {
@@ -274,7 +278,7 @@ body::after {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 50;
-  background: rgba(11, 14, 16, 0.78);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   border-bottom: 1px solid var(--color-line-2);
@@ -320,7 +324,7 @@ body::after {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -341,6 +345,8 @@ body::after {
   place-items: center;
   width: 2.5rem;
   height: 2.5rem;
+  min-height: 44px;
+  min-width: 44px;
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   background: transparent;
@@ -726,7 +732,7 @@ body::after {
   margin: 0.5rem 0 0;
   font-size: clamp(2.5rem, 7vw, 5rem);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
 }
 
 .project-page__stack {
@@ -805,7 +811,7 @@ body::after {
   margin: 1rem 0 0;
   font-size: clamp(2.5rem, 7vw, 5.5rem);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
 }
 
 .about__grid {
@@ -825,7 +831,7 @@ body::after {
   font-size: clamp(1.4rem, 3vw, 2rem);
   line-height: 1.45;
   margin: 0 0 1.5rem;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .about__copy {
@@ -936,6 +942,7 @@ body::after {
 .about__card-title {
   margin: 1rem 0 0.5rem;
   font-size: 1.1rem;
+  letter-spacing: -0.03em;
 }
 
 .about__card-text {
@@ -977,7 +984,7 @@ body::after {
   margin: 1rem 0 0;
   font-size: clamp(2.5rem, 7vw, 5.5rem);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
 }
 
 .contact__grid {
@@ -1098,7 +1105,7 @@ body::after {
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-family: var(--font-display);
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
 }
 
 .site-footer__links {
@@ -1133,6 +1140,8 @@ body::after {
 
 .site-footer__meta {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
   justify-content: space-between;
   align-items: center;
   margin-top: 3rem;
@@ -1162,7 +1171,7 @@ body::after {
 .not-found__title {
   margin: 1rem 0 0;
   font-size: clamp(2.5rem, 7vw, 5rem);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   position: relative;
 }
 
@@ -1183,9 +1192,25 @@ body::after {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .tunnel,
+  .tunnel *,
+  .tunnel__card,
+  .hero__line,
+  .hero__scroll svg,
+  .marquee__track,
+  .contact__signal-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .hero__line {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -1265,7 +1290,7 @@ body::after {
   font-family: var(--font-display);
   font-size: clamp(3rem, 14vw, 7rem);
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   text-decoration: none;
   color: var(--color-paper);
   transition: color var(--duration-micro) var(--ease);
@@ -1574,7 +1599,7 @@ body::after {
 .about__card-title {
   margin: 0 0 0.5rem;
   font-size: 1.2rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .about__card-text {
@@ -1993,6 +2018,8 @@ body::after {
   transition: all 0.2s var(--ease);
 }
 .filter-pill.active, .filter-pill:hover{ background:var(--color-paper); color:var(--color-ink); border-color:var(--color-paper); transform: translateY(-1px); }
+.filter-pill:focus-visible{ outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.purvoid-nav a:focus-visible{ outline: 2px solid var(--color-accent); outline-offset: 2px; }
 
 /* Bento Projects - Modern Layouts decode */
 .bento {
@@ -2043,43 +2070,43 @@ body::after {
 
 /* ===== PURVA BHANDARI DECODED - Framer Geist + Warm Cream + Red Punch ===== */
 .purva-section {
-  background: #f7f2e6;
-  color: #242424;
+  background: var(--color-paper-2);
+  color: var(--color-ink);
   padding: 5rem 0;
   position: relative;
   overflow: hidden;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
 }
-.purva-section .eyebrow { color: #9e9e9e; }
+.purva-section .eyebrow { color: var(--color-ui); }
 .purva-kicker {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #9e9e9e;
+  color: var(--color-ui);
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
 }
-.purva-kicker::before { content:""; width:2rem; height:1px; background:#d60004; }
+.purva-kicker::before { content:""; width:2rem; height:1px; background: var(--color-accent); }
 .purva-title {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 5vw, 3.8rem);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   line-height: 0.9;
-  color: #242424;
+  color: var(--color-ink);
 }
 .purva-title em {
   font-family: "Gideon Roman", Georgia, serif;
   font-weight: 400;
   font-style: italic;
-  color: #d60004;
+  color: var(--color-accent);
 }
 .script-accent {
   font-family: "Ingrid Darling", cursive;
   font-size: 1.6rem;
-  color: #d60004;
+  color: var(--color-accent);
   transform: rotate(-2deg);
   display: inline-block;
 }
@@ -2092,8 +2119,8 @@ body::after {
 }
 @media(max-width:900px){ .manifesto-grid{grid-template-columns:1fr} }
 .manifesto-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
   border-radius: 16px;
   padding: 1.8rem;
   position: relative;
@@ -2105,14 +2132,14 @@ body::after {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.14em;
-  color: #d60004;
+  color: var(--color-accent);
 }
 .manifesto-card__title {
   font-family: var(--font-display);
   font-size: 1.45rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin: 0.6rem 0 0.4rem;
-  color: #242424;
+  color: var(--color-ink);
 }
 .manifesto-card__text { color: #424242; line-height: 1.6; font-size: 0.95rem; margin: 0; }
 /* iPod Terminal - skeuomorphic */
@@ -2124,9 +2151,9 @@ body::after {
 }
 .ipod {
   width: 280px;
-  background: linear-gradient(180deg, #ffffff, #f5f5f5);
-  border: 1px solid #e0e0e0;
-  border-radius: 24px;
+  background: linear-gradient(180deg, var(--color-paper), var(--color-paper-2));
+  border: 1px solid var(--color-line);
+  border-radius: 16px;
   box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,1);
   padding: 1.2rem;
   transform-style: preserve-3d;
@@ -2154,7 +2181,7 @@ body::after {
   width: 140px; height: 140px;
   border-radius: 50%;
   background: #f0f0f0;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--color-line);
   margin: 1.2rem auto 0;
   display: grid;
   place-items: center;
@@ -2162,7 +2189,7 @@ body::after {
   box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
 }
 .ipod__wheel::before {
-  content:""; width:48px; height:48px; border-radius:50%; background:#fff; border:1px solid #e0e0e0;
+  content:""; width:48px; height:48px; border-radius:50%; background: var(--color-paper); border: 1px solid var(--color-line);
 }
 /* 3D Video Tunnel - move-3d */
 .tunnel {
@@ -2195,9 +2222,9 @@ body::after {
 @keyframes opacity3d { 0%,100%{opacity:0} 10%,90%{opacity:1} }
 .tunnel__card video, .tunnel__card img { width:100%; height:100%; object-fit:cover; display:block; }
 .red-cta {
-  background: #d60004;
-  color:#fff;
-  border:1px solid #d60004;
+  background: var(--color-accent);
+  color: var(--color-paper);
+  border: 1px solid var(--color-accent);
   border-radius: 999px;
   padding: 0.7rem 1.2rem;
   font-family: var(--font-mono);
@@ -2205,7 +2232,7 @@ body::after {
   display:inline-flex; align-items:center; gap:0.5rem;
   transition: background 0.2s, transform 0.2s;
 }
-.red-cta:hover { background:#f21317; transform: translateY(-2px); }
+.red-cta:hover { background: var(--color-accent-warm); transform: translateY(-2px); }
 
 /* ===== HUMAN HANDCRAFTED OVERRIDES - NOT AI ===== */
 .hand { font-family: var(--font-hand); font-weight: 500; line-height: 1; }
@@ -2235,7 +2262,7 @@ body::after {
   pointer-events: none;
 }
 .polaroid {
-  background: #fff;
+  background: var(--color-paper);
   padding: 10px 10px 28px 10px;
   box-shadow: 0 8px 24px -8px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.08);
   transform: rotate(-1.2deg);
@@ -2252,8 +2279,8 @@ body::after {
 }
 .torn {
   position: relative;
-  background: #fff;
-  border: 1px solid rgba(26,26,24,0.08);
+  background: var(--color-paper);
+  border: 1px solid var(--color-line-2);
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 .torn::before {
@@ -2266,29 +2293,19 @@ body::after {
 
 /* Human header - paper not glass */
 .site-header {
-  background: rgba(253,248,239,0.92) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(8px) !important;
-  border-bottom: 1px solid rgba(26,26,24,0.08) !important;
+  border-bottom: 1px solid var(--color-line-2) !important;
   color: var(--color-ink) !important;
 }
 .site-header .logo { color: var(--color-ink) !important; }
-.site-header .logo__mark { border-color: rgba(26,26,24,0.15); color: var(--color-accent); }
+.site-header .logo__mark { border-color: var(--color-line-2); color: var(--color-accent); }
 .site-header__nav a { color: var(--color-ink) !important; }
 
-/* Hero as desk - warm paper with desk texture */
-.hero {
-  background: var(--color-paper) !important;
-  color: var(--color-ink) !important;
-}
-.hero::before {
-  background: radial-gradient(ellipse at 20% 20%, rgba(196,90,60,0.06), transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(30,58,95,0.04), transparent 50%), var(--color-paper) !important;
-}
-.hero__canvas { opacity: 0.18 !important; filter: sepia(0.3) contrast(1.1); }
-.hero .display { color: var(--color-ink); }
-.hero__line--outline { -webkit-text-stroke: 1.2px var(--color-ink) !important; }
+
 
 /* Paper sections - alternating warm */
-.purva-section { background: #fff !important; border-color: rgba(26,26,24,0.08) !important; }
+.purva-section { background: var(--color-paper) !important; border-color: var(--color-line-2) !important; }
 
 
 

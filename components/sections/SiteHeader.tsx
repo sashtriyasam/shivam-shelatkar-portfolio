@@ -24,14 +24,13 @@ export function SiteHeader() {
     [0, 1],
     [0.78, 0.98]
   );
-  const headerBackground = useMotionTemplate`rgba(11, 14, 16, ${headerBgOpacity})`;
+  const headerBackground = useMotionTemplate`rgba(255, 255, 255, ${headerBgOpacity})`;
 
   return (
     <motion.header
       className="site-header"
       style={{
         background: headerBackground,
-        borderTop: "1px solid var(--color-line-2)",
       }}
     >
       <div className="content-max site-header__inner">
@@ -39,7 +38,7 @@ export function SiteHeader() {
           <span className="logo__mark">SS</span>
           <span
             className="logo__name"
-            style={{ letterSpacing: "0.1em" }}
+            style={{ letterSpacing: "0.14em" }}
           >
             Shivam Shelatkar
           </span>
@@ -66,9 +65,11 @@ export function SiteHeader() {
 
         <button
           className="site-header__menu"
+          style={{ minHeight: 44, minWidth: 44 }}
           onClick={openMenu}
           aria-label="Open menu"
           aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           <Menu size={18} />
         </button>

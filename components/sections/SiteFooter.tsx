@@ -31,7 +31,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-<p className="site-footer__tech">
+<p className="site-footer__tech" aria-label="Site version 2.0">
           v2.0
         </p>
 

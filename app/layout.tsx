@@ -1,5 +1,5 @@
 ﻿import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, Geist, Gideon_Roman, Ingrid_Darling } from "next/font/google";
+import { Geist, Geist_Mono, Gideon_Roman, Ingrid_Darling } from "next/font/google";
 import "./globals.css";
 import { CursorProvider } from "@/components/cursor/CursorProvider";
 import { ScrollProgress } from "@/components/scroll-progress/ScrollProgress";
@@ -10,21 +10,15 @@ import { SiteFooter } from "@/components/sections/SiteFooter";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 
-const clash = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-clash",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
   display: "swap",
 });
 
@@ -68,7 +62,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0e10",
+  themeColor: "#ffffff",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
@@ -79,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${gideon.variable} ${ingrid.variable} ${clash.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${gideon.variable} ${ingrid.variable}`} suppressHydrationWarning>
       <body>
         <MotionProvider>
           <CursorProvider>
