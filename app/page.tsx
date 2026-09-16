@@ -332,6 +332,136 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== PURVA BHANDARI DECODED - Warm Cream / Red Punch / 3D Tunnel ===== */}
+      <section className="purva-section">
+        <div className="content-max">
+          <div className="split" style={{ alignItems: "flex-start" }}>
+            <div>
+              <div className="purva-kicker">purva bhandari decoded • bangalore — india</div>
+              <h2 className="purva-title" style={{ marginTop: "0.8rem" }}>
+                Curiosity over <em>pixels.</em>
+                <br />
+                Why beats <span className="script-accent">how.</span>
+              </h2>
+              <p style={{ maxWidth: "42ch", color: "#424242", lineHeight: 1.6, marginTop: "1rem" }}>
+                Purva&apos;s Framer portfolio is Geist + Gideon Roman + Ingrid Darling, cream #f7f2e6, red punch #d60004. No hero image — type is hero. I rewire it for a technologist: split-wordmark + live clock + manifesto + iPod.
+              </p>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.14em", color: "#9e9e9e" }}>[ BASED IN PUNE, INDIA ]</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", marginTop: 4, color: "#242424" }}>
+                IN {new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false })} IST
+              </div>
+              <Link href="/work" className="red-cta" style={{ marginTop: "1rem" }}>
+                Want to do something fun? →
+              </Link>
+            </div>
+          </div>
+
+          {/* Manifesto - DELULU / WONDER */}
+          <div className="manifesto-grid">
+            <div className="manifesto-card">
+              <div className="manifesto-card__num">001 — from Purva</div>
+              <h3 className="manifesto-card__title">DELULU IS THE SOLULU</h3>
+              <p className="manifesto-card__text">Purva ships `DELULU IS THE SOLULU`. For Shivam: `SHIP WEIRD • LEARN LOUD` — curiosity is the system.</p>
+            </div>
+            <div className="manifesto-card" style={{ background: "#242424", color: "#fff", borderColor: "#242424" }}>
+              <div className="manifesto-card__num" style={{ color: "#c7f35a" }}>
+                002 — keep wonder
+              </div>
+              <h3 className="manifesto-card__title" style={{ color: "#fff" }}>
+                KEEP CHILDLIKE WONDER
+              </h3>
+              <p className="manifesto-card__text" style={{ color: "#9e9e9e" }}>
+                Past and present don&apos;t exist. Live in the present. Debug with play, not fear.
+              </p>
+            </div>
+            <div className="manifesto-card">
+              <div className="manifesto-card__num">003 — chase anything</div>
+              <h3 className="manifesto-card__title">CHASE ANYTHING →</h3>
+              <p className="manifesto-card__text">Purva&apos;s `A mind that is stretched` (Gideon Roman 50px) becomes `Why before what` — uncover the why behind every decision.</p>
+              <div className="script-accent" style={{ marginTop: "0.6rem" }}>
+                why?
+              </div>
+            </div>
+          </div>
+
+          {/* iPod Terminal + 3D Tunnel side by side */}
+          <div style={{ display: "grid", gridTemplateColumns: "340px 1fr", gap: "1.5rem", marginTop: "2.5rem", alignItems: "center" }}>
+            <div className="ipod-wrap">
+              <div
+                className="ipod"
+                onMouseMove={(e) => {
+                  const el = e.currentTarget as HTMLDivElement;
+                  const rect = el.getBoundingClientRect();
+                  const cx = rect.left + rect.width / 2;
+                  const cy = rect.top + rect.height / 2;
+                  const rx = ((e.clientY - cy) / (rect.height / 2)) * 8;
+                  const ry = ((e.clientX - cx) / (rect.width / 2)) * 8;
+                  el.style.transform = `rotateX(${-rx}deg) rotateY(${ry}deg)`;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.transform = "rotateX(0) rotateY(0)";
+                }}
+              >
+                <div className="ipod__screen">
+                  <div style={{ opacity: 0.7 }}>Purva&apos;s iPod → Shivam&apos;s Terminal</div>
+                  <div style={{ marginTop: 8, color: "#fff" }}>
+                    $ why --curiosity
+                    <br />
+                    &gt; uncovering why beats shipping what
+                    <br />
+                    $ ls projects --filter=wall
+                    <br />
+                    &gt; 3 shipped • 1.2k commits
+                  </div>
+                  <div style={{ marginTop: 8, display: "flex", gap: 6 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff3b82", display: "inline-block" }} />
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffb84d", display: "inline-block" }} />
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#c7f35a", display: "inline-block" }} />
+                  </div>
+                </div>
+                <div className="ipod__wheel">
+                  <span style={{ position: "absolute", top: 12, fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#9e9e9e" }}>MENU</span>
+                  <span style={{ position: "absolute", bottom: 12, fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#9e9e9e" }}>▶︎❚❚</span>
+                </div>
+                <div style={{ textAlign: "center", marginTop: 8, fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#9e9e9e" }}>Purva × Shivam — tactile filter</div>
+              </div>
+            </div>
+
+            <div className="tunnel">
+              <div className="tunnel__track">
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="tunnel__card" style={{ animationDelay: `${-i * 1.66}s`, left: `${18 + i * 11}%`, top: `${12 + ((i * 13) % 40)}%` } as any}>
+                    <img src={`https://picsum.photos/seed/tunnel${i}/400/300`} alt="" loading="lazy" />
+                    <div style={{ position: "absolute", inset: "auto 0 0 0", padding: "0.6rem", background: "linear-gradient(transparent, rgba(0,0,0,0.8))", color: "#fff", fontFamily: "var(--font-mono)", fontSize: "0.62rem" }}>
+                      00{i + 1} • {["HYPERLAB", "SWIVL.TECH", "DECIDE.ED", "2BY2 MAG", "OLYMPICS", "FITKIT"][i]}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", pointerEvents: "none" }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.14em", color: "rgba(242,240,233,0.6)", background: "rgba(11,14,16,0.6)", padding: "0.4rem 0.8rem", borderRadius: 999, border: "1px solid rgba(242,240,233,0.15)" }}>
+                  3D VIDEO TUNNEL — move-3d • 10s linear • Purva approach
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: "1.5rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+            <span className="tag" style={{ background: "#fff" }}>
+              Geist 400/700 + Ingrid Darling script
+            </span>
+            <span className="tag" style={{ background: "#242424", color: "#fff" }}>
+              #f7f2e6 cream • #d60004 red punch
+            </span>
+            <span className="tag" style={{ background: "#fff" }}>
+              Split wordmark Purv+o+id → Shi+vam
+            </span>
+          </div>
+        </div>
+      </section>
+
       {/* FOOT KINETIC TICKER */}
       <div className="marquee" style={{ padding: "2rem 0", borderTop: "1px solid var(--color-line-2)", borderBottom: "1px solid var(--color-line-2)" }}>
         <div className="marquee__track" style={{ animationDuration: "18s" }}>
