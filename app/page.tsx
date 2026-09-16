@@ -115,6 +115,11 @@ export default function HomePage() {
   const [soundActive, setSoundActive] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const shouldReduceMotion = useReducedMotion();
+  const [typedAbout, setTypedAbout] = useState("");
+  const fullAbout = "About me — I'm a Product Designer & Engineer who loves turning fuzzy ideas into calm, useful products. I design with curiosity, code with care, and get genuinely excited when tech feels human.";
+  const ROLES = ["Product Designer & Engineer", "Creative Technologist", "Spatial UX Explorer", "Frontend Architect"];
+  const [roleIdx, setRoleIdx] = useState(0);
+  const [displayRole, setDisplayRole] = useState(ROLES[0]);
 
   useEffect(() => {
     setMounted(true);
@@ -143,6 +148,55 @@ export default function HomePage() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+
+  // typewriter for about me
+  useEffect(() => {
+    if (!mounted) return;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setTypedAbout(fullAbout.slice(0, i));
+      if (i >= fullAbout.length) clearInterval(id);
+    }, 14);
+    return () => clearInterval(id);
+  }, [mounted]);
+
+  // scramble role ticker - every 2.8s scramble to next role
+  useEffect(() => {
+    if (!mounted || shouldReduceMotion) return;
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@$%&";
+    let scrambleInterval: any;
+    let holdTimeout: any;
+    const cycle = () => {
+      const nextIdx = (roleIdx + 1) % ROLES.length;
+      let iterations = 0;
+      const target = ROLES[nextIdx];
+      clearInterval(scrambleInterval);
+      scrambleInterval = setInterval(() => {
+        setDisplayRole(
+          target
+            .split("")
+            .map((c, idx) => {
+              if (idx < iterations) return target[idx];
+              if (c === " " || c === "&") return c;
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join("")
+        );
+        if (iterations >= target.length) {
+          clearInterval(scrambleInterval);
+          setRoleIdx(nextIdx);
+        }
+        iterations += 1.6;
+      }, 32);
+    };
+    const ticker = setInterval(cycle, 3200);
+    return () => {
+      clearInterval(ticker);
+      clearInterval(scrambleInterval);
+      clearTimeout(holdTimeout);
+    };
+  }, [mounted, roleIdx, shouldReduceMotion]);
 
   const toggleAudio = () => {
     const isEnabled = sound.toggle();
@@ -653,6 +707,578 @@ export default function HomePage() {
             display: none;
           }
         }
+
+        /* ——— IMMERSIVE HERO — WOW EDITION ——— */
+        .immersive-hero {
+          min-height: calc(100vh - 56px);
+          min-height: calc(100dvh - 56px);
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: clamp(1.5rem, 4vw, 3rem) clamp(20px, 4.5vw, 72px) 1.2rem;
+          isolation: isolate;
+        }
+        .hero-orb {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 1;
+          filter: blur(42px);
+          opacity: 0.55;
+          mix-blend-mode: screen;
+        }
+        .hero-orb--a {
+          width: 560px; height: 560px;
+          background: radial-gradient(circle at 30% 30%, rgba(255,59,48,0.22), rgba(255,59,48,0) 70%);
+          top: -120px; right: -80px;
+          animation: orbFloatA 9s ease-in-out infinite;
+        }
+        .hero-orb--b {
+          width: 720px; height: 720px;
+          background: radial-gradient(circle at 50% 50%, rgba(0,212,255,0.14), rgba(0,212,255,0) 70%);
+          bottom: -180px; left: -160px;
+          animation: orbFloatB 11s ease-in-out infinite;
+        }
+        @keyframes orbFloatA { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-18px,14px) scale(1.06)} }
+        @keyframes orbFloatB { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(22px,-10px) scale(1.05)} }
+
+        .immersive-hero-content {
+          max-width: 1240px;
+          width: 100%;
+          margin: 0 auto;
+          position: relative;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          gap: 1.6rem;
+          padding-top: clamp(0.5rem, 2vh, 1.2rem);
+          padding-bottom: 1rem;
+        }
+        .hero-kicker-row {
+          display: flex;
+          align-items: center;
+          gap: 0.9rem;
+          flex-wrap: wrap;
+          font-family: var(--font-mono);
+          font-size: 0.64rem;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+        .hero-kicker-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          padding: 0.5rem 0.95rem;
+          border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(12,14,20,0.72);
+          backdrop-filter: blur(12px);
+          color: rgba(255,255,255,0.85);
+        }
+        .kicker-dot {
+          width: 7px; height: 7px;
+          border-radius: 50%;
+          background: #00f59b;
+          box-shadow: 0 0 10px #00f59b;
+          animation: beaconPulse 2s infinite;
+          flex: 0 0 7px;
+        }
+        .kicker-sep { color: rgba(255,255,255,0.25); }
+        .hero-kicker-sub {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0.5rem 0.9rem;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255,255,255,0.08);
+          color: rgba(255,255,255,0.65);
+        }
+
+        .hero-name-wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+        }
+        .hi-row {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.7rem;
+          font-family: var(--font-hand, "Caveat", cursive);
+        }
+        .hi-script {
+          font-family: var(--font-hand, "Caveat", cursive);
+          font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+          font-weight: 600;
+          color: #ff3b30;
+          line-height: 1;
+          transform: rotate(-1.5deg);
+          display: inline-block;
+          text-shadow: 0 2px 18px rgba(255,59,48,0.35);
+        }
+        .hi-wave { font-size: clamp(1.5rem, 2.4vw, 2rem); filter: saturate(1.1); }
+        .hi-line-decor {
+          width: clamp(40px, 8vw, 110px);
+          height: 1px;
+          background: linear-gradient(90deg, rgba(255,59,48,0.9), rgba(255,59,48,0));
+          margin-left: 0.2rem;
+          opacity: 0.9;
+        }
+
+        .hero-big-name {
+          margin: 0;
+          line-height: 0.82;
+          letter-spacing: -0.055em;
+          font-weight: 800;
+          font-family: var(--font-display, var(--font-geist));
+          perspective: 600px;
+          transform-style: preserve-3d;
+        }
+        .name-line {
+          display: block;
+          font-size: clamp(3.4rem, 10.5vw, 9.2rem);
+          font-weight: 900;
+          letter-spacing: -0.06em;
+          line-height: 0.85;
+          overflow: visible;
+        }
+        .name-first {
+          color: #fff;
+          text-shadow: 0 12px 40px rgba(0,0,0,0.55);
+        }
+        .name-last {
+          color: transparent;
+          -webkit-text-stroke: 1.35px rgba(255,255,255,0.92);
+          paint-order: stroke fill;
+          margin-top: 0.06em;
+          transition: -webkit-text-stroke 0.2s ease;
+        }
+        .name-last .char:hover {
+          -webkit-text-stroke: 1.2px #00d4ff;
+          color: transparent;
+        }
+        .char {
+          display: inline-block;
+          cursor: default;
+          transition: color 0.18s ease, transform 0.18s ease, -webkit-text-stroke 0.18s ease;
+          will-change: transform;
+        }
+        .char--first:hover {
+          color: #ff3b30 !important;
+          text-shadow: 0 0 22px rgba(255,59,48,0.55);
+        }
+        .hero-role-row {
+          display: flex;
+          align-items: baseline;
+          gap: 0.7rem;
+          flex-wrap: wrap;
+          font-family: var(--font-mono);
+          margin-top: 0.8rem;
+          font-size: clamp(0.72rem, 1.05vw, 0.92rem);
+          letter-spacing: 0.06em;
+        }
+        .role-scramble {
+          color: #00d4ff;
+          font-weight: 800;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          font-size: 0.78rem;
+          min-width: 22ch;
+          display: inline-block;
+          text-shadow: 0 0 18px rgba(0,212,255,0.35);
+        }
+        .role-divider { color: rgba(255,255,255,0.25); }
+        .role-hint {
+          color: rgba(255,255,255,0.55);
+          font-family: var(--font-body);
+          letter-spacing: -0.01em;
+          text-transform: none;
+          font-size: 0.92rem;
+        }
+
+        .hero-about-card {
+          margin-top: 0.6rem;
+          max-width: 62ch;
+          background: linear-gradient(135deg, rgba(18,20,28,0.78) 0%, rgba(10,12,16,0.86) 100%);
+          border: 1px solid rgba(255,255,255,0.10);
+          border-radius: 18px;
+          padding: 1.15rem 1.25rem 1.1rem;
+          backdrop-filter: blur(14px) saturate(130%);
+          box-shadow: 0 20px 60px -18px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.08);
+          position: relative;
+          overflow: hidden;
+        }
+        .hero-about-card::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(500px 200px at 20% 0%, rgba(255,59,48,0.08), transparent 60%);
+          pointer-events: none;
+        }
+        .hero-about-label {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          font-family: var(--font-mono);
+          font-size: 0.6rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #00f59b;
+          margin-bottom: 0.6rem;
+          font-weight: 700;
+        }
+        .about-dot {
+          width: 6px; height: 6px;
+          border-radius: 50%;
+          background: #00f59b;
+          box-shadow: 0 0 8px #00f59b;
+        }
+        .about-line {
+          flex: 1;
+          height: 1px;
+          background: linear-gradient(90deg, rgba(0,245,155,0.35), transparent);
+          margin-left: 0.4rem;
+        }
+        .hero-about-text {
+          margin: 0;
+          font-size: clamp(0.96rem, 1.25vw, 1.08rem);
+          line-height: 1.6;
+          letter-spacing: -0.015em;
+          color: rgba(255,255,255,0.88);
+          font-weight: 400;
+          position: relative;
+          min-height: 3.2em;
+        }
+        .type-cursor {
+          display: inline-block;
+          margin-left: 2px;
+          color: #00d4ff;
+          font-weight: 300;
+          animation: blink 1s step-end infinite;
+          transform: translateY(1px);
+        }
+        @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+
+        .immersive-cta {
+          gap: 0.85rem;
+          margin-top: 0.2rem;
+          align-items: center;
+        }
+        .btn-ghost {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.9rem 1.15rem;
+          border-radius: 999px;
+          font-family: var(--font-mono);
+          font-size: 0.68rem;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          text-decoration: none;
+          color: rgba(255,255,255,0.75);
+          border: 1px solid transparent;
+          transition: all 0.2s ease;
+        }
+        .btn-ghost:hover {
+          color: #fff;
+          background: rgba(255,255,255,0.06);
+          border-color: rgba(255,255,255,0.12);
+          transform: translateY(-2px);
+        }
+        .hero-side-label {
+          position: absolute;
+          right: clamp(14px, 2vw, 28px);
+          top: 50%;
+          transform: translateY(-50%) rotate(90deg);
+          transform-origin: center;
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.32);
+          z-index: 3;
+          pointer-events: none;
+          white-space: nowrap;
+        }
+        .hero-side-label .side-line {
+          width: 42px; height: 1px;
+          background: rgba(255,255,255,0.22);
+          display: inline-block;
+        }
+        .scroll-explore {
+          position: absolute;
+          left: 50%;
+          bottom: 1.1rem;
+          transform: translateX(-50%);
+          z-index: 3;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.45rem;
+          text-decoration: none;
+          color: rgba(255,255,255,0.55);
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          transition: color 0.2s ease;
+        }
+        .scroll-explore:hover { color: #fff; }
+        .scroll-wheel {
+          width: 22px; height: 34px;
+          border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.22);
+          display: grid;
+          place-items: start center;
+          padding-top: 5px;
+          background: rgba(255,255,255,0.04);
+          backdrop-filter: blur(6px);
+        }
+        .scroll-dot {
+          width: 4px; height: 4px;
+          border-radius: 50%;
+          background: #00d4ff;
+          box-shadow: 0 0 8px #00d4ff;
+          display: block;
+        }
+        .telemetry-hide-mobile { }
+        @media (max-width: 900px) {
+          .hero-side-label { display: none; }
+          .telemetry-hide-mobile { display: none !important; }
+          .immersive-hero-content { gap: 1.2rem; }
+          .hero-about-card { padding: 1rem 1.05rem; }
+          .role-scramble { min-width: unset; }
+          .hero-kicker-row { gap: 0.6rem; }
+          .immersive-cta { flex-direction: column; align-items: stretch; }
+          .immersive-cta .btn-neon-primary, .immersive-cta .btn-neon-outline { justify-content: center; }
+          .btn-ghost { justify-content: center; background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+        }
+        @media (max-width: 640px) {
+          .hero-big-name .name-line { font-size: clamp(2.9rem, 14vw, 4.6rem); }
+          .hi-script { font-size: 1.55rem; }
+          .hero-role-row { flex-direction: column; gap: 0.35rem; align-items: flex-start; }
+          .role-hint { font-size: 0.86rem; line-height: 1.4; }
+        }
+
+        /* ——— ABOUT PREVIEW — IMMERSIVE FRIENDLY ——— */
+        .about-preview-wrap {
+          padding: 5.5rem clamp(20px, 4.5vw, 72px);
+          background: radial-gradient(800px 500px at 20% 15%, rgba(0,212,255,0.06), transparent 60%), radial-gradient(700px 400px at 85% 85%, rgba(255,59,48,0.05), transparent 60%), #060709;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          position: relative;
+          z-index: 1;
+        }
+        .about-preview-inner {
+          display: grid;
+          grid-template-columns: 0.95fr 1.25fr;
+          gap: clamp(2rem, 5vw, 4.5rem);
+          align-items: center;
+        }
+        .about-visual-card {
+          background: linear-gradient(135deg, rgba(18,20,28,0.95) 0%, rgba(10,12,16,0.98) 100%);
+          border: 1px solid rgba(255,255,255,0.11);
+          border-radius: 24px;
+          padding: 1.35rem 1.35rem 1.2rem;
+          box-shadow: 0 30px 80px -20px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.08);
+          position: relative;
+          overflow: visible;
+        }
+        .about-visual-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.45);
+          margin-bottom: 1.2rem;
+        }
+        .about-visual-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.32rem 0.6rem;
+          border-radius: 999px;
+          background: rgba(0,245,155,0.10);
+          border: 1px solid rgba(0,245,155,0.22);
+          color: #00f59b;
+          font-weight: 700;
+        }
+        .about-avatar-ring {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 1.15;
+          border-radius: 20px;
+          background: radial-gradient(280px 280px at 45% 35%, rgba(255,59,48,0.14), transparent 70%), radial-gradient(340px 260px at 80% 90%, rgba(0,212,255,0.14), transparent 70%), #0a0c10;
+          border: 1px solid rgba(255,255,255,0.08);
+          display: grid;
+          place-items: center;
+          overflow: visible;
+          padding: 1.5rem;
+        }
+        .about-avatar-inner {
+          width: 148px; height: 148px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #1a1d25 0%, #0f1117 100%);
+          border: 1.5px solid rgba(255,255,255,0.16);
+          display: grid;
+          place-items: center;
+          place-content: center;
+          box-shadow: 0 18px 40px -12px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08);
+          position: relative;
+        }
+        .about-avatar-initials {
+          font-family: var(--font-display);
+          font-size: 2.8rem;
+          font-weight: 800;
+          letter-spacing: -0.05em;
+          color: #fff;
+          line-height: 1;
+        }
+        .about-avatar-sub {
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.45);
+          margin-top: 0.25rem;
+        }
+        .about-float {
+          position: absolute;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          padding: 0.45rem 0.75rem;
+          border-radius: 999px;
+          background: rgba(6,7,9,0.92);
+          border: 1px solid rgba(255,255,255,0.14);
+          backdrop-filter: blur(10px);
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.10em;
+          text-transform: uppercase;
+          color: #fff;
+          font-weight: 700;
+          box-shadow: 0 10px 28px -10px rgba(0,0,0,0.6);
+          white-space: nowrap;
+        }
+        .about-float--1 { top: 14px; right: -10px; color: #ff3b30; border-color: rgba(255,59,48,0.25); }
+        .about-float--2 { bottom: 54px; left: -14px; color: #00d4ff; border-color: rgba(0,212,255,0.25); }
+        .about-float--3 { bottom: 14px; right: 18px; color: #00f59b; border-color: rgba(0,245,155,0.22); background: rgba(6,7,9,0.92); }
+        .about-visual-stats {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.7rem;
+          margin-top: 1.15rem;
+        }
+        .av-stat {
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 14px;
+          padding: 0.75rem 0.6rem;
+          text-align: center;
+        }
+        .av-stat-num {
+          display: block;
+          font-family: var(--font-display);
+          font-size: 1.15rem;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          color: #fff;
+          line-height: 1;
+        }
+        .av-stat-label {
+          display: block;
+          margin-top: 0.28rem;
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.45);
+        }
+        .about-visual-caption {
+          margin-top: 0.7rem;
+          text-align: center;
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.35);
+        }
+        .about-preview-copy {
+          display: flex;
+          flex-direction: column;
+          gap: 1.1rem;
+        }
+        .about-preview-title {
+          margin: 0;
+          font-size: clamp(2rem, 3.8vw, 3.25rem);
+          font-weight: 800;
+          letter-spacing: -0.05em;
+          line-height: 0.95;
+          color: #fff;
+        }
+        .about-title-accent {
+          color: transparent;
+          -webkit-text-stroke: 1.25px #ff3b30;
+          paint-order: stroke fill;
+          font-style: italic;
+          font-family: var(--font-display);
+          font-weight: 400;
+          letter-spacing: -0.03em;
+        }
+        .about-preview-text {
+          display: flex;
+          flex-direction: column;
+          gap: 0.9rem;
+          font-size: 1.02rem;
+          line-height: 1.7;
+          color: rgba(255,255,255,0.82);
+        }
+        .about-preview-text p { margin: 0; }
+        .about-preview-text strong { color: #fff; font-weight: 700; }
+        .about-preview-traits {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.65rem;
+          margin-top: 0.2rem;
+        }
+        .trait {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0.5rem 0.85rem;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.10);
+          font-family: var(--font-mono);
+          font-size: 0.66rem;
+          letter-spacing: 0.10em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.72);
+          font-weight: 600;
+        }
+        .trait-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+        .about-preview-actions {
+          display: flex;
+          gap: 0.9rem;
+          flex-wrap: wrap;
+          margin-top: 0.6rem;
+        }
+        @media (max-width: 960px) {
+          .about-preview-inner { grid-template-columns: 1fr; gap: 2.2rem; }
+          .about-preview-visual { order: 2; }
+          .about-preview-copy { order: 1; }
+          .about-float--1 { right: 6px; }
+          .about-float--2 { left: 6px; }
+        }
       `}</style>
 
       <div
@@ -700,8 +1326,8 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="hero-shell">
-        <div style={{ position: "absolute", inset: 0, opacity: 0.85, pointerEvents: "all" }}>
+      <section className="hero-shell immersive-hero">
+        <div style={{ position: "absolute", inset: 0, opacity: mounted ? 0.9 : 0, transition: "opacity 1.2s ease", pointerEvents: "all" }}>
           <HeroTerrain />
         </div>
 
@@ -710,79 +1336,282 @@ export default function HomePage() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "radial-gradient(ellipse at 40% 50%, rgba(6,7,9,0.75) 0%, rgba(6,7,9,0.92) 80%)",
+            background: "radial-gradient(ellipse 900px 700px at 35% 45%, rgba(6,7,9,0.15) 0%, rgba(6,7,9,0.55) 45%, rgba(6,7,9,0.88) 72%, rgba(6,7,9,0.98) 100%), linear-gradient(180deg, rgba(6,7,9,0.25) 0%, rgba(6,7,9,0.92) 100%)",
             pointerEvents: "none",
             zIndex: 1
           }}
         />
 
-        <div className="hero-content">
+        {/* floating orbs */}
+        <div aria-hidden className="hero-orb hero-orb--a" />
+        <div aria-hidden className="hero-orb hero-orb--b" />
+
+        <div className="hero-content immersive-hero-content">
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: easeTransition }}
+            className="hero-kicker-row"
           >
-            <div className="hero-kicker-tag">
-              <Sparkles size={12} />
-              <span>SHIVAM SHELATKAR</span>
-              <span style={{ color: "rgba(255,255,255,0.3)" }}>//</span>
-              <span style={{ color: "#fff", fontWeight: 700 }}>CREATIVE TECHNOLOGIST &amp; ARCHITECT</span>
-            </div>
+            <span className="hero-kicker-pill">
+              <span className="kicker-dot" />
+              <span>Available for new opportunities — Q4 2026</span>
+              <span className="kicker-sep">·</span>
+              <span style={{ color: "#00d4ff", fontWeight: 700 }}>Pune, India</span>
+            </span>
+            <span className="hero-kicker-sub">
+              <Sparkles size={11} style={{ opacity: 0.7 }} />
+              <span>Product Designer & Engineer</span>
+            </span>
           </motion.div>
 
-          <motion.h1
-            className="hero-headline"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.1, ease: easeTransition }}
-          >
-            High-consequence <br />
-            software <span className="neon-accent">&amp;</span> spatial UX.
-          </motion.h1>
+          <div className="hero-name-wrap">
+            <motion.div
+              className="hi-row"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.08, ease: easeTransition }}
+            >
+              <span className="hi-script">Hi, I&rsquo;m</span>
+              <motion.span
+                className="hi-wave"
+                animate={shouldReduceMotion ? {} : { rotate: [0, 18, -12, 18, 0] }}
+                transition={{ duration: 1.8, delay: 1.2, ease: "easeInOut" }}
+                style={{ display: "inline-block", transformOrigin: "70% 70%" }}
+                aria-hidden
+              >
+                👋
+              </motion.span>
+              <span className="hi-line-decor" aria-hidden />
+            </motion.div>
 
-          <motion.p
-            className="hero-desc"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: easeTransition }}
-          >
-            Bridging abstract mathematical systems and tactile interfaces — from real-time ISRO satellite orbital canvases to machine learning prediction engines.
-          </motion.p>
+            <h1 className="hero-big-name" aria-label="Shivam Shelatkar">
+              <span className="name-line name-first">
+                {"SHIVAM".split("").map((ch, i) => (
+                  <motion.span
+                    key={`f-${i}`}
+                    className="char char--first"
+                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 60, rotateX: -35 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                    transition={{ duration: 0.9, delay: 0.18 + i * 0.05, ease: easeTransition }}
+                    whileHover={shouldReduceMotion ? {} : { y: -8, scale: 1.08, color: "#ff3b30" }}
+                    style={{ display: "inline-block" }}
+                  >
+                    {ch}
+                  </motion.span>
+                ))}
+              </span>
+              <span className="name-line name-last">
+                {"SHELATKAR".split("").map((ch, i) => (
+                  <motion.span
+                    key={`l-${i}`}
+                    className="char char--last"
+                    initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 70, rotateX: -40 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                    transition={{ duration: 0.9, delay: 0.42 + i * 0.045, ease: easeTransition }}
+                    whileHover={shouldReduceMotion ? {} : { y: -6, scale: 1.06, color: "#00d4ff" }}
+                    style={{ display: "inline-block" }}
+                  >
+                    {ch}
+                  </motion.span>
+                ))}
+              </span>
+            </h1>
+
+            <motion.div
+              className="hero-role-row"
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.75, ease: easeTransition }}
+            >
+              <span className="role-scramble">{displayRole}</span>
+              <span className="role-divider">—</span>
+              <span className="role-hint">obsessed with calm interfaces &amp; joyful details</span>
+            </motion.div>
+          </div>
 
           <motion.div
-            className="hero-cta-group"
+            className="hero-about-card"
             initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: easeTransition }}
+            transition={{ duration: 0.8, delay: 0.9, ease: easeTransition }}
+          >
+            <div className="hero-about-label">
+              <span className="about-dot" />
+              <span>ABOUT ME</span>
+              <span className="about-line" />
+            </div>
+            <p className="hero-about-text">
+              {mounted ? typedAbout : fullAbout}
+              <span className="type-cursor" aria-hidden>|</span>
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="hero-cta-group immersive-cta"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.05, ease: easeTransition }}
           >
             <a
-              href="#spatial"
-              className="btn-neon-primary"
+              href="#about-preview"
+              className="btn-neon-primary btn-magnetic"
               onMouseEnter={() => sound.playHover()}
               onClick={() => sound.playClick()}
             >
-              <span>Explore Spatial Showcase</span>
-              <ArrowDown size={14} />
+              <span>Meet me in 10 seconds</span>
+              <ArrowDown size={15} />
             </a>
             <a
-              href="mailto:shelatkarshivam4@gmail.com"
+              href="#work"
               className="btn-neon-outline"
               onMouseEnter={() => sound.playHover()}
               onClick={() => sound.playClick()}
             >
+              <span>See my work</span>
+              <ArrowUpRight size={14} />
+            </a>
+            <a
+              href="mailto:shelatkarshivam4@gmail.com"
+              className="btn-ghost"
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
               <Mail size={14} />
-              <span>Direct Comms: shelatkarshivam4@gmail.com</span>
+              <span>shelatkarshivam4@gmail.com</span>
             </a>
           </motion.div>
         </div>
 
+        <div className="hero-side-label" aria-hidden>
+          <span>DRAG TO ORBIT · SCROLL TO EXPLORE</span>
+          <span className="side-line" />
+        </div>
+
+        <motion.a
+          href="#about-preview"
+          className="scroll-explore"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+          onMouseEnter={() => sound.playHover()}
+          aria-label="Scroll to about me"
+        >
+          <span className="scroll-text">SCROLL</span>
+          <span className="scroll-wheel">
+            <motion.span
+              className="scroll-dot"
+              animate={shouldReduceMotion ? {} : { y: [0, 14, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </span>
+        </motion.a>
+
         <div className="hero-telemetry-bar">
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <Activity size={12} color="#00f59b" /> MISSION DISPATCH: 03 FLAGGED PLATFORMS ACTIVE
+            <Activity size={12} color="#00f59b" /> 03 FLAGSHIP SYSTEMS · REAL-TIME TERRAIN
           </span>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <ShieldCheck size={12} color="#00d4ff" /> 1.2K COMMITS · ZERO COMPROMISE ON LATENCY
+          <span className="telemetry-hide-mobile" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <ShieldCheck size={12} color="#00d4ff" /> HOVER MY NAME · TRY DRAGGING THE TERRAIN
           </span>
+        </div>
+      </section>
+
+      {/* IMMERSIVE ABOUT ME — friendly & human */}
+      <section id="about-preview" className="about-preview-wrap">
+        <div className="section-max about-preview-inner">
+          <motion.div
+            className="about-preview-visual"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30, rotate: -1 }}
+            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease: easeTransition }}
+          >
+            <TiltCard maxTilt={7}>
+              <div className="about-visual-card">
+                <div className="about-visual-top">
+                  <span className="about-visual-badge">● OPEN TO NEW IDEAS</span>
+                  <span className="about-visual-year">2026</span>
+                </div>
+
+                <div className="about-avatar-ring">
+                  <div className="about-avatar-inner">
+                    <span className="about-avatar-initials">SS</span>
+                    <span className="about-avatar-sub">Shivam Shelatkar</span>
+                  </div>
+                  <motion.span className="about-float about-float--1" animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }} transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}>
+                    <Sparkles size={12} /> Product Designer
+                  </motion.span>
+                  <motion.span className="about-float about-float--2" animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}>
+                    <Activity size={12} /> & Engineer
+                  </motion.span>
+                  <motion.span className="about-float about-float--3" animate={shouldReduceMotion ? {} : { y: [0, -4, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}>
+                    ✦ Human first
+                  </motion.span>
+                </div>
+
+                <div className="about-visual-stats">
+                  <div className="av-stat">
+                    <span className="av-stat-num">Pune</span>
+                    <span className="av-stat-label">Based in India</span>
+                  </div>
+                  <div className="av-stat">
+                    <span className="av-stat-num">Calm</span>
+                    <span className="av-stat-label">Design ethos</span>
+                  </div>
+                  <div className="av-stat">
+                    <span className="av-stat-num">∞</span>
+                    <span className="av-stat-label">Curiosity</span>
+                  </div>
+                </div>
+              </div>
+            </TiltCard>
+
+            <div className="about-visual-caption">
+              <span>↳ Hover & tilt me — I’m interactive</span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="about-preview-copy"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, delay: 0.12, ease: easeTransition }}
+          >
+            <span className="section-badge" style={{ color: "#00f59b" }}>ABOUT ME — THE HUMAN BEHIND THE PIXELS</span>
+            <h2 className="about-preview-title">
+              I like making <span className="about-title-accent">complex things</span> feel obvious.
+            </h2>
+            <div className="about-preview-text">
+              <p>
+                Hey — I&apos;m <strong>Shivam Shelatkar</strong>. Product Designer &amp; Engineer based in Pune. I spend my days somewhere between Figma, VS Code, and a lot of sketchbook scribbles.
+              </p>
+              <p style={{ color: "rgba(255,255,255,0.62)" }}>
+                I got hooked on the idea that good software should feel calm, not clever. Whether it&apos;s a geospatial canvas for ISRO or a tiny button micro-interaction, I care about the same thing: does it help a real person without making them think too hard?
+              </p>
+              <p style={{ color: "rgba(255,255,255,0.62)" }}>
+                When I&apos;m not designing, I&apos;m probably exploring new WebGL tricks, breaking my own grid systems, or hunting for the perfect imperfect font pairing.
+              </p>
+            </div>
+
+            <div className="about-preview-traits">
+              <span className="trait"><span className="trait-dot" style={{ background: "#ff3b30" }} />Detail-obsessed</span>
+              <span className="trait"><span className="trait-dot" style={{ background: "#00d4ff" }} />Calm over clever</span>
+              <span className="trait"><span className="trait-dot" style={{ background: "#00f59b" }} />Ships, then iterates</span>
+            </div>
+
+            <div className="about-preview-actions">
+              <Link href="/about" className="btn-neon-primary" onMouseEnter={() => sound.playHover()} onClick={() => sound.playClick()}>
+                <span>Full story & timeline</span>
+                <ArrowUpRight size={14} />
+              </Link>
+              <a href="mailto:shelatkarshivam4@gmail.com" className="btn-neon-outline" onMouseEnter={() => sound.playHover()} onClick={() => sound.playClick()}>
+                <Mail size={14} />
+                <span>Say hi</span>
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
