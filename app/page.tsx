@@ -19,75 +19,75 @@ const HeroTerrain = dynamic(
 const FEATURED_PROJECTS = [
   {
     id: "01",
-    slug: "depthwizard",
-    title: "DepthWizard",
-    subtitle: "ISRO-DEPTHWIZ · Geospatial Intelligence",
-    headline: "Unified geospatial operations canvas for high-stakes field decisions",
-    description: "Fuses satellite imagery, high-resolution terrain meshes, and live mission tracking into a single interactive WebGL viewport. Built for operators who need instant situational awareness without cognitive friction.",
-    tags: ["Geospatial", "ISRO", "Three.js", "Mapbox GL", "Next.js"],
-    year: "2024",
-    stats: "40% Faster Decision Latency",
-    href: "/work/depthwizard",
-    previewImg: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop"
+    slug: "swarvibhaa",
+    title: "Swarvibhaa",
+    subtitle: "Founder · Music Tech + Architecture — 2023—",
+    headline: "Pan-India creative collective where heritage evolves without losing its soul",
+    description: "Not a band, not a troupe — an ecosystem. I founded Swarvibhaa to pause, listen, and revive the timeless across Mumbai, Delhi, Gujarat. I craft its digital presence (Odoo), form its national artist network, and bridge Hindustani + Trinity Western classical with modern audio tech. Every note intentional, every rhythm lived.",
+    tags: ["Swarvibhaa", "Founder", "Odoo", "Hindustani + Western", "Community"],
+    year: "2023—",
+    stats: "Collective · 15+ Artists · Mumbai·Delhi·Gujarat",
+    href: "https://swarvibhaa.odoo.com/founders-team",
+    previewImg: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop" // tabla / sitar vibe — replace with @shastriyakid shoot
   },
   {
     id: "02",
-    slug: "projection-ai",
-    title: "Projection AI",
-    subtitle: "Fintech & ML · Predictive Revenue Engine",
-    headline: "Turning abstract forecast equations into a tactile decision workspace",
-    description: "Interactive predictive modeling engine empowering leadership to simulate market scenarios in real time. Features dynamic confidence corridors, sensitivity heatmaps, and zero-latency recalculations.",
-    tags: ["Data Viz", "D3.js", "Machine Learning", "React", "TypeScript"],
+    slug: "raatrani-orchestral",
+    title: "Raatrani (Orchestral)",
+    subtitle: "Swarvibhaa Original · Composer / Producer",
+    headline: "Where melody blooms like the night-flower — strings, ambient textures, cinematic soul",
+    description: "Lush reimagining of our original Raatrani into a cinematic soundscape. From Pandit Mukundraj Deo tabla training (10+ yrs) to Trinity Piano (6 yrs), I weave strings and harmonies that feel larger than life — fearless, limitless, made for Indian cinema's global stage (IMDb nm17605062).",
+    tags: ["Raatrani", "Orchestral", "Composer", "Tabla · Piano", "Cinematic"],
     year: "2024",
-    stats: "22% Forecast Precision Lift",
-    href: "/work/projection-ai",
-    previewImg: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop"
+    stats: "Original · Cinematic · Swarvibhaa",
+    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10",
+    previewImg: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1200&auto=format&fit=crop" // studio orchestral
   },
   {
     id: "03",
-    slug: "park-easy",
-    title: "ParkEasy",
-    subtitle: "Urban Tech & IoT · Smart Parking OS",
-    headline: "City-scale real-time spot allocation and operator control plane",
-    description: "Connected urban mobility platform uniting thousands of IoT sensor telemetry streams, dynamic occupancy pricing, and driver-facing turn-by-turn guidance across 15+ central commercial hubs.",
-    tags: ["IoT Telemetry", "Mapbox GL", "Mobile OS", "Node.js"],
-    year: "2023",
-    stats: "30% Drop in Cruising Time",
-    href: "/work/park-easy",
-    previewImg: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=1200&auto=format&fit=crop"
+    slug: "thevita-masthak",
+    title: "Thevita Masthak Deva",
+    subtitle: "Marathi Bhajan · Ashadi Ekadashi 2025",
+    headline: "A sonic offering to Lord Vitthal — Wari pilgrimage, Varkari soul",
+    description: "Heartfelt bhajan carrying centuries of devotion. Released on Ashadi Ekadashi 2025, with arrangement by Tarang Sashte & me — bridging ancient devotion with contemporary production. Built on indie circuits behind-the-scenes where sonic detail matters most.",
+    tags: ["Varkari", "Bhajan", "Ashadi Ekadashi 2025", "Arrangement", "Devotional"],
+    year: "2025",
+    stats: "Wari · Varkari Heritage",
+    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/thevita-masthak-deva-tuzha-payi-3",
+    previewImg: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop" // vitthal / wari pilgrimage vibe
   }
 ];
 
 const ARCHIVE_PROJECTS = [
   {
     id: "04",
-    title: "Decide.ed",
-    category: "Design Systems & Editorial",
-    description: "An open manual examining decision friction and component state clarity in enterprise systems.",
-    year: "2023",
-    href: "https://decided.cargo.site",
+    title: "Saffron सुरावळ",
+    category: "Instrumental · Emotion & Evolution",
+    description: "An instrumental reflection — Indo-Western fusion from slate studio to stage. Minimal, expressive, heritage in motion.",
+    year: "2024",
+    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/saffron-suraaval-9",
     external: true,
-    tag: "OPEN SOURCE"
+    tag: "SWARVIBHAA"
   },
   {
     id: "05",
-    title: "2 by 2 Magazine",
-    category: "Editorial Design & Layout",
-    description: "Curated publication featuring modular bento spreads, custom typography, and longform essays.",
-    year: "2023",
-    href: "/work",
-    external: false,
-    tag: "PUBLICATION"
+    title: "Unity & Code — Game Dev",
+    category: "Independent Game Dev · 2017—",
+    description: "Engineer by training, Unity developer since 2017. Building interactive worlds where music meets code — Hindustani rhythm + real-time graphics.",
+    year: "2017—",
+    href: "https://github.com/sashtriyasam",
+    external: true,
+    tag: "ENGINEERING"
   },
   {
     id: "06",
-    title: "India 2036 Olympic Identity",
-    category: "Speculative Identity & Spatial",
-    description: "Speculative identity system, bilingual wayfinding protocols, and generative broadcast graphics.",
-    year: "2022",
-    href: "/work",
-    external: false,
-    tag: "SPECULATIVE"
+    title: "ABVP · Nation First",
+    category: "Thane District · Education & Activism",
+    description: "ABVP Thane District Technical Education Student Activities Convenor (2023—). Intern of @naradmuniii. Damit. Nation first. Organising, bridging campuses, keeping tradition and technology in dialogue.",
+    year: "2023—",
+    href: "https://linkedin.com/in/shivam-shelatkar-503305358",
+    external: true,
+    tag: "COMMUNITY"
   }
 ];
 
@@ -116,8 +116,8 @@ export default function HomePage() {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const shouldReduceMotion = useReducedMotion();
   const [typedAbout, setTypedAbout] = useState("");
-  const fullAbout = "About me — I'm a Product Designer & Engineer who loves turning fuzzy ideas into calm, useful products. I design with curiosity, code with care, and get genuinely excited when tech feels human.";
-  const ROLES = ["Product Designer & Engineer", "Creative Technologist", "Spatial UX Explorer", "Frontend Architect"];
+  const fullAbout = "About me — Karwar-born, Mumbai-grown. Tabla 10+ yrs (Pandit Mukundraj Deo) + Trinity Piano 6 yrs → now Founder @Swarvibhaa. I build pan-India for classical artists and code interactive worlds in Unity since 2017. Rooted in tradition. Wired with code. I love cats, blue like real blues, and making heritage feel alive (880+ @shastriyakid).";
+  const ROLES = ["Founder @Swarvibhaa", "Music Technologist", "Engineer · Unity Dev", "Tabla · Trinity Piano"];
   const [roleIdx, setRoleIdx] = useState(0);
   const [displayRole, setDisplayRole] = useState(ROLES[0]);
 
@@ -1387,13 +1387,13 @@ export default function HomePage() {
           >
             <span className="hero-kicker-pill">
               <span className="kicker-dot" />
-              <span>Available for new opportunities — Q4 2026</span>
+              <span>Founder @Swarvibhaa — 2023—</span>
               <span className="kicker-sep">·</span>
-              <span style={{ color: "#00d4ff", fontWeight: 700 }}>Pune, India</span>
+              <span style={{ color: "#00d4ff", fontWeight: 700 }}>Karwar → Mumbai · Pune</span>
             </span>
             <span className="hero-kicker-sub">
               <Sparkles size={11} style={{ opacity: 0.7 }} />
-              <span>Product Designer & Engineer</span>
+              <span>IMDb nm17605062 · @shastriyakid</span>
             </span>
           </motion.div>
 
@@ -1466,7 +1466,7 @@ export default function HomePage() {
             >
               <span className="role-scramble" aria-live="polite">{displayRole}</span>
               <span className="role-divider" aria-hidden="true">—</span>
-              <span className="role-hint">obsessed with calm interfaces &amp; joyful details</span>
+              <span className="role-hint">Rooted in tradition. Wired with code. — Swarvibhaa · Mumbai</span>
             </motion.div>
           </div>
 
@@ -1549,10 +1549,10 @@ export default function HomePage() {
 
         <div className="hero-telemetry-bar">
           <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <Activity size={12} color="#00f59b" /> 03 FLAGSHIP SYSTEMS · REAL-TIME TERRAIN
+            <Activity size={12} color="#00f59b" /> Swarvibhaa · Raatrani · Thevita · Saffron — 2023—2025
           </span>
           <span className="telemetry-hide-mobile" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-            <ShieldCheck size={12} color="#00d4ff" /> HOVER MY NAME · TRY DRAGGING THE TERRAIN
+            <ShieldCheck size={12} color="#00d4ff" /> TABLE 10YRS · PIANO TRINITY 6YRS · UNITY SINCE 2017
           </span>
         </div>
       </section>
@@ -1619,26 +1619,27 @@ export default function HomePage() {
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, delay: 0.12, ease: easeTransition }}
           >
-            <span className="section-badge" style={{ color: "#00f59b" }}>ABOUT ME — THE HUMAN BEHIND THE PIXELS</span>
+            <span className="section-badge" style={{ color: "#00f59b" }}>ABOUT ME — KARWAR → MUMBAI · TABLE + PIANO → CODE</span>
             <h2 className="about-preview-title">
-              I like making <span className="about-title-accent">complex things</span> feel obvious.
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#00f59b", display: "block", marginBottom: "0.6rem" }}>Rooted in tradition. Wired with code.</span>
+              Quietly building <span className="about-title-accent">art that speaks</span>.
             </h2>
             <div className="about-preview-text">
               <p>
-                Hey — I&apos;m <strong>Shivam Shelatkar</strong>. Product Designer &amp; Engineer based in Pune. I spend my days somewhere between Figma, VS Code, and a lot of sketchbook scribbles.
+                Hey — I&apos;m <strong>Shivam Shelatkar</strong> (<a href="https://www.instagram.com/shastriyakid" target="_blank" rel="noopener" style={{ color: "#00d4ff", textDecoration: "underline", textUnderlineOffset: 3 }}>@shastriyakid</a>). Born in Karwar, grown in Mumbai. I love cats, blue like real blues, and Damit — Nation first.
+              </p>
+              <p style={{ color: "rgba(255,255,255,0.68)" }}>
+                I&apos;m Founder of <strong style={{ color: "#fff" }}>Swarvibhaa</strong> — pan-India collective for Hindustani, Western classical, dance &amp; visual art (Mumbai·Delhi·Gujarat). From Pandit Mukundraj Deo — 10 yrs Tabla — to Trinity College London — 6 yrs Piano — I now produce for cinema/theatre/indie behind the scenes where sonic detail matters. Intern of @naradmuniii, ABVP Thane District Convenor.
               </p>
               <p style={{ color: "rgba(255,255,255,0.62)" }}>
-                I got hooked on the idea that good software should feel calm, not clever. Whether it&apos;s a geospatial canvas for ISRO or a tiny button micro-interaction, I care about the same thing: does it help a real person without making them think too hard?
-              </p>
-              <p style={{ color: "rgba(255,255,255,0.62)" }}>
-                When I&apos;m not designing, I&apos;m probably exploring new WebGL tricks, breaking my own grid systems, or hunting for the perfect imperfect font pairing.
+                Engineer by training, Unity dev since 2017, I speak English·Hindi·Malayalam·Gujarati·Marathi and build at the crossroads of <em>tradition, technology &amp; storytelling</em> — see IMDb nm17605062, EverybodyWiki, and Swarvibhaa originals Raatrani / Thevita Masthak / Saffron.
               </p>
             </div>
 
             <div className="about-preview-traits">
-              <span className="trait"><span className="trait-dot" style={{ background: "#ff3b30" }} />Detail-obsessed</span>
-              <span className="trait"><span className="trait-dot" style={{ background: "#00d4ff" }} />Calm over clever</span>
-              <span className="trait"><span className="trait-dot" style={{ background: "#00f59b" }} />Ships, then iterates</span>
+              <span className="trait"><span className="trait-dot" style={{ background: "#ff3b30" }} />Tabla 10+ yrs · Piano Trinity</span>
+              <span className="trait"><span className="trait-dot" style={{ background: "#00d4ff" }} />Mumbai · Karwar · Pune</span>
+              <span className="trait"><span className="trait-dot" style={{ background: "#00f59b" }} />Cats · Blue · Tradition → Code</span>
             </div>
 
             <div className="about-preview-actions">
@@ -1652,6 +1653,43 @@ export default function HomePage() {
               </a>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* — HUMAN FEED — @shastriyakid — real life, not AI — ref: Brittany editorial + Louis muted paper */}
+      <section id="life" className="section-wrap" style={{ background: "#080a0e", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "3.5rem", paddingBottom: "3.5rem" }}>
+        <div className="section-max">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1rem", marginBottom: "1.6rem" }}>
+            <div>
+              <span className="section-badge" style={{ color: "#00d4ff" }}>LIFE — @shastriyakid · 880 followers · Pune ⇄ Mumbai</span>
+              <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 700, letterSpacing: "-0.04em", margin: 0, color: "#fff", lineHeight: 1.05 }}>
+                Cats, blue like real blues, and tabla <span style={{ color: "#ff3b30", fontWeight: 400, fontStyle: "italic", fontFamily: "var(--font-display)" }}>at dawn</span>.
+              </h2>
+            </div>
+            <a href="https://www.instagram.com/shastriyakid" target="_blank" rel="noopener noreferrer" onMouseEnter={() => sound.playHover()} style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#00d4ff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 700 }}>
+              <span>Follow @shastriyakid</span><ArrowUpRight size={14} />
+            </a>
+          </div>
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", color: "rgba(255,255,255,0.52)", margin: "0 0 1.4rem", maxWidth: "68ch", lineHeight: 1.6 }}>
+            Real moments, not stock: Intern of @naradmuniii · Damit Nation first · Student of music · I love cats. Replace these Unsplash placeholders with your 50 posts — this grid is built for your real photos (polaroid rotation + tape keeps the human feel — ref. Bruno Simon play + Louis paper texture).
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "0.9rem" }} className="life-grid">
+            {[
+              { url: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=600&auto=format&fit=crop", cap: "Cats > code · 2024", rot: "-1.6deg" },
+              { url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=600&auto=format&fit=crop", cap: "Tabla — Pandit Mukundraj Deo", rot: "1.2deg" },
+              { url: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=600&auto=format&fit=crop", cap: "Piano — Trinity 6 yrs", rot: "-0.8deg" },
+              { url: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=600&auto=format&fit=crop", cap: "Swarvibhaa — Mumbai baithak", rot: "1.4deg" },
+              { url: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=600&auto=format&fit=crop", cap: "Blue hour — Karwar → Mumbai", rot: "-1.1deg" },
+              { url: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?q=80&w=600&auto=format&fit=crop", cap: "ABVP — Thane District", rot: "0.9deg" },
+            ].map((p, i) => (
+              <div key={i} style={{ background: "#fff", padding: "6px 6px 22px", borderRadius: 2, transform: `rotate(${p.rot})`, boxShadow: "0 10px 28px -12px rgba(0,0,0,0.65)", position: "relative" }}>
+                <div style={{ position: "absolute", top: -6, left: "50%", transform: "translateX(-50%) rotate(1deg)", width: 44, height: 12, background: "rgba(255,255,255,0.72)", border: "1px solid rgba(0,0,0,0.06)", backdropFilter: "blur(2px)" }} aria-hidden />
+                <img src={p.url} alt={p.cap} loading="lazy" style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block", filter: "contrast(1.02) saturate(0.95)" }} />
+                <span style={{ display: "block", marginTop: 8, fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.08em", color: "#1a1a18", textAlign: "center" }}>{p.cap}</span>
+              </div>
+            ))}
+          </div>
+          <style>{`@media(max-width: 900px){ .life-grid{ grid-template-columns: repeat(3,1fr) !important; } } @media(max-width: 560px){ .life-grid{ grid-template-columns: repeat(2,1fr) !important; } }`}</style>
         </div>
       </section>
 
@@ -1947,22 +1985,40 @@ export default function HomePage() {
                 SECURE CHANNELS
               </div>
               <a
-                href="https://linkedin.com/in/shivam-shelatkar"
+                href="https://linkedin.com/in/shivam-shelatkar-503305358"
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={() => sound.playHover()}
                 style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
               >
-                <Linkedin size={16} color="#00d4ff" /> <span>LinkedIn Network</span>
+                <Linkedin size={16} color="#00d4ff" /> <span>LinkedIn — Shivam Shelatkar</span>
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/sashtriyasam"
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={() => sound.playHover()}
                 style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
               >
-                <Github size={16} color="#00f59b" /> <span>GitHub Repos</span>
+                <Github size={16} color="#00f59b" /> <span>GitHub — sashtriyasam</span>
+              </a>
+              <a
+                href="https://www.instagram.com/shastriyakid"
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => sound.playHover()}
+                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
+              >
+                <span style={{ width: 16, height: 16, display: "grid", placeItems: "center", color: "#ff3b30" }}>◎</span> <span>Instagram — @shastriyakid</span>
+              </a>
+              <a
+                href="https://www.imdb.com/name/nm17605062/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => sound.playHover()}
+                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
+              >
+                <span style={{ width: 16, height: 16, display: "grid", placeItems: "center", color: "#f5c518", fontWeight: 800, fontSize: 9 }}>IMDb</span> <span>IMDb — nm17605062</span>
               </a>
               <a
                 href="/about"
@@ -1997,9 +2053,10 @@ export default function HomePage() {
               gap: "1.2rem"
             }}
           >
-            <div>© {new Date().getFullYear()} SHIVAM SHELATKAR · PUNE, IN · ALL RIGHTS RESERVED.</div>
-            <div style={{ display: "flex", gap: "1.8rem" }}>
-              <span>NEXT.JS 16 · THREE.JS · WEBGL · AUDIO SYNTH</span>
+            <div>© {new Date().getFullYear()} SHIVAM SHELATKAR · KARWAR→MUMBAI·PUNE · ALL RIGHTS RESERVED.</div>
+            <div style={{ display: "flex", gap: "1.4rem", flexWrap: "wrap", maxWidth: 420, justifyContent: "flex-end", textAlign: "right" }}>
+              <span style={{ color: "rgba(255,255,255,0.32)", fontSize: "0.58rem" }}>Refs: Brittany Chiang (a11y sidebar) · Louis Cuenot (muted paper #F4F3EC/#221F21) · Bruno Simon (play) — handcrafted in Mumbai</span>
+              <span>NEXT.JS 16 · THREE.JS · WEBGL · ODOO</span>
               <a
                 href="#top"
                 onClick={(e) => {
