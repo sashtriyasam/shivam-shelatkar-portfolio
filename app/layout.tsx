@@ -1,5 +1,5 @@
 ﻿import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Space_Grotesk, Inter, Geist, Gideon_Roman, Ingrid_Darling } from "next/font/google";
 import "./globals.css";
 import { CursorProvider } from "@/components/cursor/CursorProvider";
 import { ScrollProgress } from "@/components/scroll-progress/ScrollProgress";
@@ -19,6 +19,26 @@ const clash = Space_Grotesk({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist",
+  display: "swap",
+});
+
+const gideon = Gideon_Roman({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-gideon",
+  display: "swap",
+});
+
+const ingrid = Ingrid_Darling({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-ingrid",
   display: "swap",
 });
 
@@ -59,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${clash.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${geist.variable} ${gideon.variable} ${ingrid.variable} ${clash.variable} ${inter.variable}`} suppressHydrationWarning>
       <body>
         <MotionProvider>
           <CursorProvider>

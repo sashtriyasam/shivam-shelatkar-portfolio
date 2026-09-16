@@ -1,513 +1,349 @@
-"use client";
-
+﻿"use client";
 import dynamic from "next/dynamic";
-import { motion, useScroll, useTransform } from "motion/react";
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { HeroFallback } from "@/components/hero/HeroFallback";
-import { projects } from "@/lib/projects";
-
+import { motion } from "motion/react";
+import { useEffect, useState, useRef } from "react";
 const HeroTerrain = dynamic(() => import("@/components/hero/HeroTerrain").then((m) => m.HeroTerrain), { ssr: false });
-const ease = [0.16, 1, 0.3, 1] as const;
-
-// Decoded from Wall of Portfolios + Awwwards:
-// Minimal 810 / Dark 390 / Interactive 300 / Creative 180 / Bento 90
-const categories = [
-  { title: "Minimal Systems", count: "810+ Craft", accent: "#c7f35a", desc: "Brutalist grids broken by neon" },
-  { title: "Dark Matter", count: "390+ Portfolios", accent: "#66e3ff", desc: "Near-black void + acid bloom" },
-  { title: "Interactive Arcade", count: "300+ Motion", accent: "#ff3b82", desc: "Playable, magnetic, ghost screens" },
-  { title: "Creative Editorial", count: "180+ Stories", accent: "#7c5cfb", desc: "Custom doodles + handwritten" },
-  { title: "Bento Modern", count: "90+ Layouts", accent: "#ffb84d", desc: "Asymmetric bento + spotlight" },
+const TUNNEL_VIDEOS = [
+  "https://framerusercontent.com/assets/Yo7TGuLgeZp5DtokZ4PidmxR7M.mov",
+  "https://framerusercontent.com/assets/mjbdAFqO4xeMy6pC7ABLg2cmjA.mov",
+  "https://framerusercontent.com/assets/G5jmOXD2kI54xkagQf6AcT6VwEs.mp4",
+  "https://framerusercontent.com/assets/n1RNEKWSYIkrWIuzYG6bnQl1jI.mov",
+  "https://framerusercontent.com/assets/2wTW9FJ5PuotF07MtfhaKyMsEE.mov",
+  "https://framerusercontent.com/assets/QxbzwJi5iLF1DCMOz4064eHvEs.mov",
 ];
-
-const stories = [
-  { name: "Aditya Sadhukhan", role: "UX 2 • #1 Aug 26", rank: 1 },
-  { name: "Ryan Walter", role: "Graphic • Retro", rank: 2 },
-  { name: "Harrison Wheeler", role: "Product Lead", rank: 3 },
-  { name: "Akriti Purbey", role: "Visual Lead", rank: 4 },
-  { name: "Sandeep Baral", role: "UX Motion", rank: 5 },
+const INTRO_TEXT = "I BELIEVE IN DESIGNING WITH, FOR AND BY PEOPLE. THIS PLACE IS A COLLECTION OF MY WORK, THOUGHTS, EXPLORATIONS, CONVERSATIONS & IDEAS.";
+function ScrambleText({ text }: { text: string }) {
+  const [display, setDisplay] = useState(text);
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#%&*";
+  useEffect(() => {
+    let frame = 0;
+    let raf = 0;
+    const total = 28;
+    const tick = () => {
+      frame++;
+      if (frame >= total) { setDisplay(text); return; }
+      const out = text.split("").map((c,i)=>{
+        if(c===" "||c==="."||c===","||c==="&") return c;
+        const progress=frame/total;
+        const revealAt=(i/text.length)*0.7+0.2;
+        if(progress>revealAt) return text[i]??c;
+        return chars[Math.floor(Math.random()*chars.length)]??c;
+      }).join("");
+      setDisplay(out);
+      raf = window.setTimeout(tick,42) as unknown as number;
+    };
+    const t=window.setTimeout(tick,300);
+    return()=>{clearTimeout(t);clearTimeout(raf);};
+  },[text]);
+  return <span>{display}</span>;
+}
+const FEATURED = [
+  { id: "001", kicker: "DEPTHWIZARD : ISRO-DEPTHWIZ", title: "Making Human Performance Measurable", desc: "Ecosystem transforms satellite / terrain into operational picture — DepthWizard fuses ISRO layers, terrain meshes and mission data into a single canvas for field teams.", img: "https://picsum.photos/seed/depthwiz/800/600", tags: ["ECOSYSTEM","GEOSPATIAL","AI"], href: "/work/depthwizard" },
+  { id: "002", kicker: "PROJECTION AI : PREDICTIVE REVENUE ENGINE", title: "Gamifying AI for Revenue Decisions", desc: "Interactive forecast workspace — confidence bands, scenario modelling and drill-downs that move as assumptions change. 22% lift in forecast accuracy.", img: "https://picsum.photos/seed/projectionai/800/600", tags: ["DASHBOARD","D3","ML"], href: "/work/projection-ai" },
+  { id: "003", kicker: "PARKEASY : URBAN PARKING OS", title: "Efficient Work Order & Lot Utilisation", desc: "Real-time availability map + operator console that optimizes pricing and space dynamically. Pilot cut circling by 30%.", img: "https://picsum.photos/seed/parkeasy/800/600", tags: ["MOBILE","MAPBOX","IOT"], href: "/work/park-easy" },
 ];
-
-const studio = [
-  { title: "Ghost Screen — Apple Duo", tag: "Framer + GPT", color: "#c7f35a" },
-  { title: "Spiral3D — Interaction in 3D", tag: "Three.js", color: "#7c5cfb" },
-  { title: "Arcade Portfolio 🎮", tag: "Figma + GPT", color: "#ff3b82" },
-  { title: "Paytm Pocket Exploration", tag: "Figma", color: "#66e3ff" },
-  { title: "Career Survival Game", tag: "Arcade", color: "#ffb84d" },
-  { title: "Keeping Onboarding Simple", tag: "Motion", color: "#c7f35a" },
+const OTHER = [
+  { id: "004", kicker: "SYSTEM DESIGN : DECIDE.ED", title: "Decide.ed — Systems for Decisions", desc: "Cargo-site inspired system design manual — uncovered the why behind every component. decided.cargo.site equivalent for Shivam.", img: "https://picsum.photos/seed/decideed/800/600", tags: ["SYSTEM","EDITORIAL"], href: "https://decided.cargo.site" },
+  { id: "005", kicker: "2 BY 2 : PILOT STUDENT MAGAZINE", title: "Editorial System for Student Voices", desc: "Pilot student magazine — bento, marginalia and custom doodles. Creative editorial at 180+ stories scale.", img: "https://picsum.photos/seed/2by2mag/800/600", tags: ["EDITORIAL","PRINT"], href: "#" },
+  { id: "006", kicker: "INDIA HOSTING 2036 OLYMPICS", title: "Speculative Nation Branding", desc: "What if India hosted 2036? Identity, wayfinding and broadcast package — wonder over pixels.", img: "https://picsum.photos/seed/olympics2036/800/600", tags: ["BRANDING","SPECULATIVE"], href: "#" },
 ];
-
-const filters = ["All", "Strategy", "Interactive", "Motion", "3D"];
-
+const INDEX_GRID = [
+  { n: "001", label: "DEPTHWIZARD : ISRO-DEPTHWIZ", href: "/work/depthwizard" },
+  { n: "002", label: "PROJECTION AI : PREDICTIVE REVENUE ENGINE", href: "/work/projection-ai" },
+  { n: "003", label: "PARKEASY : URBAN PARKING OS", href: "/work/park-easy" },
+  { n: "004", label: "SYSTEM DESIGN : DECIDE.ED", href: "https://decided.cargo.site" },
+  { n: "005", label: "2 BY 2 : PILOT STUDENT MAGAZINE", href: "#" },
+  { n: "006", label: "INDIA HOSTING 2036 OLYMPICS", href: "#" },
+];
 export default function HomePage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const [active, setActive] = useState("All");
+  const [active, setActive] = useState<"USER EXPERIENCE" | "OTHER">("USER EXPERIENCE");
+  const [time, setTime] = useState("--:--");
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(50);
-  const [time, setTime] = useState("--:--");
-
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.94]);
-
+  const heroRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    const updTime = () =>
-      setTime(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false }));
-    updTime();
-    const tid = setInterval(updTime, 60000);
-    const onMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      setMx(x);
-      setMy(y);
-      document.documentElement.style.setProperty("--mx", `${x}%`);
-      document.documentElement.style.setProperty("--my", `${y}%`);
-    };
+    const fmt = () => new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" });
+    const upd = () => setTime(fmt());
+    upd();
+    const id = setInterval(upd, 60000);
+    const onMove = (e: MouseEvent) => { setMx((e.clientX / window.innerWidth) * 100); setMy((e.clientY / window.innerHeight) * 100); };
     window.addEventListener("mousemove", onMove);
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      clearInterval(tid);
-    };
+    return () => { clearInterval(id); window.removeEventListener("mousemove", onMove); };
   }, []);
-
-  const filtered = active === "All" ? projects : projects.filter((p) => p.tags.join(" ").toLowerCase().includes(active.toLowerCase()) || p.visual === active.toLowerCase());
-
+  const workList = active === "USER EXPERIENCE" ? FEATURED : OTHER;
   return (
-    <>
-      {/* SPOTLIGHT ARCADE BEAM - Lusion + Iventions */}
-      <div className="spotlight active" style={{ ["--mx" as any]: `${mx}%`, ["--my" as any]: `${my}%` } as any} aria-hidden suppressHydrationWarning />
-
-      {/* HERO - By-Kin continuous surface + Mat Voyce kinetic type + Pacome rhythm */}
-      <section className="hero crt" id="hero" ref={heroRef} style={{ minHeight: "100vh" } as any}>
-        <HeroTerrain />
-        <HeroFallback />
-        <motion.div className="hero__decor" aria-hidden style={{ opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0]) } as any}>
-          <span className="hero__decor-line" />
-          <span className="hero__decor-label">hero / index 01 — wall decoded</span>
-        </motion.div>
-
-        <motion.div className="content-max hero__content" style={{ y, opacity, scale } as any}>
-          <div className="hero__meta">
-            <motion.p className="hero__eyebrow" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, ease }}>
-              Creative technologist <span style={{ color: "var(--color-accent)", marginLeft: 8 }}>● live</span>
-            </motion.p>
-            <motion.p className="hero__meta-line" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.18, ease }}>
-              SHIPS LIKE LUSION • BUILDS LIKE ACTIVE THEORY • MOVES LIKE MAT VOYCE
-            </motion.p>
+    <div style={{ ["--token-6c52689b" as any]: "#242424", background: "#fff", color: "#242424" } as any}>
+      <style>{`
+        .site-header, .site-footer, .scroll-progress, .custom-cursor { display: none !important; }
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono:wght@400&family=Gideon+Roman&family=Ingrid+Darling&display=swap');
+        .geist { font-family: Geist, ui-sans, system-ui, sans-serif; }
+        .geist-mono { font-family: "Geist Mono", ui-monospace, monospace; }
+        .gideon { font-family: "Gideon Roman", Georgia, serif; }
+        .ingrid { font-family: "Ingrid Darling", cursive; }
+        .purvoid-nav a { position: relative; }
+        .purvoid-nav a::after{content:""; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:#242424; transition: width 0.2s ease;}
+        .purvoid-nav a:hover::after{width:100%;}
+        .wordmark { font-family: Geist, sans-serif; color: var(--token-6c52689b); letter-spacing: -0.07em; line-height: 0.82; }
+        .tunnel{ perspective: 1000px; transform-style: preserve-3d; }
+      `}</style>
+      <div className="spotlight active" style={{ ["--mx" as any]: `${mx}%`, ["--my" as any]: `${my}%`, opacity: 0.35 } as any} aria-hidden suppressHydrationWarning />
+      <section id="hero" ref={heroRef} style={{ height: "100dvh", minHeight: "100dvh", position: "relative", overflow: "hidden", background: "#fff", display: "flex", flexDirection: "column" }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.12, pointerEvents: "none" }}><HeroTerrain /></div>
+        <div aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(600px circle at ${mx}% ${my}%, rgba(214,0,4,0.07), transparent 60%)`, pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px clamp(24px, 5vw, 80px)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#242424", borderBottom: "1px solid #e0e0e0", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(6px)" }}>
+          <div style={{ display: "flex", gap: "1.2rem", alignItems: "center" }}>
+            <span suppressHydrationWarning style={{ fontVariantNumeric: "tabular-nums" }}>IN {time}</span>
+            <span style={{ opacity: 0.35 }}>—</span>
+            <span style={{ letterSpacing: "0.18em", fontWeight: 600 }}>PORTFOLIO</span>
+            <span style={{ opacity: 0.35, display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "#d60004" }} />
           </div>
-
-          <h1 className="hero__title display">
-            <motion.span className="hero__line kinetic" initial={{ opacity: 0, y: 70 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.28, ease }}>
-              SHIVAM
-            </motion.span>
-            <motion.span
-              className="hero__line hero__line--outline kinetic kinetic--stretch"
-              initial={{ opacity: 0, y: 70 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.4, ease }}
-              style={{ fontVariationSettings: `"wdth" 110` }}
-            >
-              SHELATKAR
-            </motion.span>
-            <motion.span className="hero__line" initial={{ opacity: 0, y: 70 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.52, ease }}>
-              BUILDS <span className="scribble-underline" style={{ color: "var(--color-accent)" }}>THINGS.</span>
-            </motion.span>
-          </h1>
-
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.78, ease }}>
-            <p className="hero__lead" style={{ position: "relative" }}>
-              I design and build the space between a product&apos;s idea and the person using it — turning complexity into calm, confident interfaces.
-              <span className="hand marginalia" style={{ position: "absolute", right: "-42px", top: "-8px", fontSize: "1rem", opacity: 0.9 }}>
-                ↳ rewrote this 7×
-              </span>
-            </p>
-            <p className="hand" style={{ marginTop: "0.8rem", fontSize: "1.15rem", color: "#1e3a5f", transform: "rotate(-0.6deg)" }}>
-              ISRO maps → revenue forecasts → parking lots. Same obsession: make the hard thing feel easy.
-            </p>
-          </motion.div>
-
-          <motion.div className="hero__actions" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.98, ease }}>
-            <Link href="/work" className="btn arcade-btn">
-              View selected work →
-            </Link>
-            <Link href="/contact" className="btn">
-              Start a project
-            </Link>
-            <span className="tag" style={{ borderColor: "var(--color-violet)", color: "var(--color-violet)" }}>
-              Press G for Ghost Arcade
-            </span>
-          </motion.div>
-        </motion.div>
-
-        <motion.a href="#work" className="hero__scroll" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4, duration: 0.6 }} style={{ y } as any}>
-          <span className="hero__scroll-label">scroll down — spotlight follows</span>
-          <span className="hero__scroll-rule" />
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <path d="M12 5v14M5 12l7 7 7-7" />
-          </svg>
-        </motion.a>
-      </section>
-
-      {/* HUMAN PROOF - not fake FAANG marquee */}
-      <section className="content-max" style={{ padding: "1.5rem var(--gutter)" }}>
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-ui)" }}>
-          <span className="tag" style={{ background: "#fff" }}>
-            Built at 2am • coffee #4
-          </span>
-          <span>—</span>
-          <span>DepthWizard live with ISRO teams</span>
-          <span>•</span>
-          <span>Projection AI → 22% forecast lift</span>
-          <span>•</span>
-          <span>ParkEasy pilot 30% less circling</span>
-          <span className="hand" style={{ color: "#c45a3c", fontSize: "1rem", textTransform: "none", letterSpacing: 0 }}>
-            ← real numbers, not lorem
-          </span>
+          <nav className="purvoid-nav" style={{ display: "flex", gap: "1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.14em" }}>
+            <a href="#work" style={{ textDecoration: "none", color: "#242424" }}>WORK</a>
+            <a href="#about" style={{ textDecoration: "none", color: "#242424" }}>ABOUT</a>
+            <a href="#approach" style={{ textDecoration: "none", color: "#242424" }}>BLOG</a>
+            <a href="#contact" style={{ textDecoration: "none", color: "#242424" }}>RESUME</a>
+            <a href="#work" style={{ textDecoration: "none", color: "#242424" }}>VIZ</a>
+            <a href="#contact" style={{ textDecoration: "none", color: "#242424" }}>CONTACT</a>
+          </nav>
+        </div>
+        <div style={{ position: "relative", zIndex: 2, flex: 1, display: "grid", placeItems: "center", padding: "2rem clamp(24px, 5vw, 80px)" }}>
+          <motion.h1 className="wordmark geist" initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }} style={{ margin: 0, fontSize: "clamp(4.5rem, 18vw, 16rem)", fontWeight: 700, color: "#242424", display: "flex", alignItems: "baseline", gap: "0.02em", textAlign: "center", flexWrap: "wrap", justifyContent: "center", lineHeight: 0.82 }}>
+            <span>Shiv</span>
+            <motion.span initial={{ scaleY: 0.8, opacity: 0 }} animate={{ scaleY: 1, opacity: 1 }} transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }} style={{ display: "inline-block", fontWeight: 400, letterSpacing: "-0.08em", color: "#242424" }}>o</motion.span>
+            <span>id</span>
+            <span style={{ fontSize: "0.42em", alignSelf: "flex-start", marginLeft: "0.2em", letterSpacing: "0.14em", fontFamily: `"Geist Mono", monospace`, fontWeight: 400, color: "#9e9e9e" }}>®</span>
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }} style={{ marginTop: "1.2rem", textAlign: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#9e9e9e" }}>
+            SHIVAM SHELATKAR — CREATIVE TECHNOLOGIST <span style={{ color: "#d60004" }}>●</span> PUNE, INDIA
+          </motion.p>
+        </div>
+        <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", padding: "14px clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e" }}>
+          <span>©2026 SHIVVOID</span>
+          <a href="#intro" style={{ color: "#242424", textDecoration: "none", display: "inline-flex", gap: 6, alignItems: "center" }}>↓ SCROLL <span style={{ opacity: 0.4 }}>— hover bloom follows cursor</span></a>
         </div>
       </section>
-
-      {/* CRAFT - human, not 810+ fake counts */}
-      <section className="content-max" style={{ padding: "3rem var(--gutter) 1rem" }}>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "baseline", flexWrap: "wrap" }}>
-          <h2 className="display" style={{ fontSize: "clamp(1.6rem,3vw,2.2rem)" }}>
-            How I actually work
-          </h2>
-          <span className="hand" style={{ fontSize: "1.2rem", color: "#c45a3c" }}>
-            (no 810+ portfolios here — just 3 obsessions)
-          </span>
+      <section id="intro" style={{ background: "#fff", color: "#242424", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0", borderBottom: "1px solid #e0e0e0" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "2rem", flexWrap: "wrap" }}>
+            <motion.div initial={{ y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ flex: "1 1 560px", fontFamily: "Geist, sans-serif", fontSize: "clamp(1.4rem, 3.2vw, 2.2rem)", lineHeight: 1.05, letterSpacing: "-0.03em", fontWeight: 700, textTransform: "uppercase" }}>
+              <ScrambleText text={INTRO_TEXT} />
+            </motion.div>
+            <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", gap: "1rem", alignItems: "flex-end" }}>
+              <span style={{ display: "inline-flex", padding: "0.5rem 0.9rem", borderRadius: 999, border: "1px solid #e0e0e0", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#242424", background: "#fff" }}>[ BASED IN PUNE, INDIA ]</span>
+              <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", color: "#9e9e9e", letterSpacing: "0.14em" }} suppressHydrationWarning>IN {time} IST</span>
+            </div>
+          </div>
+          <div style={{ marginTop: "2.5rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", border: "1px solid #e0e0e0", padding: "0.35rem 0.7rem", borderRadius: 999 }}>PURVO-ID → SHIV-VOID</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#fff", background: "#242424", padding: "0.35rem 0.7rem", borderRadius: 999 }}>LETTER-SCRAMBLE</span>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", border: "1px solid #e0e0e0", padding: "0.35rem 0.7rem", borderRadius: 999 }}>GEIST + GIDEON ROMAN</span>
+          </div>
         </div>
-        <div className="categories" style={{ marginTop: "1.5rem" }}>
-          {categories.slice(0, 3).map((c, i) => (
-            <div
-              key={c.title}
-              className="categories__card torn"
-              style={
-                {
-                  ["--card-accent" as any]: c.accent,
-                  transform: `rotate(${i === 1 ? "0.7deg" : i === 2 ? "-0.6deg" : "0.3deg"})`,
-                } as any
-              }
-            >
-              <div className="tape tape--top" aria-hidden />
-              <div className="categories__thumb" aria-hidden />
-              <div className="categories__label">
-                <div className="categories__count" style={{ color: c.accent }}>
-                  0{i + 1} — {c.count.replace("+", "")}
+      </section>
+      <section id="work" style={{ background: "#fff", padding: "4rem clamp(24px, 5vw, 80px) 5rem", borderBottom: "1px solid #e0e0e0" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "1rem" }}>
+            <h2 style={{ margin: 0, fontFamily: "Geist, sans-serif", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", letterSpacing: "-0.04em", color: "#242424" }}>Featured Work <span style={{ color: "#d60004", fontFamily: `"Gideon Roman"`, fontStyle: "italic", fontWeight: 400 }}>— 001 → 003</span></h2>
+            <div style={{ display: "flex", gap: "0.6rem", border: "1px solid #e0e0e0", borderRadius: 999, padding: 4, background: "#fff" }}>
+              {(["USER EXPERIENCE", "OTHER"] as const).map((t) => (
+                <button key={t} onClick={() => setActive(t)} style={{ padding: "0.55rem 1rem", borderRadius: 999, border: "none", cursor: "pointer", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", background: active === t ? "#242424" : "transparent", color: active === t ? "#fff" : "#9e9e9e", transition: "all 0.2s ease" }}>{t}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "1rem", marginTop: "2rem" }}>
+            {workList.map((p, i) => (
+              <motion.a key={p.id} href={p.href} initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid #e0e0e0", borderRadius: 16, overflow: "hidden", background: "#fff", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
+                <div style={{ flex: i === 0 ? "0 0 58%" : "1 1 auto", position: "relative", overflow: "hidden", background: "#f7f2e6", minHeight: 260 }}>
+                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} loading="lazy" />
+                  <span style={{ position: "absolute", top: 14, left: 14, background: "rgba(255,255,255,0.92)", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.32rem 0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#242424" }}>{p.id}</span>
+                  <div style={{ position: "absolute", inset: 0, background: `radial-gradient(480px circle at ${mx}% ${my}%, rgba(214,0,4,0.06), transparent 62%)`, pointerEvents: "none" }} />
                 </div>
-                <h3 className="categories__title" style={{ fontFamily: "Fraunces, serif" }}>
-                  {c.title}
-                </h3>
-                <p style={{ fontSize: "0.85rem", color: "var(--color-ui)", margin: "0.4rem 0 0" }}>{c.desc}</p>
-                <span className="hand" style={{ fontSize: "0.95rem", display: "block", marginTop: "0.6rem" }}>
-                  {i === 0 ? "— loves grids that break" : i === 1 ? "— dark that glows" : "— plays with ghost gaps"}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* DESK NOTES - human marginalia */}
-      <section className="content-max" style={{ padding: "2.5rem var(--gutter)" }}>
-        <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap", alignItems: "center" }}>
-          <h2 className="display" style={{ fontSize: "clamp(1.5rem,3vw,2rem)" }}>
-            Desk notes
-          </h2>
-          <span className="hand" style={{ fontSize: "1.1rem", color: "#1e3a5f" }}>
-            stolen-crazy, re-drawn by hand →
-          </span>
-          <span className="eyebrow" style={{ marginLeft: "auto" }}>
-            aug 2026 • 5 friends
-          </span>
-        </div>
-        <div className="stories" style={{ marginTop: "1.5rem" }}>
-          {stories.map((s) => (
-            <div key={s.rank} className="story">
-              <div className="polaroid" style={{ padding: "8px 8px 18px 8px", transform: `rotate(${s.rank % 2 === 0 ? "1.2deg" : "-1.1deg"})` }}>
-                <div className="story__avatar" style={{ margin: 0, width: 96, height: 96 }}>
-                  <img src={`https://picsum.photos/seed/${s.rank}wall/200/200`} alt={s.name} loading="lazy" />
-                  <span className="story__rank">#{s.rank}</span>
+                <div style={{ flex: 1, padding: "1.6rem", display: "flex", flexDirection: "column", gap: "0.7rem" }}>
+                  <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#d60004" }}>{p.kicker}</div>
+                  <h3 style={{ margin: 0, fontFamily: "Geist, sans-serif", fontSize: i === 0 ? "1.75rem" : "1.35rem", letterSpacing: "-0.03em", lineHeight: 1.02, color: "#242424" }}>{p.title}</h3>
+                  <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem", flex: 1 }}>{p.desc}</p>
+                  <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginTop: "0.6rem" }}>
+                    {p.tags.map((t) => (<span key={t} style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", border: "1px solid #e0e0e0", padding: "0.3rem 0.55rem", borderRadius: 999, color: "#9e9e9e" }}>{t}</span>))}
+                  </div>
+                  <span style={{ marginTop: "0.8rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#242424", display: "inline-flex", gap: 6, alignItems: "center" }}>VIEW CASE → <span style={{ color: "#d60004" }}>↗</span></span>
                 </div>
-              </div>
-              <div className="story__name" style={{ marginTop: "0.6rem" }}>
-                {s.name}
-              </div>
-              <div className="story__role">{s.role}</div>
-              <span className="hand" style={{ fontSize: "0.85rem", display: "block", color: "#c45a3c" }}>
-                {s.rank === 1 ? "craft" : s.rank === 2 ? "retro!" : s.rank === 3 ? "editorial" : s.rank === 4 ? "play" : "motion"}
-              </span>
+              </motion.a>
+            ))}
+          </div>
+          <div style={{ marginTop: "1.2rem", display: "flex", gap: "0.6rem", flexWrap: "wrap", alignItems: "center" }}>
+            <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e" }}>6 project cards • picsum thumbnails • tags • links • hover bloom</span>
+            <span style={{ marginLeft: "auto", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#d60004" }}>PURVOID TOKENS: #fff bg • #242424 text • #d60004 red</span>
+          </div>
+          {active === "USER EXPERIENCE" && (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.8rem", marginTop: "1rem", opacity: 0.9 }}>
+              {OTHER.map((p) => (
+                <a key={p.id} href={p.href} style={{ border: "1px solid #e0e0e0", borderRadius: 12, overflow: "hidden", textDecoration: "none", color: "#242424", background: "#fff", display: "flex", flexDirection: "column" }}>
+                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: 160, objectFit: "cover" }} loading="lazy" />
+                  <div style={{ padding: "0.9rem" }}>
+                    <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "#9e9e9e" }}>{p.id} • {p.kicker}</div>
+                    <div style={{ fontFamily: "Geist, sans-serif", fontWeight: 700, fontSize: "0.95rem", marginTop: 4, letterSpacing: "-0.02em" }}>{p.title}</div>
+                  </div>
+                </a>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-        <p className="hand" style={{ fontSize: "1rem", color: "#7a756e", marginTop: "1rem", transform: "rotate(-0.3deg)" }}>
-          Aditya taught me to draw the why • Ryan dared me to use beige • Harrison made me write shorter — all in the margins.
-        </p>
       </section>
-
-      {/* STUDIO - desk scattered */}
-      <section className="content-max" style={{ padding: "2.5rem var(--gutter)" }}>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "baseline", flexWrap: "wrap" }}>
-          <h2 className="display" style={{ fontSize: "clamp(1.5rem,3vw,2rem)" }}>On the desk right now</h2>
-          <span className="hand" style={{ fontSize: "1.1rem", color: "#c45a3c" }}>
-            6 tabs open, 2 actually working
-          </span>
-          <Link href="/work" className="link-underline" style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", marginLeft: "auto" }}>
-            Explore studio →
-          </Link>
-        </div>
-        <div className="studio-grid" style={{ marginTop: "1.5rem" }}>
-          {studio.map((s, i) => (
-            <div key={s.title} className="studio-card torn" style={{ transform: `rotate(${i % 2 === 0 ? "-0.6deg" : "0.5deg"})`, borderColor: s.color }}>
-              <div className="tape tape--corner" aria-hidden />
-              <video autoPlay muted loop playsInline preload="metadata" className="studio-card__media" poster={`https://picsum.photos/seed/${s.title}/640/400`}>
-                <source src="https://cdn.wallofportfolios.in/works/93ca9d8e-41c3-4a8e-a392-6cae11e46f11/video_cbf38269.mp4" type="video/mp4" />
-              </video>
-              <div className="studio-card__overlay">
-                <p style={{ margin: 0, fontSize: "0.9rem", fontWeight: 600 }}>{s.title}</p>
-                <p style={{ margin: "0.2rem 0 0", fontFamily: "var(--font-mono)", fontSize: "0.65rem", opacity: 0.8 }}>{s.tag} — {i === 0 ? "scratched 3x" : i === 2 ? "arcade fever" : "ship it"}</p>
-              </div>
+      <section id="about" style={{ background: "#000", color: "#fff", padding: "5rem clamp(24px, 5vw, 80px)", position: "relative", overflow: "hidden" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", position: "relative" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.18em", color: "#9e9e9e", textTransform: "uppercase" }}>
+            <span>-- {"{•HELLO•}"}</span>
+            <span suppressHydrationWarning>IN {time} — PUNE</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem", alignItems: "end" }}>
+            <motion.div initial={{ y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "#fff" }}>AB</motion.div>
+            <motion.div initial={{ y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "#fff", textAlign: "right" }}>OU</motion.div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "-0.6rem" }}>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "#9e9e9e", textTransform: "uppercase" }}>— 01 / ABOUT</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "#9e9e9e", textTransform: "uppercase", textAlign: "right" }}>T — 02</div>
+          </div>
+          <motion.div initial={{ y: 24, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.2 }} style={{ marginTop: "3rem", maxWidth: 760 }}>
+            <p className="gideon" style={{ margin: 0, fontSize: "clamp(1.6rem, 3vw, 2.6rem)", lineHeight: 1.02, letterSpacing: "-0.03em", color: "#fff" }}>
+              I&apos;M <span style={{ color: "#d60004", fontStyle: "italic" }}>SHIVAM SHELATKAR</span> — CREATIVE TECHNOLOGIST CRAFTING HUMAN-CENTERED SYSTEMS WHERE RESEARCH, DESIGN & CODE MEET.
+            </p>
+            <p style={{ marginTop: "1rem", color: "#9e9e9e", lineHeight: 1.7, fontSize: "0.95rem", fontFamily: "Geist, sans-serif" }}>
+              Pune-based. Obsessed with why before what. DepthWizard → Projection AI → ParkEasy. Same thread: turn complexity into calm, confident interfaces. Purva&apos;s Gideon Roman styling, rebuilt for Shivam.
+            </p>
+            <div style={{ marginTop: "1.4rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+              <a href="#work" style={{ background: "#d60004", color: "#fff", border: "1px solid #d60004", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>VIEW WORK →</a>
+              <a href="#contact" style={{ border: "1px solid rgba(255,255,255,0.2)", color: "#fff", borderRadius: 999, padding: "0.7rem 1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>SAY HI</a>
             </div>
-          ))}
-          <div className="studio-card torn" style={{ display: "grid", placeItems: "center", background: "#fff", color: "var(--color-ink)", transform: "rotate(0.8deg)" }}>
-            <div style={{ textAlign: "center", padding: "1rem" }}>
-              <div className="hand" style={{ fontSize: "1.4rem", color: "#c45a3c" }}>
-                + your brief?
-              </div>
-              <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.08em", margin: "0.5rem 0 0" }}>Share your work — I’ll pin it here</p>
+          </motion.div>
+        </div>
+      </section>
+      <section id="approach" style={{ background: "#fff", color: "#242424", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0", borderBottom: "1px solid #e0e0e0" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e" }}>— APPROACH / MANIFESTO</div>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e" }}>PERSPECTIVE 1000PX • 6 VIDEOS • TUNNEL</div>
+          </div>
+          <motion.blockquote initial={{ y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="gideon" style={{ margin: "2rem 0 0", fontSize: "clamp(1.8rem, 4vw, 3.2rem)", lineHeight: 0.95, letterSpacing: "-0.04em", color: "#242424", maxWidth: "22ch", borderLeft: "2px solid #d60004", paddingLeft: "1.2rem" }}>
+            &ldquo;A mind that is stretched by a new experience can never go back to its old dimensions.&rdquo;
+            <span style={{ display: "block", marginTop: "0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#9e9e9e", fontStyle: "normal" }}>— Gideon Roman • Purva&apos;s quote, Shivam&apos;s lens</span>
+          </motion.blockquote>
+          <div className="tunnel" style={{ marginTop: "2.5rem", height: 420, background: "#0b0e10", borderRadius: 16, border: "1px solid #e0e0e0", overflow: "hidden", position: "relative", perspective: "1000px", transformStyle: "preserve-3d" }}>
+            <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d" }}>
+              {TUNNEL_VIDEOS.map((src, i) => (
+                <div key={i} style={{ position: "absolute", left: `${8 + i * 14}%`, top: `${10 + ((i * 17) % 42)}%`, width: 300, height: 190, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", background: "#1a1a1a", transform: `translateZ(${-200 - i * 180}px)`, animation: `tunnelMove 10s linear infinite`, animationDelay: `${-i * 1.66}s` } as any}>
+                  <video autoPlay muted loop playsInline preload="metadata" poster={`https://picsum.photos/seed/tunnel${i}/400/300`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}>
+                    <source src={src} type="video/mp4" />
+                  </video>
+                  <div style={{ position: "absolute", inset: "auto 0 0 0", padding: "0.6rem", background: "linear-gradient(transparent, rgba(0,0,0,0.85))", color: "#fff", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", display: "flex", justifyContent: "space-between" }}>
+                    <span>00{i + 1} • {["HYPERLAB","SWIVL.TECH","DECIDE.ED","2BY2 MAG","OLYMPICS","FITKIT"][i]}</span>
+                    <span style={{ opacity: 0.6 }}>▶</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", pointerEvents: "none" }}>
+              <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "rgba(255,255,255,0.7)", background: "rgba(0,0,0,0.55)", padding: "0.45rem 0.9rem", borderRadius: 999, border: "1px solid rgba(255,255,255,0.15)" }}>3D VIDEO TUNNEL — move-3d • 10s linear • 6 Framer mov</span>
+            </div>
+            <style>{`@keyframes tunnelMove { from{ transform: translateZ(-1200px)} to{ transform: translateZ(420px)} }`}</style>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginTop: "1.5rem" }}>
+            <div style={{ background: "#fff", border: "1px solid #e0e0e0", borderRadius: 16, padding: "1.6rem", position: "relative", overflow: "hidden" }}>
+              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#d60004" }}>001 — DELULU IS THE SOLULU</div>
+              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "#242424" }}>CHASE ANYTHING →</h3>
+              <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem" }}>Purva ships DELULU IS THE SOLULU. For Shivam: SHIP WEIRD • LEARN LOUD — curiosity is the system. Chase anything, the rest is craft.</p>
+              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "#d60004", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>chase →</span>
+            </div>
+            <div style={{ background: "#242424", color: "#fff", border: "1px solid #242424", borderRadius: 16, padding: "1.6rem" }}>
+              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#c7f35a" }}>002 — KEEP CHILDLIKE WONDER</div>
+              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "#fff" }}>KEEP CHILDLIKE SENSE OF WONDER</h3>
+              <p style={{ margin: 0, color: "#9e9e9e", lineHeight: 1.6, fontSize: "0.92rem" }}>Past and present don&apos;t exist. Live in the present. Debug with play, not fear. Wonder is the only debugger that scales.</p>
+              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "#c7f35a", fontSize: "1.35rem", transform: "rotate(-1deg)" }}>wonder</span>
+            </div>
+            <div style={{ background: "#fff", border: "1px solid #e0e0e0", borderRadius: 16, padding: "1.6rem" }}>
+              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#d60004" }}>003 — BE HERE NOW</div>
+              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "#242424" }}>BE HERE NOW.</h3>
+              <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem" }}>Purva&apos;s present-tense manifesto — the mind stretched by a new experience can never go back. That&apos;s the whole approach.</p>
+              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "#d60004", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>now</span>
             </div>
           </div>
         </div>
       </section>
-
-      {/* CURATED - desk bento, hand-pinned */}
-      <section id="work" className="content-max" style={{ padding: "3rem var(--gutter)" }}>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "baseline", flexWrap: "wrap" }}>
-          <h2 className="display" style={{ fontSize: "clamp(1.6rem,3.2vw,2.4rem)" }}>
-            Pinned on the wall
-          </h2>
-          <span className="hand" style={{ fontSize: "1.2rem", color: "#c45a3c" }}>
-            — not curated, just kept
-          </span>
-          <span className="eyebrow" style={{ marginLeft: "auto" }}>
-            {projects.length} kept • 1 torn
-          </span>
-        </div>
-
-        <div className="filter-bar" style={{ margin: "1.2rem 0" }}>
-          {filters.map((f) => (
-            <button key={f} className={`filter-pill ${active === f ? "active" : ""}`} onClick={() => setActive(f)} type="button" style={{ background: active === f ? "#1a1a18" : "#fff", color: active === f ? "#fff" : "#1a1a18", borderColor: "rgba(26,26,24,0.12)" }}>
-              {f === "All" && <span>◉</span>} {f}
-            </button>
-          ))}
-          <span className="hand" style={{ marginLeft: "auto", alignSelf: "center", fontSize: "0.95rem" }}>
-            tap → filter, I’ll leave the tape
-          </span>
-        </div>
-
-        <div className="bento">
-          {filtered.map((p, i) => {
-            const span = i === 0 ? "bento__item--lg" : i === 3 ? "bento__item--wide" : i % 3 === 0 ? "bento__item--md" : "bento__item--sm";
-            return (
-              <Link
-                key={p.slug}
-                href={`/work/${p.slug}`}
-                className={`bento__item ${span} grain`}
-                style={{ transform: `rotate(${i % 2 === 0 ? "-0.4deg" : "0.3deg"})` } as any}
-              >
-                <div className="tape tape--top" aria-hidden style={{ opacity: 0.6 }} />
-                <div className="bento__visual" aria-hidden>
-                  <svg viewBox="0 0 400 300" width="100%" height="100%" preserveAspectRatio="none" style={{ display: "block" }}>
-                    <rect width="400" height="300" fill={p.visualAccent || "#c45a3c"} opacity="0.06" />
-                    <g opacity="0.45" stroke={p.visualAccent || "#c45a3c"} fill="none">
-                      {p.visual === "terrain" && <path d="M0 200 Q100 80 200 150 T400 120" strokeWidth="1.6" />}
-                      {p.visual === "wave" && <path d="M0 150 Q50 100 100 150 T200 150 T300 150 T400 150" strokeWidth="1.6" />}
-                      {p.visual === "dots" && Array.from({ length: 30 }).map((_, j) => <circle key={j} cx={(j % 6) * 70 + 20} cy={Math.floor(j / 6) * 50 + 30} r="1.6" fill={p.visualAccent || "#c45a3c"} stroke="none" />)}
-                      {(p.visual === "grid" || p.visual === "bars") && <rect x="40" y="60" width="320" height="180" rx="12" strokeWidth="1.3" />}
-                      {p.visual === "orbit" && <circle cx="200" cy="150" r="70" strokeWidth="1.3" />}
-                    </g>
-                  </svg>
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      background: `radial-gradient(380px circle at ${mx}% ${my}%, ${p.visualAccent || "#c45a3c"}14, transparent 62%)`,
-                    }}
-                  />
-                </div>
-                <div className="bento__content" style={{ background: "linear-gradient(transparent, rgba(26,26,24,0.78) 65%)" }}>
-                  <div className="bento__eyebrow" style={{ color: "#e8b44a" }}>
-                    {p.year} • {p.status} — {p.visual}
-                  </div>
-                  <h3 className="bento__title" style={{ color: "#fff", fontFamily: "Fraunces, serif" }}>
-                    {p.title}
-                  </h3>
-                  <p style={{ margin: "0.4rem 0 0", color: "rgba(253,248,239,0.85)", fontSize: "0.88rem", lineHeight: 1.45 }}>{p.summary}</p>
-                  <div className="bento__tags">
-                    {p.tags.slice(0, 3).map((t) => (
-                      <span key={t} className="bento__tag" style={{ borderColor: "rgba(253,248,239,0.25)", color: "rgba(253,248,239,0.9)" }}>
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
-        <div style={{ marginTop: "1.8rem", display: "flex", gap: "0.8rem", flexWrap: "wrap", alignItems: "center" }}>
-          <Link href="/work" className="btn" style={{ background: "#1a1a18", color: "#fdf8ef", borderColor: "#1a1a18" }}>
-            Enter wall → see all work
-          </Link>
-          <span className="hand" style={{ fontSize: "1rem", color: "#7a756e" }}>
-            bento was perfect — I tore one corner on purpose
-          </span>
-        </div>
-      </section>
-
-      {/* ===== PURVA BHANDARI DECODED - Warm Cream / Red Punch / 3D Tunnel ===== */}
-      <section className="purva-section">
-        <div className="content-max">
-          <div className="split" style={{ alignItems: "flex-start" }}>
+      <section id="contact" style={{ background: "#fff", color: "#242424", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid #e0e0e0" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "2rem", alignItems: "start" }}>
             <div>
-              <div className="purva-kicker">purva bhandari decoded • bangalore — india</div>
-              <h2 className="purva-title" style={{ marginTop: "0.8rem" }}>
-                Curiosity over <em>pixels.</em>
-                <br />
-                Why beats <span className="script-accent">how.</span>
+              <h2 style={{ margin: 0, lineHeight: 0.85 }}>
+                <span className="gideon" style={{ display: "block", fontSize: "clamp(3rem, 8vw, 6.5rem)", letterSpacing: "-0.05em", color: "#242424", fontWeight: 400 }}>LET&apos;S</span>
+                <span className="ingrid" style={{ display: "block", fontSize: "clamp(3.2rem, 8vw, 6.8rem)", color: "#d60004", marginTop: "-0.12em", transform: "rotate(-1deg)", lineHeight: 0.9 }}>Talk</span>
               </h2>
-              <p style={{ maxWidth: "42ch", color: "#424242", lineHeight: 1.6, marginTop: "1rem" }}>
-                Purva&apos;s Framer portfolio is Geist + Gideon Roman + Ingrid Darling, cream #f7f2e6, red punch #d60004. No hero image — type is hero. I rewire it for a technologist: split-wordmark + live clock + manifesto + iPod.
-              </p>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.14em", color: "#9e9e9e" }}>[ BASED IN PUNE, INDIA ]</div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", marginTop: 4, color: "#242424" }} suppressHydrationWarning>
-                IN {time} IST
+              <div style={{ marginTop: "1.6rem", display: "flex", gap: "0.8rem", flexWrap: "wrap" }}>
+                <a href="mailto:shivam@example.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#d60004", color: "#fff", border: "1px solid #d60004", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none", fontWeight: 600 }}>SAY HI → shivam@example.com</a>
+                <a href="/fun-game" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", color: "#242424", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.85rem 1.4rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textDecoration: "none" }}>WANT TO DO SOMETHING FUN? CLICK HERE →</a>
               </div>
-              <Link href="/work" className="red-cta" style={{ marginTop: "1rem" }}>
-                Want to do something fun? →
-              </Link>
+              <p style={{ marginTop: "1rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", textTransform: "uppercase" }}>— Purvoid-style contact CTA • mailto + fun-game</p>
             </div>
-          </div>
-
-          {/* Manifesto - DELULU / WONDER */}
-          <div className="manifesto-grid">
-            <div className="manifesto-card">
-              <div className="manifesto-card__num">001 — from Purva</div>
-              <h3 className="manifesto-card__title">DELULU IS THE SOLULU</h3>
-              <p className="manifesto-card__text">Purva ships `DELULU IS THE SOLULU`. For Shivam: `SHIP WEIRD • LEARN LOUD` — curiosity is the system.</p>
-            </div>
-            <div className="manifesto-card" style={{ background: "#242424", color: "#fff", borderColor: "#242424" }}>
-              <div className="manifesto-card__num" style={{ color: "#c7f35a" }}>
-                002 — keep wonder
-              </div>
-              <h3 className="manifesto-card__title" style={{ color: "#fff" }}>
-                KEEP CHILDLIKE WONDER
-              </h3>
-              <p className="manifesto-card__text" style={{ color: "#9e9e9e" }}>
-                Past and present don&apos;t exist. Live in the present. Debug with play, not fear.
-              </p>
-            </div>
-            <div className="manifesto-card">
-              <div className="manifesto-card__num">003 — chase anything</div>
-              <h3 className="manifesto-card__title">CHASE ANYTHING →</h3>
-              <p className="manifesto-card__text">Purva&apos;s `A mind that is stretched` (Gideon Roman 50px) becomes `Why before what` — uncover the why behind every decision.</p>
-              <div className="script-accent" style={{ marginTop: "0.6rem" }}>
-                why?
-              </div>
-            </div>
-          </div>
-
-          {/* iPod Terminal + 3D Tunnel side by side */}
-          <div style={{ display: "grid", gridTemplateColumns: "340px 1fr", gap: "1.5rem", marginTop: "2.5rem", alignItems: "center" }}>
-            <div className="ipod-wrap">
-              <div
-                className="ipod"
-                onMouseMove={(e) => {
-                  const el = e.currentTarget as HTMLDivElement;
-                  const rect = el.getBoundingClientRect();
-                  const cx = rect.left + rect.width / 2;
-                  const cy = rect.top + rect.height / 2;
-                  const rx = ((e.clientY - cy) / (rect.height / 2)) * 8;
-                  const ry = ((e.clientX - cx) / (rect.width / 2)) * 8;
-                  el.style.transform = `rotateX(${-rx}deg) rotateY(${ry}deg)`;
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.transform = "rotateX(0) rotateY(0)";
-                }}
-              >
-                <div className="ipod__screen">
+            <div style={{ display: "grid", placeItems: "center" }}>
+              <div style={{ width: 200, height: 340, background: "linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%)", border: "1px solid #e0e0e0", borderRadius: 24, boxShadow: "0 30px 60px -20px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,1)", padding: "1rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.9rem" }}>
+                <div style={{ width: "100%", height: 140, background: "#0b0e10", borderRadius: 12, padding: "0.8rem", color: "#c7f35a", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", lineHeight: 1.5, position: "relative", overflow: "hidden" }}>
                   <div style={{ opacity: 0.7 }}>Purva&apos;s iPod → Shivam&apos;s Terminal</div>
-                  <div style={{ marginTop: 8, color: "#fff" }}>
-                    $ why --curiosity
-                    <br />
-                    &gt; uncovering why beats shipping what
-                    <br />
-                    $ ls projects --filter=wall
-                    <br />
-                    &gt; 3 shipped • 1.2k commits
-                  </div>
-                  <div style={{ marginTop: 8, display: "flex", gap: 6 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff3b82", display: "inline-block" }} />
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffb84d", display: "inline-block" }} />
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#c7f35a", display: "inline-block" }} />
-                  </div>
+                  <div style={{ marginTop: 8, color: "#fff" }}>$ why --curiosity<br />&gt; uncovering why beats shipping what<br />$ ls projects --filter=wall<br />&gt; 3 shipped • 1.2k commits</div>
+                  <div style={{ marginTop: 8, display: "flex", gap: 6 }}><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff3b82", display: "inline-block" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffb84d", display: "inline-block" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#c7f35a", display: "inline-block" }} /></div>
                 </div>
-                <div className="ipod__wheel">
-                  <span style={{ position: "absolute", top: 12, fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#9e9e9e" }}>MENU</span>
-                  <span style={{ position: "absolute", bottom: 12, fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#9e9e9e" }}>▶︎❚❚</span>
+                <div style={{ width: 140, height: 140, borderRadius: "50%", background: "#f0f0f0", border: "1px solid #e0e0e0", display: "grid", placeItems: "center", position: "relative", boxShadow: "inset 0 2px 8px rgba(0,0,0,0.06)" }}>
+                  <span style={{ position: "absolute", top: 12, fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "#9e9e9e" }}>MENU</span>
+                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#fff", border: "1px solid #e0e0e0" }} />
+                  <span style={{ position: "absolute", bottom: 12, fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "#9e9e9e" }}>▶︎❚❚</span>
+                  <span style={{ position: "absolute", left: 14, fontSize: 10, color: "#9e9e9e" }}>◀◀</span>
+                  <span style={{ position: "absolute", right: 14, fontSize: 10, color: "#9e9e9e" }}>▶▶</span>
                 </div>
-                <div style={{ textAlign: "center", marginTop: 8, fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#9e9e9e" }}>Purva × Shivam — tactile filter</div>
-              </div>
-            </div>
-
-            <div className="tunnel">
-              <div className="tunnel__track">
-                {[0, 1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="tunnel__card" style={{ animationDelay: `${-i * 1.66}s`, left: `${18 + i * 11}%`, top: `${12 + ((i * 13) % 40)}%` } as any}>
-                    <img src={`https://picsum.photos/seed/tunnel${i}/400/300`} alt="" loading="lazy" />
-                    <div style={{ position: "absolute", inset: "auto 0 0 0", padding: "0.6rem", background: "linear-gradient(transparent, rgba(0,0,0,0.8))", color: "#fff", fontFamily: "var(--font-mono)", fontSize: "0.62rem" }}>
-                      00{i + 1} • {["HYPERLAB", "SWIVL.TECH", "DECIDE.ED", "2BY2 MAG", "OLYMPICS", "FITKIT"][i]}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", pointerEvents: "none" }}>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.14em", color: "rgba(242,240,233,0.6)", background: "rgba(11,14,16,0.6)", padding: "0.4rem 0.8rem", borderRadius: 999, border: "1px solid rgba(242,240,233,0.15)" }}>
-                  3D VIDEO TUNNEL — move-3d • 10s linear • Purva approach
-                </span>
+                <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", color: "#9e9e9e", letterSpacing: "0.08em" }}>200×340 • WHITE GRADIENT • WHEEL</div>
               </div>
             </div>
           </div>
-
-          <div style={{ marginTop: "1.5rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-            <span className="tag" style={{ background: "#fff" }}>
-              Geist 400/700 + Ingrid Darling script
-            </span>
-            <span className="tag" style={{ background: "#242424", color: "#fff" }}>
-              #f7f2e6 cream • #d60004 red punch
-            </span>
-            <span className="tag" style={{ background: "#fff" }}>
-              Split wordmark Purv+o+id → Shi+vam
-            </span>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.8rem", marginTop: "3rem", borderTop: "1px solid #e0e0e0", paddingTop: "1.5rem" }}>
+            {INDEX_GRID.map((it) => (
+              <a key={it.n} href={it.href} style={{ display: "flex", gap: "0.8rem", padding: "1rem", border: "1px solid #e0e0e0", borderRadius: 12, textDecoration: "none", color: "#242424", background: "#fff" }}>
+                <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "#d60004", letterSpacing: "0.12em" }}>{it.n}</span>
+                <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase", lineHeight: 1.4 }}>{it.label}</span>
+              </a>
+            ))}
           </div>
         </div>
       </section>
-
-      {/* FOOT KINETIC TICKER */}
-      <div className="marquee" style={{ padding: "2rem 0", borderTop: "1px solid var(--color-line-2)", borderBottom: "1px solid var(--color-line-2)" }}>
-        <div className="marquee__track" style={{ animationDuration: "18s" }}>
-          {[...Array(2)].map((_, i) => (
-            <div key={i} style={{ display: "flex", gap: "3rem", alignItems: "center" }}>
-              <span className="display" style={{ fontSize: "1.8rem", whiteSpace: "nowrap" }}>
-                SHIVAM SHELATKAR — CREATIVE TECHNOLOGIST — BUILDS LIKE LUSION • DESIGNS LIKE OBYS • SHIPS LIKE ACTIVE THEORY —
-              </span>
+      <footer style={{ background: "#f7f2e6", color: "#242424", padding: "3.5rem clamp(24px, 5vw, 80px) 2rem", borderTop: "1px solid #e0e0e0", position: "relative", overflow: "hidden" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "2rem" }}>
+          <div>
+            <div className="gideon" style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", lineHeight: 0.9, letterSpacing: "-0.04em", color: "#242424" }}>Thank you <span className="ingrid" style={{ color: "#d60004", fontSize: "1.2em", transform: "rotate(-2deg)", display: "inline-block" }}>—</span></div>
+            <div className="ingrid" style={{ fontSize: "1.9rem", color: "#d60004", transform: "rotate(-1.5deg)", marginTop: "0.2rem" }}>Keep in touch :]</div>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>LinkedIn</a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>Instagram</a>
+              <a href="mailto:shivam@example.com" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>Email</a>
+              <a href="#" style={{ color: "#242424", textDecoration: "none", borderBottom: "1px solid #242424" }}>First Website</a>
             </div>
-          ))}
+            <div style={{ marginTop: "1.6rem", display: "flex", gap: "1rem", alignItems: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "#9e9e9e" }}>
+              <span suppressHydrationWarning>IN {time} — 2026</span>
+              <span>•</span>
+              <span>© SHIVVOID — PUNE, INDIA</span>
+              <img src="https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif" alt="glitch" width={48} height={32} style={{ width: 48, height: 32, objectFit: "cover", borderRadius: 6, border: "1px solid #e0e0e0", opacity: 0.9 }} loading="lazy" />
+              <span style={{ opacity: 0.6 }}>glitch gif</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.8rem", justifyContent: "center" }}>
+            <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#9e9e9e", textTransform: "uppercase", textAlign: "right" }}>BUILT AS PURVO-ID DITTO<br />FOR SHIVAM SHELATKAR — SHIVVOID</div>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              <span style={{ background: "#fff", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#fff bg</span>
+              <span style={{ background: "#242424", color: "#fff", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#242424 text</span>
+              <span style={{ background: "#f7f2e6", border: "1px solid #e0e0e0", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#f7f2e6 cream</span>
+              <span style={{ background: "#d60004", color: "#fff", borderRadius: 999, padding: "0.35rem 0.7rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em" }}>#d60004 red</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </>
+        <div style={{ maxWidth: 1240, margin: "2rem auto 0", paddingTop: "1rem", borderTop: "1px solid #e0e0e0", display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "#9e9e9e", textTransform: "uppercase" }}>
+          <span>wall-decoded spotlight preserved • hover bloom 0.12 opacity</span>
+          <span>motion/react • spring translateY • Geist + Gideon Roman + Ingrid Darling</span>
+        </div>
+      </footer>
+    </div>
   );
 }
