@@ -60,8 +60,8 @@ const CAPS = [
 
 const TIMELINE = [
   {
-    title: "Karwar, born",
-    body: "Coastal roots, first rhythms, long train rides north.",
+    title: "Thane, born",
+    body: "Thane roots, first rhythms, long train rides nearby.",
   },
   {
     title: "Mumbai, grown",
@@ -500,7 +500,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
           >
-            Founder at Swarvibhaa, Karwar to Mumbai
+            Founder at Swarvibhaa, Thane to Mumbai
           </motion.p>
           <h1 className="hero-name">
             <motion.span
@@ -526,7 +526,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.26, ease: EASE }}
           >
-            Karwar-born, Mumbai-grown. Ten years of tabla with Pandit Mukundraj Deo,
+            Thane-born, Mumbai-grown. Ten years of tabla with Pandit Mukundraj Deo,
             six years of piano through Trinity, founder of Swarvibhaa in 2023,
             building small worlds in Unity since 2017.
           </motion.p>
@@ -671,8 +671,8 @@ export default function HomePage() {
             transition={{ duration: 0.7, ease: EASE }}
           >
             <span className="eyebrow">Story</span>
-            <h2 className="h2">Karwar to Mumbai.</h2>
-            <p className="lede">Born on the coast, grown in the city, now working across three states.</p>
+            <h2 className="h2">Thane to Mumbai.</h2>
+            <p className="lede">Born in Thane, grown in Mumbai, working across three states.</p>
           </motion.div>
           <div className="strip">
             {TIMELINE.map((t, i) => (
@@ -830,7 +830,7 @@ export default function HomePage() {
             Thanks for stopping by, I read every note and reply within a few days.
           </motion.p>
           <div className="footer-base">
-            <div>{new Date().getFullYear()} Shivam Shelatkar, Karwar to Mumbai</div>
+            <div>{new Date().getFullYear()} Shivam Shelatkar, Thane to Mumbai</div>
             <button type="button" className="to-top" onClick={toTop} onMouseEnter={() => sound.playHover()}>
               Back to top
             </button>

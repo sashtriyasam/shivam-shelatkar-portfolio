@@ -95,7 +95,7 @@ export function InteractiveTerminal() {
         res = (
           <div style={{ color: "rgba(255,255,255,0.85)", lineHeight: 1.7 }}>
             <div><strong>Shivam Shelatkar</strong> — Creative Technologist & Product Designer</div>
-            <div>Location: Pune, India (18.5204° N, 73.8567° E) · Remote-ready</div>
+            <div>Location: Thane·Mumbai, India · Remote-ready</div>
             <div style={{ marginTop: "0.4rem", color: "rgba(255,255,255,0.6)" }}>
               Specialized in high-density data visualization, geospatial interfaces, and real-time operations tools.
             </div>
