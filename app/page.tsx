@@ -340,11 +340,29 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section id="crowd" style={{ position: "relative", width: "100%", height: "450px", overflow: "hidden", background: "var(--color-paper)", borderTop: "1px solid var(--color-line)" }}>
-        <div style={{ position: "absolute", top: "2rem", left: "50%", transform: "translateX(-50%)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "var(--color-ui)", letterSpacing: "0.14em", textTransform: "uppercase", zIndex: 10 }}>— CROWD CANVAS —</div>
-          <div style={{ position: "absolute", inset: 0, opacity: 0.9, filter: "grayscale(100%)", mixBlendMode: "multiply" }}>
-            <CrowdCanvas src="https://skiper-ui.com/images/peeps/all-peeps.png" rows={15} cols={7} />
+      <section id="crowd" style={{ position: "relative", width: "100%", height: "450px", overflow: "hidden", background: "var(--color-paper)", borderTop: "1px solid var(--color-line)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        
+        <div style={{ position: "absolute", top: "2rem", left: "50%", transform: "translateX(-50%)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "var(--color-ui)", letterSpacing: "0.14em", textTransform: "uppercase", zIndex: 10 }}>
+          — LIVE FOOTAGE —
+        </div>
+
+        <div style={{ position: "absolute", zIndex: 10, textAlign: "center", pointerEvents: "none", display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}>
+          <h2 style={{ fontFamily: "var(--font-ingrid)", fontSize: "clamp(3rem, 8vw, 6rem)", margin: "0", color: "var(--color-ink)", lineHeight: 1, textTransform: "uppercase", textShadow: "0 0 20px var(--color-paper), 0 0 40px var(--color-paper)" }}>
+            The Lobby
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
+            <p style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.75rem", margin: 0, color: "var(--color-ink)", letterSpacing: "0.05em", textTransform: "uppercase", background: "var(--color-paper)", padding: "0.5rem 1rem", border: "1px solid var(--color-line)", borderRadius: "100px", boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
+              Other recruiters waiting for me to reply to their emails.
+            </p>
+            <p style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.65rem", margin: 0, color: "var(--color-ui)", letterSpacing: "0.05em", textTransform: "uppercase", background: "var(--color-paper)", padding: "0.25rem 0.75rem", border: "1px solid var(--color-line)", borderRadius: "100px", opacity: 0.8 }}>
+              (Skip the line. Contact me below.) 👇
+            </p>
           </div>
+        </div>
+
+        <div style={{ position: "absolute", inset: 0, opacity: 0.75, filter: "grayscale(100%)", mixBlendMode: "multiply" }}>
+          <CrowdCanvas src="https://skiper-ui.com/images/peeps/all-peeps.png" rows={15} cols={7} />
+        </div>
       </section>
       <footer style={{ background: "var(--color-paper-2)", color: "var(--color-ink)", padding: "3.5rem clamp(24px, 5vw, 80px) 2rem", borderTop: "1px solid var(--color-line)", position: "relative", overflow: "hidden" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto", display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "2rem" }}>
