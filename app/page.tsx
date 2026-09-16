@@ -101,6 +101,9 @@ export default function HomePage() {
         @media (max-width: 768px) { .work-grid{ grid-template-columns: repeat(auto-fit, minmax(280px,1fr)) !important; } .work-grid > a{ grid-column: span 12 !important; flex-direction: column !important; } .work-featured { flex-direction: column !important; } }
         #about{ box-sizing: border-box; overflow: hidden; overflow-x: hidden; max-width: 100vw; }
         .about-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .other-project-img, .work-project-img { filter: grayscale(100%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: center; }
+        .other-project-card:hover .other-project-img, .work-project-card:hover .work-project-img { filter: grayscale(0%); transform: scale(1.03); }
+        .other-project-card:hover, .work-project-card:hover { border-color: var(--color-ink) !important; }
         @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr !important; } .about-grid > div { text-align: left !important; } #about { padding: 3rem 20px !important; } #intro { padding: 3rem 20px !important; } #intro > div > div { flex-direction: column !important; } #intro > div > div > div:first-child { font-size: clamp(1.2rem, 5vw, 1.6rem) !important; } }
         .tunnel{ perspective: 1000px; transform-style: preserve-3d; overflow: hidden; border-radius: 16px; }
         section { box-sizing: border-box; max-width: 100vw; overflow-x: hidden; }
@@ -175,9 +178,9 @@ export default function HomePage() {
           </div>
           <div className="work-grid" style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "1rem", marginTop: "2rem" }}>
             {workList.map((p, i) => (
-              <motion.a key={p.id} href={p.href} className={i === 0 ? "work-featured" : undefined} initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid var(--color-line)", borderRadius: 16, overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
+              <motion.a key={p.id} href={p.href} className={`work-project-card ${i === 0 ? "work-featured" : ""}`} initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid var(--color-line)", borderRadius: 16, overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
                 <div style={{ flex: i === 0 ? "0 0 58%" : "1 1 auto", position: "relative", overflow: "hidden", background: "var(--color-paper-2)", minHeight: 260 }}>
-                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", aspectRatio: "16 / 10" }} loading="lazy" />
+                  <img src={p.img} alt={p.kicker} className="work-project-img" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", aspectRatio: "16 / 10" }} loading="lazy" />
                   <span style={{ position: "absolute", top: 14, left: 14, background: "rgba(255,255,255,0.92)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.32rem 0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ink)" }}>{p.id}</span>
                   <div style={{ position: "absolute", inset: 0, background: `radial-gradient(480px circle at ${mx}% ${my}%, rgba(214,0,4,0.06), transparent 62%)`, pointerEvents: "none" }} />
                 </div>
@@ -200,8 +203,8 @@ export default function HomePage() {
           {active === "USER EXPERIENCE" && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "0.8rem", marginTop: "1rem", opacity: 0.9 }}>
               {OTHER.map((p) => (
-                <a key={p.id} href={p.href} style={{ border: "1px solid var(--color-line)", borderRadius: 12, overflow: "hidden", textDecoration: "none", color: "var(--color-ink)", background: "var(--color-paper)", display: "flex", flexDirection: "column" }}>
-                  <img src={p.img} alt={p.kicker} style={{ width: "100%", height: 160, objectFit: "cover", aspectRatio: "16 / 10", display: "block" }} loading="lazy" />
+                <a key={p.id} href={p.href} className="other-project-card" style={{ border: "1px solid var(--color-line)", borderRadius: 12, overflow: "hidden", textDecoration: "none", color: "var(--color-ink)", background: "var(--color-paper)", display: "flex", flexDirection: "column" }}>
+                  <img src={p.img} alt={p.kicker} className="other-project-img" style={{ width: "100%", height: 160, objectFit: "cover", aspectRatio: "16 / 10", display: "block" }} loading="lazy" />
                   <div style={{ padding: "0.9rem" }}>
                     <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.58rem", letterSpacing: "0.12em", color: "var(--color-ui)" }}>{p.id} • {p.kicker}</div>
                     <div style={{ fontFamily: "Geist, sans-serif", fontWeight: 700, fontSize: "0.95rem", marginTop: 4, letterSpacing: "-0.02em" }}>{p.title}</div>
