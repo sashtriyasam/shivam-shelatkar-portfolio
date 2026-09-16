@@ -5,7 +5,7 @@
     "description": "Portfolio of Shivam Shelatkar — creative technologist and software engineer.",
     "scripts": {
         "dev": "next dev",
-        "build": "next build --webpack",
+        "build": "pwd && ls -la && ls -la app || true && next build --webpack",
         "start": "next start",
         "lint": "eslint . --max-warnings 0",
         "typecheck": "tsc --noEmit"
