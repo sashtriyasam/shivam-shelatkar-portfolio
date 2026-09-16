@@ -37,33 +37,33 @@ const ingrid = Ingrid_Darling({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://Shivam.runs-on.dev"),
+  metadataBase: new URL("https://shivam.runs-on.dev"),
   title: {
-    default: "Shivam Shelatkar — Creative Technologist",
+    default: "Shivam Shelatkar — Product Designer & Engineer",
     template: "%s | Shivam Shelatkar",
   },
   description:
-    "Creative technologist and product designer building the space between ideas and the people who use them.",
+    "Hi, I'm Shivam Shelatkar — Product Designer & Engineer from Pune. I turn fuzzy ideas into calm, useful products. Explore my immersive portfolio.",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://Shivam.runs-on.dev",
+    url: "https://shivam.runs-on.dev",
     siteName: "Shivam Shelatkar",
-    title: "Shivam Shelatkar — Creative Technologist",
+    title: "Hi, I'm Shivam Shelatkar — Product Designer & Engineer",
     description:
-      "Creative technologist and product designer building the space between ideas and the people who use them.",
+      "Hi, I'm Shivam — Product Designer & Engineer from Pune. I turn fuzzy ideas into calm, useful products. Calm over clever, ships then iterates.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shivam Shelatkar — Creative Technologist",
+    title: "Shivam Shelatkar — Product Designer & Engineer",
     description:
-      "Creative technologist and product designer building the space between ideas and the people who use them.",
+      "Hi, I'm Shivam — Product Designer & Engineer from Pune. Minimal, friendly, human-first.",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  colorScheme: "light",
+  themeColor: "#060709",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
