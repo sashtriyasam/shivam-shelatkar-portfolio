@@ -256,9 +256,16 @@ export default function HomePage() {
           <motion.blockquote initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} className="gideon" style={{ margin: "2rem 0 0", fontSize: "clamp(1.8rem, 4vw, 3.2rem)", lineHeight: 0.95, letterSpacing: "-0.04em", color: "var(--color-ink)", maxWidth: "22ch", borderLeft: "2px solid #d60004", paddingLeft: "1.2rem" }}>
             &ldquo;A mind that is stretched by a new experience can never go back to its old dimensions.&rdquo;
             <span style={{ display: "block", marginTop: "0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)", fontStyle: "normal" }}>— Gideon Roman • Purva&apos;s quote, Shivam&apos;s lens</span>
-          </motion.blockquote>
-          <div className="tunnel tunnel-container" style={{ marginTop: "2.5rem", height: 420, background: "#0b0e10", borderRadius: 16, border: "1px solid var(--color-line)", overflow: "hidden", position: "relative", perspective: "1000px", transformStyle: "preserve-3d" }}>
-            <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d" }}>
+            </motion.blockquote>
+            <motion.div 
+              className="tunnel tunnel-container" 
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              style={{ marginTop: "2.5rem", height: 420, background: "#0b0e10", borderRadius: 16, border: "1px solid var(--color-line)", overflow: "hidden", position: "relative", perspective: "1000px", transformStyle: "preserve-3d" }}
+            >
+              <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d" }}>
               {TUNNEL_VIDEOS.map((src, i) => (
                 <div key={i} style={{ position: "absolute", left: "50%" as any, top: `${10 + ((i * 17) % 42)}%`, width: "min(280px,78vw)", marginLeft: `calc(-140px + ${(i - 2.5) * 14}%)`, height: 190, borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", background: "#1a1a1a", transform: `translateZ(${-200 - i * 180}px)`, animation: `tunnelMove 10s linear infinite`, animationDelay: `${-i * 1.66}s` } as any}>
                   <video autoPlay muted loop playsInline preload="metadata" poster={`https://picsum.photos/seed/tunnel${i}/400/300`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", aspectRatio: "16 / 10" }}>
@@ -276,27 +283,30 @@ export default function HomePage() {
             </div>
             <style>{`@media (prefers-reduced-motion: reduce) { .tunnel, .tunnel * { animation: none !important; transition: none !important; } }
         @keyframes tunnelMove { from{ transform: translateZ(-1200px)} to{ transform: translateZ(420px)} }`}</style>
-          </div>
-          <div className="manifesto-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginTop: "1.5rem", alignItems: "stretch" }}>
-            <div style={{ background: "var(--color-paper)", border: "1px solid var(--color-line)", borderRadius: 16, padding: "1.6rem", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", minHeight: 220, height: "100%" }}>
-              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)" }}>001 — DELULU IS THE SOLULU</div>
-              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "var(--color-ink)" }}>CHASE ANYTHING →</h3>
-              <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem" }}>Purva ships DELULU IS THE SOLULU. For Shivam: SHIP WEIRD • LEARN LOUD — curiosity is the system. Chase anything, the rest is craft.</p>
-              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "var(--color-accent)", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>chase →</span>
+          </motion.div>
+            <div className="manifesto-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", marginTop: "1.5rem", alignItems: "stretch" }}>
+              {[
+                { n: "001", kicker: "DELULU IS THE SOLULU", title: "CHASE ANYTHING ✦", desc: "Purva ships DELULU IS THE SOLULU. For Shivam: SHIP WEIRD • LEARN LOUD — curiosity is the system. Chase anything, the rest is craft.", script: "chase ✦", bg: "var(--color-paper)", text: "var(--color-ink)", accent: "var(--color-accent)", border: "var(--color-line)" },
+                { n: "002", kicker: "KEEP CHILDLIKE WONDER", title: "KEEP CHILDLIKE SENSE OF WONDER", desc: "Past and present don't exist. Live in the present. Debug with play, not fear. Wonder is the only debugger that scales.", script: "wonder", bg: "var(--color-ink)", text: "var(--color-paper)", accent: "#c7f35a", border: "var(--color-ink)", descColor: "var(--color-ui)" },
+                { n: "003", kicker: "BE HERE NOW", title: "BE HERE NOW.", desc: "Purva's present-tense manifesto — the mind stretched by a new experience can never go back. That's the whole approach.", script: "now", bg: "var(--color-paper)", text: "var(--color-ink)", accent: "var(--color-accent)", border: "var(--color-line)" }
+              ].map((m, i) => (
+                <motion.div
+                  key={m.n}
+                  initial={shouldReduceMotion ? { opacity: 0 } : { y: 30, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: shouldReduceMotion ? 0.01 : 0.6, delay: shouldReduceMotion ? 0 : i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ background: m.bg, border: `1px solid ${m.border}`, borderRadius: 16, padding: "1.6rem", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", minHeight: 220, height: "100%", transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 12px 24px -10px rgba(0,0,0,0.1)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                >
+                  <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: m.accent }}>{m.n} — {m.kicker}</div>
+                  <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: m.text }}>{m.title}</h3>
+                  <p style={{ margin: 0, color: m.descColor || "#424242", lineHeight: 1.6, fontSize: "0.92rem", flex: 1 }}>{m.desc}</p>
+                  <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: m.accent, fontSize: "1.35rem", transform: `rotate(${i === 1 ? -1 : -2}deg)` }}>{m.script}</span>
+                </motion.div>
+              ))}
             </div>
-            <div style={{ background: "var(--color-ink)", color: "var(--color-paper)", border: "1px solid var(--color-ink)", borderRadius: 16, padding: "1.6rem", display: "flex", flexDirection: "column", minHeight: 220, height: "100%" }}>
-              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "#c7f35a" }}>002 — KEEP CHILDLIKE WONDER</div>
-              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "var(--color-paper)" }}>KEEP CHILDLIKE SENSE OF WONDER</h3>
-              <p style={{ margin: 0, color: "var(--color-ui)", lineHeight: 1.6, fontSize: "0.92rem" }}>Past and present don&apos;t exist. Live in the present. Debug with play, not fear. Wonder is the only debugger that scales.</p>
-              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "#c7f35a", fontSize: "1.35rem", transform: "rotate(-1deg)" }}>wonder</span>
-            </div>
-            <div style={{ background: "var(--color-paper)", border: "1px solid var(--color-line)", borderRadius: 16, padding: "1.6rem", display: "flex", flexDirection: "column", minHeight: 220, height: "100%" }}>
-              <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-accent)" }}>003 — BE HERE NOW</div>
-              <h3 style={{ margin: "0.7rem 0 0.5rem", fontFamily: "Geist, sans-serif", fontSize: "1.35rem", letterSpacing: "-0.03em", color: "var(--color-ink)" }}>BE HERE NOW.</h3>
-              <p style={{ margin: 0, color: "#424242", lineHeight: 1.6, fontSize: "0.92rem" }}>Purva&apos;s present-tense manifesto — the mind stretched by a new experience can never go back. That&apos;s the whole approach.</p>
-              <span className="ingrid" style={{ display: "inline-block", marginTop: "0.7rem", color: "var(--color-accent)", fontSize: "1.35rem", transform: "rotate(-2deg)" }}>now</span>
-            </div>
-          </div>
         </div>
       </section>
       <section id="contact" style={{ background: "var(--color-paper)", color: "var(--color-ink)", padding: "5rem clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)" }}>
@@ -332,11 +342,21 @@ export default function HomePage() {
             </div>
           </div>
           <div className="index-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.8rem", marginTop: "3rem", borderTop: "1px solid var(--color-line)", paddingTop: "1.5rem" }}>
-            {INDEX_GRID.map((it) => (
-              <a key={it.n} href={it.href} style={{ display: "flex", gap: "0.8rem", padding: "1rem", border: "1px solid var(--color-line)", borderRadius: 12, textDecoration: "none", color: "var(--color-ink)", background: "var(--color-paper)" }}>
-                <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "var(--color-accent)", letterSpacing: "0.12em" }}>{it.n}</span>
+            {INDEX_GRID.map((it, i) => (
+              <motion.a 
+                key={it.n} 
+                href={it.href} 
+                initial={shouldReduceMotion ? { opacity: 0 } : { y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.4, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: "flex", gap: "0.8rem", padding: "1rem", border: "1px solid var(--color-line)", borderRadius: 12, textDecoration: "none", color: "var(--color-ink)", background: "var(--color-paper)", transition: "transform 0.2s, background 0.2s, border-color 0.2s" }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.background = "var(--color-paper-2)"; e.currentTarget.style.borderColor = "var(--color-ink)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.background = "var(--color-paper)"; e.currentTarget.style.borderColor = "var(--color-line)"; }}
+              >
+                <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "var(--color-accent)", letterSpacing: "0.12em", transition: "color 0.2s" }}>{it.n}</span>
                 <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase", lineHeight: 1.4 }}>{it.label}</span>
-              </a>
+              </motion.a>
             ))}
           </div>
           </div>
@@ -374,10 +394,10 @@ export default function HomePage() {
             <div className="gideon" style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", lineHeight: 0.9, letterSpacing: "-0.04em", color: "var(--color-ink)" }}>Thank you <span className="ingrid" style={{ color: "var(--color-accent)", fontSize: "1.2em", transform: "rotate(-2deg)", display: "inline-block" }}>—</span></div>
             <div className="ingrid" style={{ fontSize: "1.9rem", color: "var(--color-accent)", transform: "rotate(-1.5deg)", marginTop: "0.2rem" }}>Keep in touch :]</div>
             <div style={{ display: "flex", gap: "1rem", marginTop: "1.2rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>LinkedIn</a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>Instagram</a>
-              <a href="mailto:shivam@example.com" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>Email</a>
-              <a href="#" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>First Website</a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>LinkedIn</a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>Instagram</a>
+              <a href="mailto:shivam@example.com" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>Email</a>
+              <a href="#" className="link-underline" style={{ color: "var(--color-ink)", paddingBottom: "2px" }}>First Website</a>
             </div>
             <div style={{ marginTop: "1.6rem", display: "flex", gap: "1rem", alignItems: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-ui)" }}>
               <span>IN {mounted ? time : "--:--"} — 2026</span>
