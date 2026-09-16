@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -16,7 +16,7 @@ const SHOWCASE_ITEMS = [
     color: "#00f59b",
     desc: "Merging real-time satellite orbital passes, high-res topographic elevation meshes, and unit telemetry into a single zero-latency 3D operational picture.",
     href: "/work/depthwizard",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop",
+    photoNote: "DepthWizard photo coming from @shastriyakid",
     features: ["3D Terrain Mesh", "Satellite Layering", "Mission Markers", "Sub-second Querying"],
   },
   {
@@ -29,7 +29,7 @@ const SHOWCASE_ITEMS = [
     color: "#00d4ff",
     desc: "A tactile financial simulation workspace where executive teams test macroeconomic shocks against multi-billion dollar balance sheets with real-time feedback.",
     href: "/work/projection-ai",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+    photoNote: "Projection AI photo coming from @shastriyakid",
     features: ["Confidence Corridors", "Scenario Trees", "Dynamic Heatmaps", "Live Backtesting"],
   },
   {
@@ -42,7 +42,7 @@ const SHOWCASE_ITEMS = [
     color: "#ff3b30",
     desc: "Large-scale urban infrastructure control plane unifying thousands of ground sensor feeds, surge-demand pricing, and high-frequency operator dispatch.",
     href: "/work/park-easy",
-    image: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?q=80&w=1200&auto=format&fit=crop",
+    photoNote: "ParkEasy photo coming from @shastriyakid",
     features: ["15+ City Hubs", "Dynamic Spot Pricing", "IoT Fleet Telemetry", "Driver Wayfinding"],
   },
 ];
@@ -188,18 +188,7 @@ export function SpatialShowcase() {
               background: "#000",
             }}
           >
-            <img
-              src={active.image}
-              alt={active.name}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-                minHeight: 380,
-                filter: "contrast(1.08) brightness(0.9)",
-              }}
-            />
+            {/* Photo placeholder: replace this div with a real image, e.g. <img src="/photos/[slug].jpg" alt="project photo" />. Real photos TODO from @shastriyakid/Swarvibhaa. */}<div style={{ width: "100%", minHeight: 380, background: "#141820", display: "grid", placeItems: "center", padding: "32px", textAlign: "center" }}><span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", lineHeight: 1.6, color: "rgba(255, 255, 255, 0.45)" }}>{active.photoNote}</span></div>
             <div
               style={{
                 position: "absolute",
