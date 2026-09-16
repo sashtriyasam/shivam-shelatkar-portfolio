@@ -62,11 +62,13 @@ const INDEX_GRID = [
 export default function HomePage() {
   const [active, setActive] = useState<"USER EXPERIENCE" | "OTHER">("USER EXPERIENCE");
   const [time, setTime] = useState("--:--");
+  const [mounted, setMounted] = useState(false);
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(50);
   const heroRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
   useEffect(() => {
+    setMounted(true);
     const fmt = () => new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" });
     const upd = () => setTime(fmt());
     upd();
@@ -79,12 +81,10 @@ export default function HomePage() {
   return (
     <div style={{ ["--token-6c52689b" as any]: "var(--color-ink)", background: "var(--color-paper)", color: "var(--color-ink)" } as any}>
             <style>{`
-        .site-header, .site-footer, .scroll-progress, .custom-cursor { display: none !important; }
-        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono:wght@400&family=Gideon+Roman&family=Ingrid+Darling&display=swap');
-        .geist { font-family: Geist, ui-sans, system-ui, sans-serif; }
-        .geist-mono { font-family: "Geist Mono", ui-monospace, monospace; }
-        .gideon { font-family: "Gideon Roman", Georgia, serif; }
-        .ingrid { font-family: "Ingrid Darling", cursive; }
+        .geist { font-family: var(--font-body); }
+        .geist-mono { font-family: var(--font-mono); }
+        .gideon { font-family: var(--font-display); }
+        .ingrid { font-family: var(--font-hand); }
         .purvoid-nav a { position: relative; }
         .purvoid-nav a::after{content:""; position:absolute; left:0; bottom:-2px; width:0; height:1px; background:var(--color-ink); transition: width 0.2s ease; will-change: width;}
         .purvoid-nav a:hover::after{width:100%;}
@@ -103,11 +103,7 @@ export default function HomePage() {
         .about-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr !important; } .about-grid > div { text-align: left !important; } #about { padding: 3rem 20px !important; } #intro { padding: 3rem 20px !important; } #intro > div > div { flex-direction: column !important; } #intro > div > div > div:first-child { font-size: clamp(1.2rem, 5vw, 1.6rem) !important; } }
         .tunnel{ perspective: 1000px; transform-style: preserve-3d; overflow: hidden; border-radius: 16px; }
-        /* Global phone perfect: overflow-x, shell, box-sizing */
-        html, body { overflow-x: hidden !important; max-width: 100vw; }
-        .shell { max-width: 100vw !important; overflow-x: hidden; box-sizing: border-box; }
-        section, footer, header, div { box-sizing: border-box; }
-        section { max-width: 100vw; overflow-x: hidden; }
+        section { box-sizing: border-box; max-width: 100vw; overflow-x: hidden; }
         @media (max-width: 768px) { #contact { padding: 3rem 20px !important; } .contact-grid { gap: 1.5rem !important; } footer { padding: 2rem 20px !important; } footer > div:first-of-type { grid-template-columns: 1fr !important; } footer > div:first-of-type > div:last-child { align-items: flex-start !important; text-align: left !important; } footer img { max-width: 100% !important; height: auto !important; } .manifesto-grid { gap: 1rem !important; } }
         @media (prefers-reduced-motion: reduce) {
           .tunnel *, .hero__line, .wordmark { animation: none !important; transition: none !important; transform: none !important; }
@@ -121,7 +117,7 @@ export default function HomePage() {
         <div aria-hidden style={{ position: "absolute", inset: 0, background: `radial-gradient(600px circle at ${mx}% ${my}%, rgba(214,0,4,0.07), transparent 60%)`, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px clamp(24px, 5vw, 80px)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ink)", borderBottom: "1px solid var(--color-line)", background: "rgba(255,255,255,0.92)", backdropFilter: "blur(6px)" }}>
           <div style={{ display: "flex", gap: "1.2rem", alignItems: "center" }}>
-            <span suppressHydrationWarning style={{ fontVariantNumeric: "tabular-nums" }}>IN {time}</span>
+            <span style={{ fontVariantNumeric: "tabular-nums" }}>IN {mounted ? time : "--:--"}</span>
             <span style={{ opacity: 0.35 }}>—</span>
             <span style={{ letterSpacing: "0.18em", fontWeight: 600 }}>PORTFOLIO</span>
             <span style={{ opacity: 0.35, display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: "var(--color-accent)" }} />
@@ -157,7 +153,7 @@ export default function HomePage() {
             </motion.div>
             <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", gap: "1rem", alignItems: "flex-end" }}>
               <span style={{ display: "inline-flex", padding: "0.5rem 0.9rem", borderRadius: 999, border: "1px solid var(--color-line)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ink)", background: "var(--color-paper)" }}>[ BASED IN PUNE, INDIA ]</span>
-              <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", color: "var(--color-ui)", letterSpacing: "0.14em" }} suppressHydrationWarning>IN {time} IST</span>
+              <span style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", color: "var(--color-ui)", letterSpacing: "0.14em" }}>IN {mounted ? time : "--:--"} IST</span>
             </div>
           </div>
           <div style={{ marginTop: "2.5rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
@@ -220,7 +216,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1240, margin: "0 auto", position: "relative", boxSizing: "border-box", overflow: "hidden", width: "100%" } as any}>
           <div style={{ display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.18em", color: "var(--color-ui)", textTransform: "uppercase" }}>
             <span>-- {"{•HELLO•}"}</span>
-            <span suppressHydrationWarning>IN {time} — PUNE</span>
+            <span>IN {mounted ? time : "--:--"} — PUNE</span>
           </div>
           <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem", alignItems: "end", overflow: "hidden", boxSizing: "border-box" }}>
             <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(4rem, 18vw, 10rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "var(--color-paper)", overflow: "hidden", boxSizing: "border-box", overflowWrap: "break-word", wordBreak: "break-word" }}>AB</motion.div>
@@ -350,7 +346,7 @@ export default function HomePage() {
               <a href="#" style={{ color: "var(--color-ink)", textDecoration: "none", borderBottom: "1px solid var(--color-ink)" }}>First Website</a>
             </div>
             <div style={{ marginTop: "1.6rem", display: "flex", gap: "1rem", alignItems: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-ui)" }}>
-              <span suppressHydrationWarning>IN {time} — 2026</span>
+              <span>IN {mounted ? time : "--:--"} — 2026</span>
               <span>•</span>
               <span>© SHIVAM SHELATKAR — PUNE, INDIA</span>
               <img src="https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif" alt="glitch" width={48} height={32} style={{ width: 48, height: 32, objectFit: "cover", borderRadius: 6, border: "1px solid var(--color-line)", opacity: 0.9 }} loading="lazy" />

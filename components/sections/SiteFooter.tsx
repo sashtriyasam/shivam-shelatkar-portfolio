@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function SiteFooter() {
+  const pathname = usePathname();
   const year = new Date().getFullYear();
+
+  if (pathname === "/") return null;
 
   return (
     <footer className="site-footer">

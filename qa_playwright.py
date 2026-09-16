@@ -1,4 +1,4 @@
-﻿import os
+import os
 import json
 import re
 from playwright.sync_api import sync_playwright
@@ -27,8 +27,8 @@ viewports = [
     {"width": 375, "height": 812},
 ]
 
-EXPECTED_DISPLAY_FONT = "Space Grotesk"
-EXPECTED_BODY_FONT = "Inter"
+EXPECTED_DISPLAY_FONT = "Gideon Roman"
+EXPECTED_BODY_FONT = "Geist"
 
 BLUE_LINK_COLORS = {
     "#0000ee", "#0000f", "#0000f0", "#0000ff",
@@ -97,14 +97,14 @@ def run_checks(page, page_name, viewport):
 
     font_checks = page.evaluate("""() => {
         const result = {};
-        try { result.spaceGrotesk = document.fonts.check('Space Grotesk'); }
-        catch (e) { result.spaceGrotesk = 'ERROR: ' + e.message; }
-        try { result.inter = document.fonts.check('Inter'); }
-        catch (e) { result.inter = 'ERROR: ' + e.message; }
+        try { result.gideon = document.fonts.check('12px "Gideon Roman"'); }
+        catch (e) { result.gideon = 'ERROR: ' + e.message; }
+        try { result.geist = document.fonts.check('12px "Geist"'); }
+        catch (e) { result.geist = 'ERROR: ' + e.message; }
         return result;
     }""")
-    result["font_space_grotesk"] = font_checks.get("spaceGrotesk")
-    result["font_inter"] = font_checks.get("inter")
+    result["font_gideon"] = font_checks.get("gideon")
+    result["font_geist"] = font_checks.get("geist")
 
     fonts = page.evaluate("""() => {
         const result = {};
@@ -171,20 +171,20 @@ def run_checks(page, page_name, viewport):
             "message": "h1 computed font-family falls back to default serif",
         })
 
-    if result.get("font_space_grotesk") is False:
+    if result.get("font_gideon") is False:
         result["failures"].append({
             "type": "font",
             "element": "document.fonts.check",
             "font": EXPECTED_DISPLAY_FONT,
-            "message": "Space Grotesk font is not loaded (document.fonts.check returned false)",
+            "message": "Gideon Roman font is not loaded (document.fonts.check returned false)",
         })
 
-    if result.get("font_inter") is False:
+    if result.get("font_geist") is False:
         result["failures"].append({
             "type": "font",
             "element": "document.fonts.check",
             "font": EXPECTED_BODY_FONT,
-            "message": "Inter font is not loaded (document.fonts.check returned false)",
+            "message": "Geist font is not loaded (document.fonts.check returned false)",
         })
 
     if page_errors:
@@ -221,14 +221,14 @@ def main():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
 
-        for page_name, page_path in pages:
+        for page_path, page_name in pages:
             for viewport in viewports:
                 print(f"[{len(all_results) + 1:02d}/{len(pages) * len(viewports)}] Testing {page_path or '/'} @ {viewport['width']}x{viewport['height']}")
 
                 page = browser.new_page(viewport=viewport)
                 try:
-                    page.goto(f"{URL}{page_path}", wait_until="networkidle")
-                    page.wait_for_load_state("networkidle")
+                    page.goto(f"{URL}{page_path}", wait_until="load")
+                    page.wait_for_load_state("load")
                     result = run_checks(page, page_name, viewport)
                     screenshot_path = take_screenshot(page, page_name, viewport)
                     result["screenshot"] = screenshot_path

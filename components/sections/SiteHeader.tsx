@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMobileMenu } from "@/components/layout/MobileMenuProvider";
 import { Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
 import {
   motion,
   useScroll,
@@ -17,6 +18,7 @@ const navLinks = [
 ];
 
 export function SiteHeader() {
+  const pathname = usePathname();
   const { openMenu, open } = useMobileMenu();
   const { scrollYProgress } = useScroll();
   const headerBgOpacity = useTransform(
@@ -25,6 +27,8 @@ export function SiteHeader() {
     [0.78, 0.98]
   );
   const headerBackground = useMotionTemplate`rgba(255, 255, 255, ${headerBgOpacity})`;
+
+  if (pathname === "/") return null;
 
   return (
     <motion.header

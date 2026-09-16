@@ -12,8 +12,10 @@ function readLabel(el: Element | null): string {
   if (attr && attr.trim().length > 0) return attr.trim().toUpperCase();
   return "VIEW";
 }
+import { usePathname } from "next/navigation";
 
 export function CustomCursor() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [label, setLabel] = useState("VIEW");
 
@@ -70,6 +72,8 @@ export function CustomCursor() {
       window.removeEventListener("mouseout", leave);
     };
   }, [x, y, scale, labelOpacity]);
+
+  if (pathname === "/") return null;
 
   return (
     <motion.div
