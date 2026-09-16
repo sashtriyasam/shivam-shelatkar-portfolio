@@ -1,206 +1,128 @@
-"use client";
+﻿"use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  OrbitControls,
-  Stars,
-  Float,
-  Environment,
-} from "@react-three/drei";
-import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import gsap from "gsap";
+import { Stars, Float } from "@react-three/drei";
 
-function Terrain() {
+function TopoTerrain() {
   const meshRef = useRef<THREE.Mesh>(null);
   const wireRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.MeshStandardMaterial>(null);
 
-  useEffect(() => {
-    const mesh = meshRef.current;
-    if (!mesh) return;
-    const ctx = gsap.context(() => {
-      gsap.to(mesh.rotation, {
-        y: Math.PI * 2,
-        duration: 24,
-        repeat: -1,
-        ease: "none",
-      });
-    });
-    return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    const wire = wireRef.current;
-    if (!wire) return;
-    const ctx = gsap.context(() => {
-      gsap.to(wire.rotation, {
-        y: -Math.PI * 2,
-        duration: 36,
-        repeat: -1,
-        ease: "none",
-      });
-    });
-    return () => ctx.revert();
+  const geometry = useMemo(() => {
+    const geo = new THREE.PlaneGeometry(18, 18, 70, 70);
+    const pos = geo.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i);
+      const y = pos.getY(i);
+      const dist = Math.sqrt(x * x + y * y);
+      const elevation =
+        Math.sin(x * 0.45) * Math.cos(y * 0.45) * 1.1 +
+        Math.sin(x * 1.2 + y * 0.8) * 0.4 -
+        Math.pow(dist / 14, 2) * 1.5;
+      pos.setZ(i, elevation);
+    }
+    geo.computeVertexNormals();
+    return geo;
   }, []);
 
   useFrame((state) => {
-    const material = materialRef.current;
-    if (!material) return;
-    material.emissiveIntensity = 0.5 + Math.sin(state.clock.elapsedTime * 0.6) * 0.15;
+    const t = state.clock.getElapsedTime();
+    if (meshRef.current) {
+      meshRef.current.rotation.z = t * 0.035;
+    }
+    if (wireRef.current) {
+      wireRef.current.rotation.z = t * 0.035;
+    }
   });
 
   return (
-    <group>
-      <mesh
-        ref={meshRef}
-        rotation={[-Math.PI / 2.2, 0, 0]}
-        position={[0, -0.4, 0]}
-      >
-        <planeGeometry args={[12, 12, 96, 96]} />
+    <group position={[0, -1.2, -2]} rotation={[-Math.PI / 2.5, 0, 0]}>
+      {/* Base shaded surface */}
+      <mesh ref={meshRef} geometry={geometry}>
         <meshStandardMaterial
-          ref={materialRef}
-          color="#0b0e10"
-          roughness={0.85}
-          metalness={0.15}
-          emissive="#c7f35a"
-          emissiveIntensity={0.4}
+          color="#0a0c10"
+          roughness={0.7}
+          metalness={0.4}
+          wireframe={false}
         />
       </mesh>
-      <mesh
-        ref={wireRef}
-        rotation={[-Math.PI / 2.2, 0, 0]}
-        position={[0, -0.34, 0]}
-      >
-        <planeGeometry args={[12.4, 12.4, 96, 96]} />
+
+      {/* Glowing neon contour wireframe */}
+      <mesh ref={wireRef} geometry={geometry} position={[0, 0, 0.03]}>
         <meshBasicMaterial
           wireframe
-          color="#c7f35a"
+          color="#ff3b30"
           transparent
-          opacity={0.18}
+          opacity={0.35}
         />
       </mesh>
     </group>
   );
 }
 
-function FloatingShapes() {
-  const shapes = useRef<THREE.Group>(null);
+function FloatingConstellation() {
+  const group = useRef<THREE.Group>(null);
 
-  useEffect(() => {
-    const group = shapes.current;
-    if (!group) return;
-    const ctx = gsap.context(() => {
-      gsap.to(group.rotation, {
-        y: Math.PI * 2,
-        duration: 30,
-        repeat: -1,
-        ease: "none",
-      });
-    });
-    return () => ctx.revert();
-  }, []);
+  useFrame((state) => {
+    if (group.current) {
+      const t = state.clock.getElapsedTime();
+      group.current.rotation.y = t * 0.02;
+    }
+  });
 
   return (
-    <group ref={shapes}>
-      <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.6}>
-        <mesh position={[-2.5, 1.2, -1]}>
-          <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color="#c7f35a" emissive="#c7f35a" emissiveIntensity={0.3} />
+    <group ref={group}>
+      <Float speed={1.8} rotationIntensity={0.5} floatIntensity={0.8}>
+        <mesh position={[-3.5, 1.8, -2]}>
+          <octahedronGeometry args={[0.3, 0]} />
+          <meshStandardMaterial color="#00f59b" emissive="#00f59b" emissiveIntensity={0.6} wireframe />
         </mesh>
       </Float>
-      <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.8}>
-        <mesh position={[2.2, 0.8, -2]}>
-          <sphereGeometry args={[0.25, 32, 32]} />
-          <meshStandardMaterial color="#66e3ff" emissive="#66e3ff" emissiveIntensity={0.3} />
+
+      <Float speed={2.2} rotationIntensity={0.6} floatIntensity={1.0}>
+        <mesh position={[3.8, 1.2, -3]}>
+          <icosahedronGeometry args={[0.35, 0]} />
+          <meshStandardMaterial color="#00d4ff" emissive="#00d4ff" emissiveIntensity={0.6} wireframe />
         </mesh>
       </Float>
-      <Float speed={1} rotationIntensity={0.2} floatIntensity={0.5}>
-        <mesh position={[0.5, 1.8, -3]}>
-          <torusGeometry args={[0.2, 0.05, 16, 64]} />
-          <meshStandardMaterial color="#ff7a4d" emissive="#ff7a4d" emissiveIntensity={0.3} />
+
+      <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.7}>
+        <mesh position={[1.2, 2.8, -4]}>
+          <dodecahedronGeometry args={[0.25, 0]} />
+          <meshStandardMaterial color="#ff3b30" emissive="#ff3b30" emissiveIntensity={0.6} wireframe />
         </mesh>
       </Float>
     </group>
   );
 }
 
-function Parallax() {
-  const controlsRef = useRef<OrbitControlsImpl>(null);
-  const baseAz = useRef(0);
-  const basePol = useRef(0);
-  const targetAz = useRef(0);
-  const targetPol = useRef(0);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const onMove = (e: MouseEvent) => {
-      const ndcX = (e.clientX / window.innerWidth) * 2 - 1;
-      const ndcY = -((e.clientY / window.innerHeight) * 2 - 1);
-      targetAz.current = ndcX;
-      targetPol.current = ndcY;
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, []);
-
-  useEffect(() => {
-    const controls = controlsRef.current;
-    if (!controls) return;
-    baseAz.current = controls.getAzimuthalAngle();
-    basePol.current = controls.getPolarAngle();
-  }, []);
-
-  useFrame(() => {
-    const controls = controlsRef.current;
-    if (!controls) return;
-    const t = 0.06;
-    targetAz.current += (0 - targetAz.current) * t;
-    targetPol.current += (0 - targetPol.current) * t;
-
-    const az = baseAz.current + targetAz.current * 0.35;
-    const pol = Math.max(
-      0.1,
-      Math.min(Math.PI - 0.1, basePol.current + targetPol.current * 0.3),
-    );
-    controls.setAzimuthalAngle(az);
-    controls.setPolarAngle(pol);
+function InteractiveParallax() {
+  useFrame(({ camera, pointer }) => {
+    camera.position.x += (pointer.x * 0.8 - camera.position.x) * 0.035;
+    camera.position.y += (2.2 + pointer.y * 0.5 - camera.position.y) * 0.035;
+    camera.lookAt(0, -0.4, -2);
   });
-
-  return (
-    <OrbitControls
-      ref={controlsRef}
-      enableZoom={false}
-      enablePan={false}
-      autoRotate={false}
-      enableDamping
-      dampingFactor={0.05}
-    />
-  );
+  return null;
 }
 
 export function HeroTerrain() {
   return (
-    <div className="hero__canvas">
+    <div style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}>
       <Canvas
-        camera={{ position: [0, 2.5, 6], fov: 45 }}
+        camera={{ position: [0, 2.2, 6], fov: 48 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
-        <color attach="background" args={["#0b0e10"]} />
-        <ambientLight intensity={0.4} />
-        <directionalLight
-          position={[5, 8, 5]}
-          intensity={1.4}
-          color="#c7f35a"
-        />
-        <pointLight position={[6, 3, 2]} intensity={1.1} color="#ffd9a0" />
-        <Terrain />
-        <FloatingShapes />
-        <Stars radius={80} depth={50} count={800} factor={2} saturation={0} fade speed={0.5} />
-        <Environment preset="night" />
-        <Parallax />
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[4, 8, 3]} intensity={1.8} color="#00d4ff" />
+        <pointLight position={[-4, 3, 2]} intensity={2.0} color="#ff3b30" />
+        <pointLight position={[0, -1, 3]} intensity={1.2} color="#00f59b" />
+
+        <TopoTerrain />
+        <FloatingConstellation />
+        <Stars radius={60} depth={40} count={900} factor={3} saturation={0.5} fade speed={0.8} />
+        <InteractiveParallax />
       </Canvas>
     </div>
   );

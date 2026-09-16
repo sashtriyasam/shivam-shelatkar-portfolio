@@ -4,8 +4,12 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
-import { ArrowUpRight, ArrowDown, Mail, Github, Linkedin } from "lucide-react";
+import { ArrowUpRight, ArrowDown, Mail, Github, Linkedin, Volume2, VolumeX, Sparkles, Activity, ShieldCheck } from "lucide-react";
 import { CrowdCanvas } from "@/components/sections/CrowdCanvas";
+import { TiltCard } from "@/components/projects/TiltCard";
+import { InteractiveTerminal } from "@/components/sections/InteractiveTerminal";
+import { SpatialShowcase } from "@/components/sections/SpatialShowcase";
+import { sound } from "@/lib/audio";
 
 const HeroTerrain = dynamic(
   () => import("@/components/hero/HeroTerrain").then((m) => m.HeroTerrain),
@@ -62,7 +66,8 @@ const ARCHIVE_PROJECTS = [
     description: "An open manual examining decision friction and component state clarity in enterprise systems.",
     year: "2023",
     href: "https://decided.cargo.site",
-    external: true
+    external: true,
+    tag: "OPEN SOURCE"
   },
   {
     id: "05",
@@ -71,7 +76,8 @@ const ARCHIVE_PROJECTS = [
     description: "Curated publication featuring modular bento spreads, custom typography, and longform essays.",
     year: "2023",
     href: "/work",
-    external: false
+    external: false,
+    tag: "PUBLICATION"
   },
   {
     id: "06",
@@ -80,7 +86,8 @@ const ARCHIVE_PROJECTS = [
     description: "Speculative identity system, bilingual wayfinding protocols, and generative broadcast graphics.",
     year: "2022",
     href: "/work",
-    external: false
+    external: false,
+    tag: "SPECULATIVE"
   }
 ];
 
@@ -105,6 +112,7 @@ const PRINCIPLES = [
 export default function HomePage() {
   const [time, setTime] = useState("--:--");
   const [mounted, setMounted] = useState(false);
+  const [soundActive, setSoundActive] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const shouldReduceMotion = useReducedMotion();
 
@@ -136,647 +144,519 @@ export default function HomePage() {
     };
   }, []);
 
+  const toggleAudio = () => {
+    const isEnabled = sound.toggle();
+    setSoundActive(isEnabled);
+  };
+
   const easeTransition = [0.16, 1, 0.3, 1] as const;
 
   return (
-    <div className="home-root" style={{ background: "var(--color-paper)", color: "var(--color-ink)", position: "relative", overflowX: "hidden" }}>
+    <div className="immersive-portfolio-root">
       <style>{`
-        .home-root {
+        .immersive-portfolio-root {
+          background-color: #060709;
+          color: #f0f2f5;
           font-family: var(--font-body);
-          --accent-red: #d60004;
-          --line-subtle: #eaeaea;
+          position: relative;
+          overflow-x: hidden;
+          min-height: 100vh;
         }
 
-        .spotlight-glow {
+        .immersive-portfolio-root::before {
+          content: "";
           position: fixed;
           inset: 0;
           pointer-events: none;
           z-index: 0;
-          background: radial-gradient(750px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(214, 0, 4, 0.04), transparent 65%);
-          transition: background 0.15s ease-out;
+          background-image: 
+            linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+          background-size: 64px 64px;
         }
 
-        .hero-top-bar {
+        .ambient-glow {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          z-index: 0;
+          background: radial-gradient(850px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 59, 48, 0.045), rgba(0, 212, 255, 0.02) 40%, transparent 75%);
+          transition: background 0.1s ease-out;
+        }
+
+        .hud-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding: 0 clamp(20px, 4.5vw, 72px);
-          height: 54px;
-          border-bottom: 1px solid var(--color-line);
-          background: rgba(255, 255, 255, 0.92);
-          backdrop-filter: blur(12px);
+          height: 56px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          background: rgba(6, 7, 9, 0.88);
+          backdrop-filter: blur(16px);
           position: sticky;
           top: 0;
-          z-index: 50;
+          z-index: 60;
           font-family: var(--font-mono);
           font-size: 0.65rem;
           letter-spacing: 0.12em;
           text-transform: uppercase;
         }
 
-        .hero-nav {
+        .hud-left {
           display: flex;
           align-items: center;
-          gap: 1.8rem;
+          gap: 1.2rem;
         }
 
-        .hero-nav a {
+        .hud-beacon {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #00f59b;
+          box-shadow: 0 0 10px #00f59b;
+          animation: beaconPulse 2s infinite;
+        }
+
+        @keyframes beaconPulse {
+          0% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.85); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+
+        .hud-audio-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #f0f2f5;
+          padding: 0.35rem 0.75rem;
+          border-radius: 999px;
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.1em;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .hud-audio-btn:hover {
+          background: rgba(255, 255, 255, 0.12);
+          border-color: #00d4ff;
+          color: #00d4ff;
+        }
+
+        .hud-nav {
+          display: flex;
+          align-items: center;
+          gap: 2rem;
+        }
+
+        .hud-nav a {
           text-decoration: none;
-          color: var(--color-ink);
+          color: rgba(255, 255, 255, 0.7);
           position: relative;
-          padding: 6px 0;
+          padding: 4px 0;
           transition: color 0.2s ease;
         }
 
-        .hero-nav a::after {
+        .hud-nav a:hover {
+          color: #fff;
+        }
+
+        .hud-nav a::after {
           content: "";
           position: absolute;
           left: 0;
-          bottom: 0;
+          bottom: -2px;
           width: 0;
           height: 1.5px;
-          background: var(--accent-red);
-          transition: width 0.22s var(--ease);
+          background: #ff3b30;
+          transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .hero-nav a:hover {
-          color: var(--accent-red);
-        }
-
-        .hero-nav a:hover::after {
+        .hud-nav a:hover::after {
           width: 100%;
         }
 
-        .hero-section {
-          min-height: calc(100vh - 54px);
+        .hero-shell {
+          min-height: calc(100vh - 56px);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: 3.5rem clamp(20px, 4.5vw, 72px) 2rem;
+          padding: 4rem clamp(20px, 4.5vw, 72px) 2.5rem;
           position: relative;
           z-index: 1;
         }
 
-        .hero-center {
+        .hero-content {
           max-width: 1240px;
           width: 100%;
           margin: auto 0;
+          position: relative;
+          z-index: 2;
         }
 
-        .hero-kicker-pill {
+        .hero-kicker-tag {
           display: inline-flex;
           align-items: center;
           gap: 0.6rem;
-          padding: 0.45rem 0.95rem;
+          padding: 0.45rem 1rem;
           border-radius: 999px;
-          border: 1px solid var(--color-line);
-          background: rgba(255, 255, 255, 0.9);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: rgba(12, 14, 20, 0.75);
+          backdrop-filter: blur(10px);
           font-family: var(--font-mono);
-          font-size: 0.64rem;
-          letter-spacing: 0.14em;
+          font-size: 0.65rem;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: var(--color-ink);
+          color: #00d4ff;
           margin-bottom: 2rem;
         }
 
-        .pulse-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #10b981;
-          box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
-          animation: statusPulse 2s infinite;
-        }
-
-        @keyframes statusPulse {
-          0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-          70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-          100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        .hero-title {
-          font-size: clamp(3.2rem, 8.5vw, 8.4rem);
+        .hero-headline {
+          font-size: clamp(3.2rem, 9vw, 8.8rem);
           font-weight: 700;
-          line-height: 0.92;
-          letter-spacing: -0.045em;
+          line-height: 0.9;
+          letter-spacing: -0.05em;
           margin: 0;
-          color: var(--color-ink);
+          color: #fff;
+          text-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
         }
 
-        .hero-title .italic-accent {
+        .hero-headline .neon-accent {
+          color: #ff3b30;
           font-family: var(--font-display);
           font-style: italic;
           font-weight: 400;
-          color: var(--accent-red);
           letter-spacing: -0.02em;
+          display: inline-block;
+          text-shadow: 0 0 25px rgba(255, 59, 48, 0.4);
         }
 
-        .hero-bio {
-          font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+        .hero-desc {
+          font-size: clamp(1.1rem, 2.2vw, 1.65rem);
           line-height: 1.5;
           letter-spacing: -0.02em;
-          color: #4a4a4a;
-          max-width: 46ch;
-          margin: 2rem 0 2.5rem;
+          color: rgba(255, 255, 255, 0.75);
+          max-width: 48ch;
+          margin: 2.2rem 0 2.8rem;
         }
 
-        .hero-actions {
+        .hero-cta-group {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          gap: 1.2rem;
           flex-wrap: wrap;
         }
 
-        .btn-primary {
+        .btn-neon-primary {
           display: inline-flex;
           align-items: center;
           gap: 0.6rem;
-          background: var(--color-ink);
-          color: var(--color-paper);
-          padding: 0.85rem 1.6rem;
+          background: #ff3b30;
+          color: #fff;
+          padding: 0.9rem 1.8rem;
           border-radius: 999px;
           font-family: var(--font-mono);
           font-size: 0.7rem;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
           text-decoration: none;
-          font-weight: 600;
-          transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+          font-weight: 700;
+          box-shadow: 0 10px 30px -5px rgba(255, 59, 48, 0.5);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .btn-primary:hover {
-          background: var(--accent-red);
-          transform: translateY(-2px);
-          box-shadow: 0 10px 24px -8px rgba(214, 0, 4, 0.4);
+        .btn-neon-primary:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 15px 40px -5px rgba(255, 59, 48, 0.7);
         }
 
-        .btn-secondary {
+        .btn-neon-outline {
           display: inline-flex;
           align-items: center;
           gap: 0.6rem;
-          background: transparent;
-          color: var(--color-ink);
-          border: 1px solid var(--color-line);
-          padding: 0.85rem 1.6rem;
+          background: rgba(255, 255, 255, 0.04);
+          color: #fff;
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          padding: 0.9rem 1.8rem;
           border-radius: 999px;
           font-family: var(--font-mono);
           font-size: 0.7rem;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
           text-decoration: none;
           transition: all 0.2s ease;
         }
 
-        .btn-secondary:hover {
-          border-color: var(--color-ink);
-          background: rgba(36, 36, 36, 0.04);
+        .btn-neon-outline:hover {
+          border-color: #00d4ff;
+          color: #00d4ff;
           transform: translateY(-2px);
+          background: rgba(0, 212, 255, 0.06);
         }
 
-        .hero-footer-bar {
+        .hero-telemetry-bar {
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding-top: 2rem;
-          border-top: 1px solid var(--color-line);
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
           font-family: var(--font-mono);
           font-size: 0.65rem;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--color-ui);
+          color: rgba(255, 255, 255, 0.45);
         }
 
-        .section-shell {
-          padding: 6.5rem clamp(20px, 4.5vw, 72px);
-          border-top: 1px solid var(--color-line);
+        .section-wrap {
+          padding: 7rem clamp(20px, 4.5vw, 72px);
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
           position: relative;
           z-index: 1;
         }
 
-        .section-container {
+        .section-max {
           max-width: 1240px;
           margin: 0 auto;
         }
 
-        .section-header-row {
+        .section-header-top {
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
-          margin-bottom: 3.5rem;
+          margin-bottom: 4rem;
           flex-wrap: wrap;
           gap: 1.5rem;
         }
 
-        .section-label {
+        .section-badge {
           font-family: var(--font-mono);
           font-size: 0.62rem;
-          letter-spacing: 0.2em;
+          letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: var(--accent-red);
+          color: #ff3b30;
           display: block;
           margin-bottom: 0.6rem;
-          font-weight: 600;
+          font-weight: 700;
         }
 
-        .section-heading {
-          font-size: clamp(2rem, 4.5vw, 3.8rem);
+        .section-h2 {
+          font-size: clamp(2.2rem, 4.5vw, 4rem);
           font-weight: 700;
           line-height: 1.05;
           letter-spacing: -0.04em;
           margin: 0;
+          color: #fff;
         }
 
-        .work-list {
+        .project-flow {
           display: flex;
           flex-direction: column;
-          gap: 2.2rem;
+          gap: 2.8rem;
         }
 
-        .work-card {
+        .project-card-inner {
           display: grid;
           grid-template-columns: 1.15fr 1fr;
-          border: 1px solid var(--color-line);
-          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 22px;
           overflow: hidden;
-          background: var(--color-paper);
-          text-decoration: none;
-          color: inherit;
-          transition: transform 0.35s var(--ease), border-color 0.35s ease, box-shadow 0.35s ease;
+          background: #0a0c10;
+          box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.5);
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .work-card:hover {
-          transform: translateY(-4px);
-          border-color: var(--color-ink);
-          box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+        .project-card-inner:hover {
+          border-color: rgba(255, 255, 255, 0.3);
+          box-shadow: 0 30px 80px -15px rgba(0, 0, 0, 0.8);
         }
 
-        .work-card-media {
+        .project-img-box {
           position: relative;
           overflow: hidden;
-          background: #0d0d0d;
-          min-height: 380px;
+          background: #000;
+          min-height: 420px;
         }
 
-        .work-card-img {
+        .project-img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           display: block;
-          filter: grayscale(40%);
+          filter: contrast(1.05) brightness(0.85);
           transition: filter 0.5s ease, transform 0.6s var(--ease);
         }
 
-        .work-card:hover .work-card-img {
-          filter: grayscale(0%);
-          transform: scale(1.03);
+        .project-card-inner:hover .project-img {
+          filter: contrast(1.1) brightness(1);
+          transform: scale(1.04);
         }
 
-        .work-card-info {
-          padding: clamp(2rem, 3.5vw, 3.2rem);
+        .project-info-pane {
+          padding: clamp(2.2rem, 3.8vw, 3.4rem);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          background: linear-gradient(135deg, rgba(14,16,22,0.95) 0%, rgba(8,10,14,0.98) 100%);
         }
 
-        .work-badge-row {
+        .project-meta-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
           margin-bottom: 1.2rem;
-        }
-
-        .work-category {
           font-family: var(--font-mono);
           font-size: 0.62rem;
-          letter-spacing: 0.16em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: var(--color-ui);
         }
 
-        .work-year {
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.12em;
-          color: var(--color-ui);
-        }
-
-        .work-title {
-          font-size: clamp(1.8rem, 3vw, 2.6rem);
+        .project-title-h3 {
+          font-size: clamp(2rem, 3.2vw, 2.8rem);
           font-weight: 700;
-          letter-spacing: -0.035em;
-          line-height: 1.08;
+          letter-spacing: -0.04em;
+          line-height: 1.05;
           margin: 0 0 0.8rem;
-          color: var(--color-ink);
+          color: #fff;
         }
 
-        .work-headline {
-          font-size: 1rem;
+        .project-headline-p {
+          font-size: 1.05rem;
           font-weight: 500;
           line-height: 1.5;
-          color: #333;
+          color: #00d4ff;
           margin-bottom: 1rem;
         }
 
-        .work-desc {
-          font-size: 0.9rem;
-          line-height: 1.65;
-          color: #666;
-          margin: 0 0 1.5rem;
+        .project-body-p {
+          font-size: 0.94rem;
+          line-height: 1.7;
+          color: rgba(255, 255, 255, 0.7);
+          margin: 0 0 1.6rem;
         }
 
-        .work-tag-row {
+        .project-tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.45rem;
+          gap: 0.5rem;
           margin-bottom: 2rem;
         }
 
-        .work-tag {
+        .tag-pill {
           font-family: var(--font-mono);
           font-size: 0.58rem;
-          letter-spacing: 0.1em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          padding: 0.32rem 0.65rem;
+          padding: 0.32rem 0.7rem;
           border-radius: 999px;
-          border: 1px solid var(--color-line);
-          color: var(--color-ui);
-          background: var(--color-paper);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: rgba(255, 255, 255, 0.7);
+          background: rgba(255, 255, 255, 0.03);
         }
 
-        .work-cta-row {
+        .project-footer-row {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-top: 1.2rem;
-          border-top: 1px solid var(--color-line);
+          padding-top: 1.4rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .work-metric {
+        .project-stat-label {
           font-family: var(--font-mono);
-          font-size: 0.68rem;
-          font-weight: 600;
+          font-size: 0.72rem;
+          font-weight: 700;
           letter-spacing: 0.08em;
-          color: var(--accent-red);
         }
 
-        .work-link-text {
+        .project-cta-link {
           font-family: var(--font-mono);
-          font-size: 0.68rem;
+          font-size: 0.7rem;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          font-weight: 600;
+          font-weight: 700;
           display: inline-flex;
           align-items: center;
-          gap: 4px;
-          color: var(--color-ink);
+          gap: 5px;
+          color: #fff;
         }
 
-        .archive-grid {
+        .archive-deck {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 1.2rem;
+          gap: 1.4rem;
           margin-top: 2rem;
         }
 
-        .archive-card {
-          border: 1px solid var(--color-line);
-          border-radius: 16px;
-          padding: 1.8rem;
-          background: var(--color-paper);
+        .archive-unit {
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 18px;
+          padding: 2rem;
+          background: rgba(12, 14, 20, 0.75);
+          backdrop-filter: blur(10px);
           text-decoration: none;
           color: inherit;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          min-height: 220px;
+          min-height: 240px;
           transition: all 0.25s ease;
         }
 
-        .archive-card:hover {
-          border-color: var(--color-ink);
-          transform: translateY(-3px);
-          background: var(--color-paper-2);
+        .archive-unit:hover {
+          border-color: #00d4ff;
+          transform: translateY(-4px);
+          background: rgba(16, 20, 30, 0.95);
         }
 
-        .philosophy-grid {
+        .principles-deck {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 1.6rem;
+          gap: 1.8rem;
         }
 
-        .philosophy-item {
-          border: 1px solid var(--color-line);
-          border-radius: 16px;
-          padding: 2.2rem;
-          background: var(--color-paper);
+        .principle-box {
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          padding: 2.4rem;
+          background: rgba(12, 14, 20, 0.6);
+          backdrop-filter: blur(12px);
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.1rem;
         }
 
-        .philosophy-num {
-          font-family: var(--font-mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.2em;
-          color: var(--accent-red);
-          font-weight: 600;
-        }
-
-        .philosophy-title {
-          font-size: 1.25rem;
-          font-weight: 700;
-          letter-spacing: -0.025em;
-          line-height: 1.2;
-          margin: 0;
-        }
-
-        .philosophy-body {
-          font-size: 0.92rem;
-          line-height: 1.7;
-          color: #555;
-          margin: 0;
-        }
-
-        .about-strip {
-          background: #111;
-          color: #fff;
-          border-radius: 24px;
+        .about-cockpit {
+          background: linear-gradient(135deg, #0d0f15 0%, #060709 100%);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 26px;
           padding: clamp(2.5rem, 5vw, 4.5rem);
           display: grid;
-          grid-template-columns: 1.2fr 0.8fr;
-          gap: 3rem;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 3.5rem;
           align-items: center;
+          box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
         }
 
-        .about-strip-heading {
-          font-size: clamp(2rem, 4vw, 3.2rem);
-          font-weight: 700;
-          line-height: 1.08;
-          letter-spacing: -0.035em;
-          margin: 0 0 1.5rem;
-        }
-
-        .about-strip-copy {
-          font-size: 1.05rem;
-          line-height: 1.75;
-          color: rgba(255, 255, 255, 0.7);
-          margin: 0 0 2rem;
-        }
-
-        .terminal-shell {
-          background: #08090a;
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 16px;
-          overflow: hidden;
-          font-family: var(--font-mono);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-        }
-
-        .terminal-header {
-          background: rgba(255, 255, 255, 0.04);
-          padding: 0.75rem 1rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          font-size: 0.62rem;
-          color: rgba(255, 255, 255, 0.4);
-        }
-
-        .terminal-dot {
-          width: 9px;
-          height: 9px;
-          border-radius: 50%;
-        }
-
-        .terminal-body {
-          padding: 1.4rem;
-          font-size: 0.72rem;
-          line-height: 1.8;
-          color: #e5e5e5;
-        }
-
-        .crowd-container {
-          position: relative;
-          width: 100%;
-          height: 440px;
-          overflow: hidden;
-          background: var(--color-paper-2);
-          border-top: 1px solid var(--color-line);
-          border-bottom: 1px solid var(--color-line);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .crowd-overlay {
-          position: absolute;
-          z-index: 10;
-          text-align: center;
-          pointer-events: none;
-          max-width: 580px;
-          padding: 0 1.5rem;
-        }
-
-        .crowd-tag {
-          display: inline-block;
-          font-family: var(--font-mono);
-          font-size: 0.58rem;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: var(--accent-red);
-          margin-bottom: 0.8rem;
-          font-weight: 600;
-        }
-
-        .crowd-heading {
-          font-size: clamp(2.2rem, 5vw, 3.8rem);
-          font-weight: 700;
-          letter-spacing: -0.04em;
-          margin: 0 0 1rem;
-          color: var(--color-ink);
-        }
-
-        .crowd-text {
-          font-family: var(--font-mono);
-          font-size: 0.75rem;
-          line-height: 1.6;
-          color: #555;
-          margin: 0;
-          background: rgba(247, 242, 230, 0.85);
-          backdrop-filter: blur(8px);
-          padding: 0.6rem 1.2rem;
-          border-radius: 999px;
-          border: 1px solid var(--color-line);
-        }
-
-        .site-footer-main {
-          background: var(--color-ink);
-          color: var(--color-paper);
-          padding: 5rem clamp(20px, 4.5vw, 72px) 2.5rem;
-        }
-
-        .footer-grid {
-          display: grid;
-          grid-template-columns: 1.4fr 0.6fr;
-          gap: 3rem;
-          margin-bottom: 4rem;
-        }
-
-        .footer-heading {
-          font-size: clamp(2.4rem, 5.5vw, 4.5rem);
-          font-weight: 700;
-          line-height: 0.95;
-          letter-spacing: -0.045em;
-          margin: 0 0 1.5rem;
-        }
-
-        .footer-links-col {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          align-items: flex-end;
-        }
-
-        .footer-bottom-bar {
-          padding-top: 2rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-family: var(--font-mono);
-          font-size: 0.62rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: rgba(255, 255, 255, 0.4);
-          flex-wrap: wrap;
-          gap: 1rem;
-        }
-
-        @media (max-width: 900px) {
-          .work-card {
+        @media (max-width: 960px) {
+          .project-card-inner {
             grid-template-columns: 1fr;
           }
-          .archive-grid, .philosophy-grid {
+          .archive-deck, .principles-deck {
             grid-template-columns: 1fr;
           }
-          .about-strip {
+          .about-cockpit {
             grid-template-columns: 1fr;
           }
-          .footer-grid {
-            grid-template-columns: 1fr;
-          }
-          .footer-links-col {
-            align-items: flex-start;
-          }
-          .hero-nav {
+          .hud-nav {
             display: none;
           }
         }
       `}</style>
 
       <div
-        className="spotlight-glow"
+        className="ambient-glow"
         style={{
           "--mouse-x": `${mousePos.x}%`,
           "--mouse-y": `${mousePos.y}%`
@@ -784,94 +664,141 @@ export default function HomePage() {
         aria-hidden
       />
 
-      <header className="hero-top-bar">
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
-            <span className="pulse-dot" />
-            <span>PUNE, IN</span>
+      <header className="hud-header">
+        <div className="hud-left">
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+            <span className="hud-beacon" />
+            <span style={{ color: "#00f59b", fontWeight: 700 }}>SYS: ONLINE</span>
           </span>
-          <span style={{ color: "var(--color-line)" }}>|</span>
-          <span style={{ fontVariantNumeric: "tabular-nums", color: "var(--color-ui)" }}>
+          <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+          <span style={{ color: "rgba(255,255,255,0.7)" }}>PUNE 18.52°N 73.85°E</span>
+          <span style={{ color: "rgba(255,255,255,0.2)" }}>|</span>
+          <span style={{ fontVariantNumeric: "tabular-nums", color: "#00d4ff" }}>
             {mounted ? time : "--:--"} IST
           </span>
         </div>
 
-        <nav className="hero-nav">
-          <a href="#work">Selected Work</a>
-          <a href="#philosophy">Approach</a>
-          <a href="/about">About</a>
-          <a href="/work">Archive</a>
-          <a href="#contact">Contact</a>
+        <nav className="hud-nav">
+          <a href="#spatial" onMouseEnter={() => sound.playHover()}>Spatial</a>
+          <a href="#work" onMouseEnter={() => sound.playHover()}>Systems</a>
+          <a href="#philosophy" onMouseEnter={() => sound.playHover()}>Philosophy</a>
+          <a href="#terminal" onMouseEnter={() => sound.playHover()}>Console</a>
+          <a href="/about" onMouseEnter={() => sound.playHover()}>About</a>
+          <a href="#contact" onMouseEnter={() => sound.playHover()}>Transmit</a>
         </nav>
+
+        <div>
+          <button
+            type="button"
+            className="hud-audio-btn"
+            onClick={toggleAudio}
+            title="Toggle tactile sound synthesis"
+          >
+            {soundActive ? <Volume2 size={13} color="#00f59b" /> : <VolumeX size={13} />}
+            <span>{soundActive ? "AUDIO: ON" : "AUDIO: OFF"}</span>
+          </button>
+        </div>
       </header>
 
-      <section className="hero-section">
-        <div style={{ position: "absolute", inset: 0, opacity: 0.08, pointerEvents: "none" }}>
+      <section className="hero-shell">
+        <div style={{ position: "absolute", inset: 0, opacity: 0.85, pointerEvents: "all" }}>
           <HeroTerrain />
         </div>
 
-        <div className="hero-center">
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(ellipse at 40% 50%, rgba(6,7,9,0.75) 0%, rgba(6,7,9,0.92) 80%)",
+            pointerEvents: "none",
+            zIndex: 1
+          }}
+        />
+
+        <div className="hero-content">
           <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: easeTransition }}
           >
-            <div className="hero-kicker-pill">
-              <span>Shivam Shelatkar</span>
-              <span style={{ color: "var(--color-line)" }}>/</span>
-              <span style={{ color: "var(--accent-red)", fontWeight: 600 }}>Creative Technologist</span>
+            <div className="hero-kicker-tag">
+              <Sparkles size={12} />
+              <span>SHIVAM SHELATKAR</span>
+              <span style={{ color: "rgba(255,255,255,0.3)" }}>//</span>
+              <span style={{ color: "#fff", fontWeight: 700 }}>CREATIVE TECHNOLOGIST &amp; ARCHITECT</span>
             </div>
           </motion.div>
 
           <motion.h1
-            className="hero-title"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 36 }}
+            className="hero-headline"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.1, ease: easeTransition }}
+            transition={{ duration: 0.9, delay: 0.1, ease: easeTransition }}
           >
-            Building systems where <br />
-            research <span className="italic-accent">&amp;</span> code meet.
+            High-consequence <br />
+            software <span className="neon-accent">&amp;</span> spatial UX.
           </motion.h1>
 
           <motion.p
-            className="hero-bio"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+            className="hero-desc"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.2, ease: easeTransition }}
+            transition={{ duration: 0.9, delay: 0.2, ease: easeTransition }}
           >
-            Product designer and frontend engineer crafting high-consequence tools — from ISRO satellite intelligence canvases to AI-driven predictive revenue engines.
+            Bridging abstract mathematical systems and tactile interfaces — from real-time ISRO satellite orbital canvases to machine learning prediction engines.
           </motion.p>
 
           <motion.div
-            className="hero-actions"
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+            className="hero-cta-group"
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.3, ease: easeTransition }}
+            transition={{ duration: 0.8, delay: 0.3, ease: easeTransition }}
           >
-            <a href="#work" className="btn-primary">
-              <span>Explore Selected Work</span>
+            <a
+              href="#spatial"
+              className="btn-neon-primary"
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              <span>Explore Spatial Showcase</span>
               <ArrowDown size={14} />
             </a>
-            <a href="mailto:shelatkarshivam4@gmail.com" className="btn-secondary">
+            <a
+              href="mailto:shelatkarshivam4@gmail.com"
+              className="btn-neon-outline"
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
               <Mail size={14} />
-              <span>shelatkarshivam4@gmail.com</span>
+              <span>Direct Comms: shelatkarshivam4@gmail.com</span>
             </a>
           </motion.div>
         </div>
 
-        <div className="hero-footer-bar">
-          <span>01 / 04 Core Focus: Geospatial · AI · Mobility</span>
-          <span>Scroll to inspect cases ↓</span>
+        <div className="hero-telemetry-bar">
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <Activity size={12} color="#00f59b" /> MISSION DISPATCH: 03 FLAGGED PLATFORMS ACTIVE
+          </span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <ShieldCheck size={12} color="#00d4ff" /> 1.2K COMMITS · ZERO COMPROMISE ON LATENCY
+          </span>
         </div>
       </section>
 
-      <section id="work" className="section-shell">
-        <div className="section-container">
-          <div className="section-header-row">
+      <section id="spatial" className="section-wrap" style={{ background: "#040507" }}>
+        <div className="section-max">
+          <SpatialShowcase />
+        </div>
+      </section>
+
+      <section id="work" className="section-wrap">
+        <div className="section-max">
+          <div className="section-header-top">
             <div>
-              <span className="section-label">01 / Portfolio</span>
-              <h2 className="section-heading">
-                Selected Case Studies <span style={{ color: "var(--accent-red)" }}>.</span>
+              <span className="section-badge">01 // PRODUCTION ARTIFACTS</span>
+              <h2 className="section-h2">
+                Flagship Case Studies <span style={{ color: "#ff3b30" }}>.</span>
               </h2>
             </div>
             <Link
@@ -879,262 +806,343 @@ export default function HomePage() {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "0.68rem",
-                letterSpacing: "0.12em",
+                letterSpacing: "0.14em",
                 textTransform: "uppercase",
                 textDecoration: "none",
-                color: "var(--color-ink)",
+                color: "#00d4ff",
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                fontWeight: 600
+                fontWeight: 700
               }}
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
             >
-              <span>View full archive</span>
+              <span>Full System Archive</span>
               <ArrowUpRight size={14} />
             </Link>
           </div>
 
-          <div className="work-list">
+          <div className="project-flow">
             {FEATURED_PROJECTS.map((project, idx) => (
               <motion.div
                 key={project.id}
-                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40 }}
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 45 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.75, delay: idx * 0.08, ease: easeTransition }}
+                viewport={{ once: true, margin: "-70px" }}
+                transition={{ duration: 0.75, delay: idx * 0.09, ease: easeTransition }}
               >
-                <Link href={project.href} className="work-card">
-                  <div className="work-card-media">
-                    <img
-                      src={project.previewImg}
-                      alt={project.title}
-                      className="work-card-img"
-                      loading="lazy"
-                    />
-                    <div style={{ position: "absolute", top: 16, left: 16, background: "rgba(0,0,0,0.75)", color: "#fff", padding: "0.3rem 0.65rem", borderRadius: 999, fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.14em" }}>
-                      {project.id}
+                <TiltCard href={project.href} maxTilt={6}>
+                  <div className="project-card-inner">
+                    <div className="project-img-box">
+                      <img
+                        src={project.previewImg}
+                        alt={project.title}
+                        className="project-img"
+                        loading="lazy"
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 18,
+                          left: 18,
+                          background: "rgba(6, 7, 9, 0.85)",
+                          backdropFilter: "blur(8px)",
+                          border: "1px solid rgba(255, 255, 255, 0.2)",
+                          color: "#fff",
+                          padding: "0.35rem 0.8rem",
+                          borderRadius: 999,
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.62rem",
+                          letterSpacing: "0.16em",
+                          fontWeight: 700
+                        }}
+                      >
+                        MODULE {project.id}
+                      </div>
+                    </div>
+
+                    <div className="project-info-pane">
+                      <div>
+                        <div className="project-meta-row">
+                          <span style={{ color: "#00d4ff" }}>{project.subtitle}</span>
+                          <span style={{ color: "rgba(255,255,255,0.4)" }}>{project.year}</span>
+                        </div>
+                        <h3 className="project-title-h3">{project.title}</h3>
+                        <div className="project-headline-p">{project.headline}</div>
+                        <p className="project-body-p">{project.description}</p>
+                        <div className="project-tags">
+                          {project.tags.map((tag) => (
+                            <span key={tag} className="tag-pill">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="project-footer-row">
+                        <span className="project-stat-label" style={{ color: "#00f59b" }}>
+                          ✦ {project.stats}
+                        </span>
+                        <span className="project-cta-link">
+                          <span>Inspect Deep Dive</span>
+                          <ArrowUpRight size={14} color="#00f59b" />
+                        </span>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="work-card-info">
-                    <div>
-                      <div className="work-badge-row">
-                        <span className="work-category">{project.subtitle}</span>
-                        <span className="work-year">{project.year}</span>
-                      </div>
-                      <h3 className="work-title">{project.title}</h3>
-                      <div className="work-headline">{project.headline}</div>
-                      <p className="work-desc">{project.description}</p>
-                      <div className="work-tag-row">
-                        {project.tags.map((tag) => (
-                          <span key={tag} className="work-tag">{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="work-cta-row">
-                      <span className="work-metric">✦ {project.stats}</span>
-                      <span className="work-link-text">
-                        Read Case Study <ArrowUpRight size={14} />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                </TiltCard>
               </motion.div>
             ))}
           </div>
 
-          <div style={{ marginTop: "5rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--color-ui)" }}>
-                More Projects &amp; Explorations
+          <div style={{ marginTop: "6rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.8rem" }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>
+                // RESEARCH ARCHIVE &amp; EXPERIMENTAL PROTOCOLS
               </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "var(--color-ui)" }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", color: "#ff3b30" }}>
                 04 — 06
               </span>
             </div>
 
-            <div className="archive-grid">
+            <div className="archive-deck">
               {ARCHIVE_PROJECTS.map((item) => (
-                <a
-                  key={item.id}
-                  href={item.href}
-                  target={item.external ? "_blank" : undefined}
-                  rel={item.external ? "noopener noreferrer" : undefined}
-                  className="archive-card"
-                >
-                  <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.8rem" }}>
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", color: "var(--accent-red)", letterSpacing: "0.14em" }}>{item.id}</span>
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", color: "var(--color-ui)" }}>{item.year}</span>
+                <TiltCard key={item.id} href={item.href} maxTilt={8}>
+                  <div className="archive-unit">
+                    <div>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.8rem" }}>
+                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "#ff3b30", letterSpacing: "0.16em", fontWeight: 700 }}>{item.id}</span>
+                        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", color: "#00f59b" }}>{item.tag}</span>
+                      </div>
+                      <h4 style={{ fontSize: "1.35rem", fontWeight: 700, margin: "0 0 0.5rem", letterSpacing: "-0.03em", color: "#fff" }}>{item.title}</h4>
+                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", color: "rgba(255,255,255,0.4)", marginBottom: "0.8rem", textTransform: "uppercase" }}>{item.category}</div>
+                      <p style={{ fontSize: "0.88rem", lineHeight: 1.65, color: "rgba(255,255,255,0.65)", margin: 0 }}>{item.description}</p>
                     </div>
-                    <h4 style={{ fontSize: "1.25rem", fontWeight: 700, margin: "0 0 0.4rem", letterSpacing: "-0.02em" }}>{item.title}</h4>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", color: "var(--color-ui)", marginBottom: "0.6rem", textTransform: "uppercase" }}>{item.category}</div>
-                    <p style={{ fontSize: "0.88rem", lineHeight: 1.6, color: "#666", margin: 0 }}>{item.description}</p>
+                    <div style={{ marginTop: "1.4rem", fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", display: "inline-flex", alignItems: "center", gap: 5, color: "#00d4ff", fontWeight: 700 }}>
+                      <span>{item.external ? "Open Deployed Platform" : "View Project Overview"}</span>
+                      <ArrowUpRight size={13} />
+                    </div>
                   </div>
-                  <div style={{ marginTop: "1.2rem", fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.12em", textTransform: "uppercase", display: "inline-flex", alignItems: "center", gap: 4, color: "var(--color-ink)", fontWeight: 600 }}>
-                    <span>{item.external ? "Visit Platform" : "View Details"}</span>
-                    <ArrowUpRight size={12} />
-                  </div>
-                </a>
+                </TiltCard>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section id="philosophy" className="section-shell" style={{ background: "var(--color-paper-2)" }}>
-        <div className="section-container">
-          <div className="section-header-row">
+      <section id="philosophy" className="section-wrap" style={{ background: "#050608" }}>
+        <div className="section-max">
+          <div className="section-header-top">
             <div>
-              <span className="section-label">02 / Philosophy</span>
-              <h2 className="section-heading">
-                How I Think About Craft <span style={{ color: "var(--accent-red)" }}>.</span>
+              <span className="section-badge">02 // COGNITIVE PHILOSOPHY</span>
+              <h2 className="section-h2">
+                Principles of Extreme Craft <span style={{ color: "#ff3b30" }}>.</span>
               </h2>
             </div>
           </div>
 
-          <div className="philosophy-grid">
+          <div className="principles-deck">
             {PRINCIPLES.map((item, idx) => (
               <motion.div
                 key={item.num}
-                className="philosophy-item"
-                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 30 }}
+                className="principle-box"
+                initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 35 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.7, delay: idx * 0.1, ease: easeTransition }}
               >
-                <span className="philosophy-num">{item.num}</span>
-                <h3 className="philosophy-title">{item.title}</h3>
-                <p className="philosophy-body">{item.body}</p>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.68rem", letterSpacing: "0.2em", color: "#ff3b30", fontWeight: 700 }}>{item.num}</span>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff3b30" }} />
+                </div>
+                <h3 style={{ fontSize: "1.35rem", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.2, margin: 0, color: "#fff" }}>{item.title}</h3>
+                <p style={{ fontSize: "0.94rem", lineHeight: 1.75, color: "rgba(255,255,255,0.65)", margin: 0 }}>{item.body}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="about" className="section-shell">
-        <div className="section-container">
-          <div className="about-strip">
+      <section id="terminal" className="section-wrap">
+        <div className="section-max">
+          <div className="about-cockpit">
             <div>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--accent-red)", display: "block", marginBottom: "0.8rem", fontWeight: 600 }}>
-                03 / Background
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#00d4ff", display: "block", marginBottom: "0.8rem", fontWeight: 700 }}>
+                03 // COMMAND CENTER
               </span>
-              <h2 className="about-strip-heading">
-                Designer by instinct. <br />
-                Engineer by discipline.
+              <h2 style={{ fontSize: "clamp(2.2rem, 4vw, 3.5rem)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.04em", margin: "0 0 1.5rem", color: "#fff" }}>
+                Interactive Workstation Console.
               </h2>
-              <p className="about-strip-copy">
-                Based in Pune, India. I bridge the gap between abstract design systems and production-grade engineering. Over the past 4+ years, I have architected data-dense dashboards, geospatial map canvases, and real-time operations software.
+              <p style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "rgba(255,255,255,0.7)", margin: "0 0 2.2rem" }}>
+                Directly execute commands, query architecture parameters, or verify contact channels right from this console. All systems operate in real-time.
               </p>
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                <Link href="/about" className="btn-primary" style={{ background: "#fff", color: "#000" }}>
-                  <span>Read Full Bio &amp; Journey</span>
+                <Link
+                  href="/about"
+                  className="btn-neon-primary"
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
+                >
+                  <span>Complete Biography</span>
                   <ArrowUpRight size={14} />
                 </Link>
-                <a href="/about" className="btn-secondary" style={{ borderColor: "rgba(255,255,255,0.2)", color: "#fff" }}>
-                  <span>View Resume</span>
+                <a
+                  href="/about"
+                  className="btn-neon-outline"
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
+                >
+                  <span>Curriculum Vitae</span>
                 </a>
               </div>
             </div>
 
-            <div className="terminal-shell">
-              <div className="terminal-header">
-                <span className="terminal-dot" style={{ background: "#ff5f56" }} />
-                <span className="terminal-dot" style={{ background: "#ffbd2e" }} />
-                <span className="terminal-dot" style={{ background: "#27c93f" }} />
-                <span style={{ marginLeft: "auto" }}>shivam@machine ~</span>
-              </div>
-              <div className="terminal-body">
-                <div style={{ color: "rgba(255,255,255,0.4)" }}>$ whoami</div>
-                <div style={{ color: "#66e3ff", marginBottom: "0.8rem" }}>shivam-shelatkar (Creative Technologist)</div>
-
-                <div style={{ color: "rgba(255,255,255,0.4)" }}>$ cat focus.json</div>
-                <div style={{ color: "#c7f35a" }}>
-                  {`{
-  "location": "Pune, India",
-  "core": ["Next.js", "Three.js", "Mapbox", "TypeScript", "Figma"],
-  "status": "Available for high-impact roles"
-}`}
-                </div>
-
-                <div style={{ color: "rgba(255,255,255,0.4)", marginTop: "0.8rem" }}>$ echo $MISSION</div>
-                <div style={{ color: "#ff7a4d" }}>&quot;Uncover the why. Make it inevitable.&quot;</div>
-              </div>
+            <div>
+              <InteractiveTerminal />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="crowd-container">
-        <div className="crowd-overlay">
-          <span className="crowd-tag">The Interactive Lobby</span>
-          <h2 className="crowd-heading">Say Hello Directly.</h2>
-          <p className="crowd-text">
-            Skip automated filters. I respond directly to every thoughtful message.
-          </p>
-        </div>
-        <div style={{ position: "absolute", inset: 0, opacity: 0.5, filter: "grayscale(100%)", mixBlendMode: "multiply" }}>
-          <CrowdCanvas src="https://skiper-ui.com/images/peeps/all-peeps.png" rows={15} cols={7} />
+      <section className="section-wrap" style={{ padding: "5rem clamp(20px, 4.5vw, 72px)", background: "#050608" }}>
+        <div className="section-max">
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              height: "440px",
+              borderRadius: 24,
+              overflow: "hidden",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              background: "#080a0e",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <div style={{ position: "absolute", zIndex: 10, textAlign: "center", pointerEvents: "none", maxWidth: 580, padding: "0 1.5rem" }}>
+              <span style={{ display: "inline-block", fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#00f59b", marginBottom: "0.8rem", fontWeight: 700 }}>
+                ✦ THE RECRUITER LOBBY
+              </span>
+              <h2 style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)", fontWeight: 700, letterSpacing: "-0.04em", margin: "0 0 1rem", color: "#fff" }}>
+                Skip Automated Line.
+              </h2>
+              <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.78rem", lineHeight: 1.6, color: "rgba(255,255,255,0.75)", margin: 0, background: "rgba(6,7,9,0.8)", backdropFilter: "blur(8px)", padding: "0.6rem 1.4rem", borderRadius: 999, border: "1px solid rgba(255,255,255,0.12)" }}>
+                Transmit directly to my primary inbox. I review every single thoughtful message.
+              </p>
+            </div>
+
+            <div style={{ position: "absolute", inset: 0, opacity: 0.35, filter: "grayscale(100%) contrast(1.2)", mixBlendMode: "screen" }}>
+              <CrowdCanvas src="https://skiper-ui.com/images/peeps/all-peeps.png" rows={15} cols={7} />
+            </div>
+          </div>
         </div>
       </section>
 
-      <footer id="contact" className="site-footer-main">
-        <div className="section-container">
-          <div className="footer-grid">
+      <footer id="contact" className="section-wrap" style={{ background: "#030304" }}>
+        <div className="section-max">
+          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 0.6fr", gap: "3.5rem", marginBottom: "4.5rem" }}>
             <div>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--accent-red)", display: "block", marginBottom: "1rem", fontWeight: 600 }}>
-                04 / Next Steps
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.65rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#ff3b30", display: "block", marginBottom: "1.2rem", fontWeight: 700 }}>
+                04 // INITIATE TRANSMISSION
               </span>
-              <h2 className="footer-heading">
-                Have a project or problem <br />
-                worth tackling? Let&apos;s talk.
+              <h2 style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.8rem)", fontWeight: 700, lineHeight: 0.95, letterSpacing: "-0.05em", margin: "0 0 1.8rem", color: "#fff" }}>
+                Have a mission worth <br />
+                building? Let&apos;s talk.
               </h2>
               <div style={{ marginTop: "2rem" }}>
                 <a
                   href="mailto:shelatkarshivam4@gmail.com"
+                  onMouseEnter={() => sound.playHover()}
+                  onClick={() => sound.playClick()}
                   style={{
-                    fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)",
-                    fontWeight: 600,
+                    fontSize: "clamp(1.3rem, 2.8vw, 2.1rem)",
+                    fontWeight: 700,
                     color: "#fff",
                     textDecoration: "none",
                     display: "inline-flex",
                     alignItems: "center",
-                    gap: "0.6rem",
-                    borderBottom: "2px solid var(--accent-red)",
-                    paddingBottom: "4px"
+                    gap: "0.8rem",
+                    borderBottom: "2px solid #ff3b30",
+                    paddingBottom: "6px",
+                    transition: "color 0.2s ease"
                   }}
                 >
                   <span>shelatkarshivam4@gmail.com</span>
-                  <ArrowUpRight size={22} />
+                  <ArrowUpRight size={26} color="#ff3b30" />
                 </a>
               </div>
             </div>
 
-            <div className="footer-links-col">
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: "0.5rem" }}>
-                Connect
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", alignItems: "flex-end" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: "0.5rem" }}>
+                SECURE CHANNELS
               </div>
-              <a href="https://linkedin.com/in/shivam-shelatkar" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, fontSize: "0.95rem" }}>
-                <Linkedin size={16} /> <span>LinkedIn</span>
+              <a
+                href="https://linkedin.com/in/shivam-shelatkar"
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => sound.playHover()}
+                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
+              >
+                <Linkedin size={16} color="#00d4ff" /> <span>LinkedIn Network</span>
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, fontSize: "0.95rem" }}>
-                <Github size={16} /> <span>GitHub</span>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => sound.playHover()}
+                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
+              >
+                <Github size={16} color="#00f59b" /> <span>GitHub Repos</span>
               </a>
-              <a href="/about" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, fontSize: "0.95rem" }}>
+              <a
+                href="/about"
+                onMouseEnter={() => sound.playHover()}
+                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
+              >
                 <span>Curriculum Vitae</span>
               </a>
-              <a href="/work" style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, fontSize: "0.95rem" }}>
-                <span>All Projects (Archive)</span>
+              <a
+                href="/work"
+                onMouseEnter={() => sound.playHover()}
+                style={{ color: "#fff", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, fontSize: "1rem" }}
+              >
+                <span>Full Project Registry</span>
               </a>
             </div>
           </div>
 
-          <div className="footer-bottom-bar">
-            <div>© {new Date().getFullYear()} Shivam Shelatkar · All rights reserved.</div>
-            <div style={{ display: "flex", gap: "1.5rem" }}>
-              <span>Designed &amp; Engineered with Next.js 16</span>
-              <a href="#hero" style={{ color: "inherit", textDecoration: "none" }}>Back to top ↑</a>
+          <div
+            style={{
+              paddingTop: "2.5rem",
+              borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.62rem",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(255, 255, 255, 0.4)",
+              flexWrap: "wrap",
+              gap: "1.2rem"
+            }}
+          >
+            <div>© {new Date().getFullYear()} SHIVAM SHELATKAR · PUNE, IN · ALL RIGHTS RESERVED.</div>
+            <div style={{ display: "flex", gap: "1.8rem" }}>
+              <span>NEXT.JS 16 · THREE.JS · WEBGL · AUDIO SYNTH</span>
+              <a
+                href="#top"
+                onClick={(e) => {
+                  e.preventDefault();
+                  sound.playClick();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                onMouseEnter={() => sound.playHover()}
+                style={{ color: "#00d4ff", textDecoration: "none", fontWeight: 700 }}
+              >
+                RETURN TO APEX ↑
+              </a>
             </div>
           </div>
         </div>
