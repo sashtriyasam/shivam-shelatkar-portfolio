@@ -44,6 +44,7 @@ export default function HomePage() {
   const [active, setActive] = useState("All");
   const [mx, setMx] = useState(50);
   const [my, setMy] = useState(50);
+  const [time, setTime] = useState("--:--");
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, -120]);
@@ -51,26 +52,22 @@ export default function HomePage() {
   const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.94]);
 
   useEffect(() => {
+    const updTime = () =>
+      setTime(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false }));
+    updTime();
+    const tid = setInterval(updTime, 60000);
     const onMove = (e: MouseEvent) => {
-      setMx((e.clientX / window.innerWidth) * 100);
-      setMy((e.clientY / window.innerHeight) * 100);
-      document.documentElement.style.setProperty("--mx", `${(e.clientX / window.innerWidth) * 100}%`);
-      document.documentElement.style.setProperty("--my", `${(e.clientY / window.innerHeight) * 100}%`);
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      setMx(x);
+      setMy(y);
+      document.documentElement.style.setProperty("--mx", `${x}%`);
+      document.documentElement.style.setProperty("--my", `${y}%`);
     };
     window.addEventListener("mousemove", onMove);
-    document.documentElement.classList.add("spotlight", "active");
-    const el = document.createElement("div");
-    el.className = "spotlight active";
-    document.body.appendChild(el);
-    const upd = () => {
-      el.style.setProperty("--mx", `${mx}%`);
-      el.style.setProperty("--my", `${my}%`);
-    };
-    const id = setInterval(upd, 50);
     return () => {
       window.removeEventListener("mousemove", onMove);
-      clearInterval(id);
-      el.remove();
+      clearInterval(tid);
     };
   }, []);
 
@@ -79,7 +76,7 @@ export default function HomePage() {
   return (
     <>
       {/* SPOTLIGHT ARCADE BEAM - Lusion + Iventions */}
-      <div className="spotlight active" style={{ ["--mx" as any]: `${mx}%`, ["--my" as any]: `${my}%` }} aria-hidden />
+      <div className="spotlight active" style={{ ["--mx" as any]: `${mx}%`, ["--my" as any]: `${my}%` } as any} aria-hidden suppressHydrationWarning />
 
       {/* HERO - By-Kin continuous surface + Mat Voyce kinetic type + Pacome rhythm */}
       <section className="hero crt" id="hero" ref={heroRef} style={{ minHeight: "100vh" } as any}>
@@ -349,8 +346,8 @@ export default function HomePage() {
             </div>
             <div style={{ textAlign: "right" }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.14em", color: "#9e9e9e" }}>[ BASED IN PUNE, INDIA ]</div>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", marginTop: 4, color: "#242424" }}>
-                IN {new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false })} IST
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", marginTop: 4, color: "#242424" }} suppressHydrationWarning>
+                IN {time} IST
               </div>
               <Link href="/work" className="red-cta" style={{ marginTop: "1rem" }}>
                 Want to do something fun? →
