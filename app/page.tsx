@@ -1,4 +1,7 @@
 "use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { CrowdCanvas } from "@/components/sections/CrowdCanvas";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState, useRef } from "react";
@@ -335,6 +338,12 @@ export default function HomePage() {
               </a>
             ))}
           </div>
+        </div>
+      </section>
+      <section id="crowd" style={{ position: "relative", width: "100%", height: "450px", overflow: "hidden", background: "var(--color-paper)", borderTop: "1px solid var(--color-line)" }}>
+        <div style={{ position: "absolute", top: "2rem", left: "50%", transform: "translateX(-50%)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", color: "var(--color-ui)", letterSpacing: "0.14em", textTransform: "uppercase", zIndex: 10 }}>— CROWD CANVAS —</div>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.9, filter: "grayscale(100%)", mixBlendMode: "multiply" }}>
+          <CrowdCanvas src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/peeps.png" rows={15} cols={7} />
         </div>
       </section>
       <footer style={{ background: "var(--color-paper-2)", color: "var(--color-ink)", padding: "3.5rem clamp(24px, 5vw, 80px) 2rem", borderTop: "1px solid var(--color-line)", position: "relative", overflow: "hidden" }}>
