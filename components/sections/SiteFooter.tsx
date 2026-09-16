@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
@@ -44,6 +44,7 @@ export function SiteFooter() {
         <div className="site-footer__meta">
           <span>&copy; {year} Shivam Shelatkar</span>
           <span>Founder at Swarvibhaa, tabla, piano, Unity</span>
+          <a className="link-external" href="https://www.imdb.com/name/nm17605062/">IMDb nm17605062</a>
         </div>
       </div>
     </footer>
