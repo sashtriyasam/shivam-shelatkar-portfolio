@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState, useRef } from "react";
@@ -78,7 +78,7 @@ export default function HomePage() {
   const workList = active === "USER EXPERIENCE" ? FEATURED : OTHER;
   return (
     <div style={{ ["--token-6c52689b" as any]: "var(--color-ink)", background: "var(--color-paper)", color: "var(--color-ink)" } as any}>
-      <style>{`
+            <style>{`
         .site-header, .site-footer, .scroll-progress, .custom-cursor { display: none !important; }
         @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;700&family=Geist+Mono:wght@400&family=Gideon+Roman&family=Ingrid+Darling&display=swap');
         .geist { font-family: Geist, ui-sans, system-ui, sans-serif; }
@@ -91,11 +91,24 @@ export default function HomePage() {
         .purvoid-nav a:focus-visible{ outline: 2px solid var(--color-accent); outline-offset: 2px; }
         .tunnel-container{ height: 420px; }
         @media (max-width: 768px) { .tunnel-container{ height: 320px !important; } }
+        @media (max-width: 480px) { .tunnel-container{ height: 280px !important; } .tunnel > div > div{ width: min(240px, 82vw) !important; margin-left: calc(-1 * min(120px, 41vw)) !important; } }
         .wordmark { font-family: Geist, sans-serif; color: var(--token-6c52689b); letter-spacing: -0.05em; line-height: 0.82; }
+        @media (max-width: 768px) { .purvoid-nav { gap: 0.6rem !important; font-size: 0.58rem !important; flex-wrap: wrap !important; justify-content: center; } .purvoid-nav a { padding: 8px 4px !important; min-height: 44px !important; display: inline-flex; align-items: center; } #hero > div:first-of-type { flex-wrap: wrap !important; gap: 0.6rem !important; } }
+        @media (max-width: 480px) { .wordmark { font-size: clamp(2.8rem, 12vw, 4.5rem) !important; line-height: 0.82 !important; } }
+        @media (max-width: 768px) { #hero div[style*="placeItems"]{ padding: 1rem 20px !important; } }
         @media (max-width: 900px) { .contact-grid{ grid-template-columns: 1fr !important; } .manifesto-grid{ grid-template-columns: 1fr !important; } .index-grid{ grid-template-columns: repeat(2, 1fr) !important; } }
         @media (max-width: 600px) { .index-grid{ grid-template-columns: 1fr !important; } }
-        @media (max-width: 768px) { .work-grid{ grid-template-columns: repeat(auto-fit, minmax(280px,1fr)) !important; } .work-grid > a{ grid-column: span 12 !important; flex-direction: column !important; } }
+        @media (max-width: 768px) { .work-grid{ grid-template-columns: repeat(auto-fit, minmax(280px,1fr)) !important; } .work-grid > a{ grid-column: span 12 !important; flex-direction: column !important; } .work-featured { flex-direction: column !important; } }
+        #about{ box-sizing: border-box; overflow: hidden; overflow-x: hidden; max-width: 100vw; }
+        .about-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr !important; } .about-grid > div { text-align: left !important; } #about { padding: 3rem 20px !important; } #intro { padding: 3rem 20px !important; } #intro > div > div { flex-direction: column !important; } #intro > div > div > div:first-child { font-size: clamp(1.2rem, 5vw, 1.6rem) !important; } }
         .tunnel{ perspective: 1000px; transform-style: preserve-3d; overflow: hidden; border-radius: 16px; }
+        /* Global phone perfect: overflow-x, shell, box-sizing */
+        html, body { overflow-x: hidden !important; max-width: 100vw; }
+        .shell { max-width: 100vw !important; overflow-x: hidden; box-sizing: border-box; }
+        section, footer, header, div { box-sizing: border-box; }
+        section { max-width: 100vw; overflow-x: hidden; }
+        @media (max-width: 768px) { #contact { padding: 3rem 20px !important; } .contact-grid { gap: 1.5rem !important; } footer { padding: 2rem 20px !important; } footer > div:first-of-type { grid-template-columns: 1fr !important; } footer > div:first-of-type > div:last-child { align-items: flex-start !important; text-align: left !important; } footer img { max-width: 100% !important; height: auto !important; } .manifesto-grid { gap: 1rem !important; } }
         @media (prefers-reduced-motion: reduce) {
           .tunnel *, .hero__line, .wordmark { animation: none !important; transition: none !important; transform: none !important; }
           .tunnel, .tunnel * { animation: none !important; }
@@ -123,18 +136,16 @@ export default function HomePage() {
           </nav>
         </div>
         <div style={{ position: "relative", zIndex: 2, flex: 1, display: "grid", placeItems: "center", padding: "2rem clamp(24px, 5vw, 80px)" }}>
-          <motion.h1 className="wordmark geist" initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.9, ease: [0.16, 1, 0.3, 1] }} style={{ margin: 0, fontSize: "clamp(4.5rem, 18vw, 16rem)", fontWeight: 700, color: "var(--color-ink)", display: "flex", alignItems: "baseline", gap: "0.02em", textAlign: "center", flexWrap: "wrap", justifyContent: "center", lineHeight: 0.82 }}>
-            <span>Shiv</span>
-            <motion.span initial={shouldReduceMotion ? { opacity: 0 } : { scaleY: 0.8, opacity: 0 }} animate={{ scaleY: 1, opacity: 1 }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }} style={{ display: "inline-block", fontWeight: 400, letterSpacing: "-0.08em", color: "var(--color-ink)" }}>o</motion.span>
-            <span>id</span>
-            <span style={{ fontSize: "0.42em", alignSelf: "flex-start", marginLeft: "0.2em", letterSpacing: "0.14em", fontFamily: `"Geist Mono", monospace`, fontWeight: 400, color: "var(--color-ui)" }}>®</span>
+                    <motion.h1 className="wordmark geist" initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.9, ease: [0.16, 1, 0.3, 1] }} style={{ margin: 0, fontSize: "clamp(3.2rem, 11vw, 9.5rem)", lineHeight: 0.82, flexDirection: "column", gap: "0.02em", fontWeight: 700, color: "var(--color-ink)", display: "flex", alignItems: "center", textAlign: "center", justifyContent: "center" }}>
+            <span style={{ display: "block" }}>Shivam</span>
+            <span style={{ display: "block", fontWeight: 400, letterSpacing: "-0.04em" }}>Shelatkar<span style={{ fontSize: "0.22em", alignSelf: "flex-start", marginLeft: "0.3em", fontFamily: `"Geist Mono", monospace`, fontWeight: 400, color: "var(--color-ui)", verticalAlign: "super" }}>®</span></span>
           </motion.h1>
           <motion.p initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : 0.6 }} style={{ marginTop: "1.2rem", textAlign: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.72rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--color-ui)" }}>
-            SHIVAM SHELATKAR — CREATIVE TECHNOLOGIST <span style={{ color: "var(--color-accent)" }}>●</span> PUNE, INDIA
+            CREATIVE TECHNOLOGIST <span style={{ color: "var(--color-accent)" }}>●</span> PUNE, INDIA
           </motion.p>
         </div>
         <div style={{ position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", padding: "14px clamp(24px, 5vw, 80px)", borderTop: "1px solid var(--color-line)", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-ui)" }}>
-          <span>©2026 SHIVVOID</span>
+          <span>©2026 SHIVAM SHELATKAR</span>
           <a href="#intro" style={{ color: "var(--color-ink)", textDecoration: "none", display: "inline-flex", gap: 6, alignItems: "center" }}>↓ SCROLL <span style={{ opacity: 0.4 }}>— hover bloom follows cursor</span></a>
         </div>
       </section>
@@ -168,7 +179,7 @@ export default function HomePage() {
           </div>
           <div className="work-grid" style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "1rem", marginTop: "2rem" }}>
             {workList.map((p, i) => (
-              <motion.a key={p.id} href={p.href} initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid var(--color-line)", borderRadius: 16, overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
+              <motion.a key={p.id} href={p.href} className={i === 0 ? "work-featured" : undefined} initial={shouldReduceMotion ? { opacity: 0 } : { y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : i * 0.08, ease: [0.16, 1, 0.3, 1] }} style={{ gridColumn: i === 0 ? "span 12" : "span 6", textDecoration: "none", color: "inherit", border: "1px solid var(--color-line)", borderRadius: 16, overflow: "hidden", background: "var(--color-paper)", display: "flex", flexDirection: i === 0 ? "row" : "column", minHeight: i === 0 ? 380 : 420 } as any}>
                 <div style={{ flex: i === 0 ? "0 0 58%" : "1 1 auto", position: "relative", overflow: "hidden", background: "var(--color-paper-2)", minHeight: 260 }}>
                   <img src={p.img} alt={p.kicker} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", aspectRatio: "16 / 10" }} loading="lazy" />
                   <span style={{ position: "absolute", top: 14, left: 14, background: "rgba(255,255,255,0.92)", border: "1px solid var(--color-line)", borderRadius: 999, padding: "0.32rem 0.6rem", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.14em", color: "var(--color-ink)" }}>{p.id}</span>
@@ -205,25 +216,25 @@ export default function HomePage() {
           )}
         </div>
       </section>
-      <section id="about" style={{ background: "#000", color: "var(--color-paper)", padding: "5rem clamp(24px, 5vw, 80px)", position: "relative", overflow: "hidden" }}>
-        <div style={{ maxWidth: 1240, margin: "0 auto", position: "relative" }}>
+      <section id="about" className="about-section" style={{ background: "#000", color: "var(--color-paper)", padding: "5rem clamp(24px, 5vw, 80px)", position: "relative", overflow: "hidden", overflowX: "hidden", boxSizing: "border-box", maxWidth: "100vw" }}>
+        <div style={{ maxWidth: 1240, margin: "0 auto", position: "relative", boxSizing: "border-box", overflow: "hidden", width: "100%" } as any}>
           <div style={{ display: "flex", justifyContent: "space-between", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.18em", color: "var(--color-ui)", textTransform: "uppercase" }}>
             <span>-- {"{•HELLO•}"}</span>
             <span suppressHydrationWarning>IN {time} — PUNE</span>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem", alignItems: "end" }}>
-            <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "var(--color-paper)" }}>AB</motion.div>
-            <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, delay: shouldReduceMotion ? 0 : 0.12, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(5rem, 14vw, 12rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "var(--color-paper)", textAlign: "right" }}>OU</motion.div>
+          <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem", alignItems: "end", overflow: "hidden", boxSizing: "border-box" }}>
+            <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(4rem, 18vw, 10rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "var(--color-paper)", overflow: "hidden", boxSizing: "border-box", overflowWrap: "break-word", wordBreak: "break-word" }}>AB</motion.div>
+            <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 80, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.8, delay: shouldReduceMotion ? 0 : 0.12, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: "Geist, sans-serif", fontSize: "clamp(4rem, 18vw, 10rem)", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-0.06em", color: "var(--color-paper)", textAlign: "right", overflow: "hidden", boxSizing: "border-box", overflowWrap: "break-word", wordBreak: "break-word" }}>OU</motion.div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "-0.6rem" }}>
+          <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "-0.6rem", boxSizing: "border-box", overflow: "hidden" }}>
             <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "var(--color-ui)", textTransform: "uppercase" }}>— 01 / ABOUT</div>
             <div style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.22em", color: "var(--color-ui)", textTransform: "uppercase", textAlign: "right" }}>T — 02</div>
           </div>
-          <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 24, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : 0.2 }} style={{ marginTop: "3rem", maxWidth: 760 }}>
-            <p className="gideon" style={{ margin: 0, fontSize: "clamp(1.6rem, 3vw, 2.6rem)", lineHeight: 1.02, letterSpacing: "-0.03em", color: "var(--color-paper)" }}>
+          <motion.div initial={shouldReduceMotion ? { opacity: 0 } : { y: 24, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} transition={{ duration: shouldReduceMotion ? 0.01 : 0.7, delay: shouldReduceMotion ? 0 : 0.2 }} style={{ marginTop: "3rem", maxWidth: 760, boxSizing: "border-box", overflow: "hidden", overflowWrap: "break-word" }}>
+            <p className="gideon" style={{ margin: 0, fontSize: "clamp(1.6rem, 3vw, 2.6rem)", lineHeight: 1.05, letterSpacing: "-0.03em", color: "var(--color-paper)", maxWidth: 760, overflowWrap: "break-word", wordBreak: "break-word", boxSizing: "border-box", overflow: "hidden", whiteSpace: "normal" }}>
               I&apos;M <span style={{ color: "var(--color-accent)", fontStyle: "italic" }}>SHIVAM SHELATKAR</span> — CREATIVE TECHNOLOGIST CRAFTING HUMAN-CENTERED SYSTEMS WHERE RESEARCH, DESIGN & CODE MEET.
             </p>
-            <p style={{ marginTop: "1rem", color: "var(--color-ui)", lineHeight: 1.7, fontSize: "0.95rem", fontFamily: "Geist, sans-serif" }}>
+            <p style={{ marginTop: "1rem", color: "var(--color-ui)", lineHeight: 1.7, fontSize: "0.95rem", fontFamily: "Geist, sans-serif", maxWidth: 760, overflowWrap: "break-word", wordBreak: "break-word", boxSizing: "border-box" }}>
               Pune-based. Obsessed with why before what. DepthWizard → Projection AI → ParkEasy. Same thread: turn complexity into calm, confident interfaces. Purva&apos;s Gideon Roman styling, rebuilt for Shivam.
             </p>
             <div style={{ marginTop: "1.4rem", display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
@@ -341,7 +352,7 @@ export default function HomePage() {
             <div style={{ marginTop: "1.6rem", display: "flex", gap: "1rem", alignItems: "center", fontFamily: `"Geist Mono", monospace`, fontSize: "0.62rem", letterSpacing: "0.12em", color: "var(--color-ui)" }}>
               <span suppressHydrationWarning>IN {time} — 2026</span>
               <span>•</span>
-              <span>© SHIVVOID — PUNE, INDIA</span>
+              <span>© SHIVAM SHELATKAR — PUNE, INDIA</span>
               <img src="https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif" alt="glitch" width={48} height={32} style={{ width: 48, height: 32, objectFit: "cover", borderRadius: 6, border: "1px solid var(--color-line)", opacity: 0.9 }} loading="lazy" />
               <span style={{ opacity: 0.6 }}>glitch gif</span>
             </div>

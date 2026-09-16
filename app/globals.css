@@ -43,6 +43,8 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 4rem;
   font-size: clamp(14px, 1vw + 0.8rem, 17px);
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -2307,5 +2309,14 @@ body::after {
 /* Paper sections - alternating warm */
 .purva-section { background: var(--color-paper) !important; border-color: var(--color-line-2) !important; }
 
+/* Phone perfect 320-768: gutter reduction */
+@media (max-width: 480px) { :root { --gutter: 20px; } .content-max { padding-inline: 20px !important; } }
 
+/* Global box-sizing + overflow guards for phone */
+html, body { overflow-x: hidden !important; }
+.shell { max-width: 100vw !important; overflow-x: hidden; box-sizing: border-box; }
+* { box-sizing: border-box; }
+section, footer, header { max-width: 100vw; overflow-x: hidden; box-sizing: border-box; }
 
+html { overflow-x: hidden; }
+body { overflow-x: hidden; }
