@@ -806,68 +806,62 @@ export default function HomePage() {
           display: inline-flex;
           align-items: center;
           gap: 0.7rem;
-          font-family: var(--font-hand, "Caveat", cursive);
         }
         .hi-script {
-          font-family: var(--font-hand, "Caveat", cursive);
-          font-size: clamp(1.8rem, 3.2vw, 2.8rem);
-          font-weight: 600;
-          color: #ff3b30;
+          font-family: var(--font-mono);
+          font-size: clamp(0.78rem, 1.1vw, 0.92rem);
+          font-weight: 700;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.62);
           line-height: 1;
-          transform: rotate(-1.5deg);
           display: inline-block;
-          text-shadow: 0 2px 18px rgba(255,59,48,0.35);
         }
-        .hi-wave { font-size: clamp(1.5rem, 2.4vw, 2rem); filter: saturate(1.1); }
+        .hi-wave { font-size: clamp(1.2rem, 1.8vw, 1.55rem); filter: saturate(1.05); margin-left: 0.15rem; }
         .hi-line-decor {
-          width: clamp(40px, 8vw, 110px);
+          width: clamp(32px, 6vw, 72px);
           height: 1px;
-          background: linear-gradient(90deg, rgba(255,59,48,0.9), rgba(255,59,48,0));
-          margin-left: 0.2rem;
-          opacity: 0.9;
+          background: rgba(255,255,255,0.18);
+          margin-left: 0.15rem;
         }
 
         .hero-big-name {
           margin: 0;
-          line-height: 0.82;
-          letter-spacing: -0.055em;
-          font-weight: 800;
-          font-family: var(--font-display, var(--font-geist));
+          line-height: 0.88;
+          letter-spacing: -0.05em;
+          font-weight: 700;
+          font-family: var(--font-body);
           perspective: 600px;
           transform-style: preserve-3d;
         }
         .name-line {
           display: block;
-          font-size: clamp(3.4rem, 10.5vw, 9.2rem);
-          font-weight: 900;
-          letter-spacing: -0.06em;
-          line-height: 0.85;
+          font-size: clamp(3.2rem, 9.5vw, 8.4rem);
+          font-weight: 700;
+          letter-spacing: -0.05em;
+          line-height: 0.90;
           overflow: visible;
         }
         .name-first {
           color: #fff;
-          text-shadow: 0 12px 40px rgba(0,0,0,0.55);
+          text-shadow: 0 8px 32px rgba(0,0,0,0.45);
         }
         .name-last {
-          color: transparent;
-          -webkit-text-stroke: 1.35px rgba(255,255,255,0.92);
-          paint-order: stroke fill;
-          margin-top: 0.06em;
-          transition: -webkit-text-stroke 0.2s ease;
-        }
-        .name-last .char:hover {
-          -webkit-text-stroke: 1.2px #00d4ff;
-          color: transparent;
+          color: #fff;
+          margin-top: 0.04em;
+          opacity: 0.98;
         }
         .char {
           display: inline-block;
           cursor: default;
-          transition: color 0.18s ease, transform 0.18s ease, -webkit-text-stroke 0.18s ease;
+          transition: color 0.18s ease, transform 0.18s ease;
           will-change: transform;
         }
         .char--first:hover {
           color: #ff3b30 !important;
-          text-shadow: 0 0 22px rgba(255,59,48,0.55);
+        }
+        .char--last:hover {
+          color: #00d4ff !important;
         }
         .hero-role-row {
           display: flex;
@@ -1060,7 +1054,6 @@ export default function HomePage() {
         }
         @media (max-width: 640px) {
           .hero-big-name .name-line { font-size: clamp(2.9rem, 14vw, 4.6rem); }
-          .hi-script { font-size: 1.55rem; }
           .hero-role-row { flex-direction: column; gap: 0.35rem; align-items: flex-start; }
           .role-hint { font-size: 0.86rem; line-height: 1.4; }
         }
@@ -1135,7 +1128,7 @@ export default function HomePage() {
           position: relative;
         }
         .about-avatar-initials {
-          font-family: var(--font-display);
+          font-family: var(--font-body);
           font-size: 2.8rem;
           font-weight: 800;
           letter-spacing: -0.05em;
@@ -1187,10 +1180,10 @@ export default function HomePage() {
         }
         .av-stat-num {
           display: block;
-          font-family: var(--font-display);
+          font-family: var(--font-body);
           font-size: 1.15rem;
-          font-weight: 800;
-          letter-spacing: -0.03em;
+          font-weight: 700;
+          letter-spacing: -0.05em;
           color: #fff;
           line-height: 1;
         }
@@ -1226,13 +1219,9 @@ export default function HomePage() {
           color: #fff;
         }
         .about-title-accent {
-          color: transparent;
-          -webkit-text-stroke: 1.25px #ff3b30;
-          paint-order: stroke fill;
-          font-style: italic;
-          font-family: var(--font-display);
-          font-weight: 400;
-          letter-spacing: -0.03em;
+          color: #ff3b30;
+          font-weight: 800;
+          letter-spacing: -0.05em;
         }
         .about-preview-text {
           display: flex;
