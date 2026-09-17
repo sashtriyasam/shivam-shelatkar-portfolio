@@ -1,5 +1,3 @@
-@import url("https://rsms.me/inter/var/late-subset.css");
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,700;9..144,1,700&family=Caveat:wght@500;600&display=swap");
 
 :root {
   --font-display: var(--font-gideon), Georgia, serif;

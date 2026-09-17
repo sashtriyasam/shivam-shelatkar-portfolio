@@ -519,7 +519,7 @@ export default function HomePage() {
               className="hero-first"
               initial={reduced ? undefined : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: EASE }}
+              transition={{ duration: 0.5, ease: EASE }}
             >
               <VariableFontHover text="Shivam Shelatkar" />
             </motion.span>
@@ -527,7 +527,7 @@ export default function HomePage() {
               className="hero-last"
               initial={reduced ? undefined : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.06, ease: EASE }}
+              transition={{ duration: 0.5, delay: 0.04, ease: EASE }}
             >
               music and code
             </motion.span>
@@ -586,7 +586,7 @@ export default function HomePage() {
             initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
           >
             <span className="eyebrow">Selected work</span>
             <h2 className="h2">Three pieces I keep returning to.</h2>
@@ -600,7 +600,7 @@ export default function HomePage() {
                 initial={reduced ? undefined : { opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2, margin: "-10%" }}
-                transition={{ duration: 0.65, delay: i * 0.1, ease: EASE }}
+                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
               >
                 <a
                   href={w.href}
@@ -611,10 +611,6 @@ export default function HomePage() {
                   onClick={() => sound.playClick()}
                   aria-label={`${w.title}, ${w.medium}`}
                 >
-                {/* Real photo goes here: replace the div below with <img src="/photos/<name>.jpg" alt="..." style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block" }} /> from @shastriyakid */}
-                <div className="work-media" aria-hidden="true">
-                  <span>{w.note}</span>
-                </div>
                   <div className="work-body">
                     <h3 className="work-title">{w.title}</h3>
                     <p className="work-medium">{w.medium}</p>
@@ -635,7 +631,7 @@ export default function HomePage() {
             initial={reduced ? undefined : { opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3, margin: "-10%" }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
           >
             Heritage stays alive<br />when it is <em>played</em> and built with care.
           </motion.p>
@@ -648,7 +644,7 @@ export default function HomePage() {
             initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
           >
             <span className="eyebrow">Capabilities</span>
             <h2 className="h2">What I do well.</h2>
@@ -662,7 +658,7 @@ export default function HomePage() {
                 initial={reduced ? undefined : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: EASE }}
+                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
               >
                 <span className="cap-num" aria-hidden="true">0{i + 1}</span>
                 <h3>{c.title}</h3>
@@ -680,7 +676,7 @@ export default function HomePage() {
             initial={reduced ? undefined : { opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
           >
             <span className="eyebrow">Story</span>
             <h2 className="h2">Thane to Mumbai.</h2>
@@ -694,7 +690,7 @@ export default function HomePage() {
                 initial={reduced ? undefined : { opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-                transition={{ duration: 0.55, delay: i * 0.08, ease: EASE }}
+                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
               >
                 <motion.span
                   className="timeline-rule"
@@ -702,7 +698,7 @@ export default function HomePage() {
                   initial={reduced ? undefined : { opacity: 0, scaleY: 0 }}
                   whileInView={{ opacity: 1, scaleY: 1 }}
                   viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-                  transition={{ duration: 0.55, delay: i * 0.08, ease: EASE }}
+                  transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
                   style={{ transformOrigin: "top" }}
                 />
                 <strong>{t.title}</strong>
@@ -715,7 +711,7 @@ export default function HomePage() {
             initial={reduced ? undefined : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.55, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
           >
             Outside music I convene student activities for ABVP in Thane, speak English,
             Hindi, Malayalam, Gujarati, and Marathi, and share work as
@@ -796,7 +792,7 @@ export default function HomePage() {
                 initial={reduced ? undefined : { opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3, margin: "-10%" }}
-                transition={{ duration: 0.7, delay: i * 0.09, ease: EASE }}
+                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
               >
                 {line}
               </motion.span>

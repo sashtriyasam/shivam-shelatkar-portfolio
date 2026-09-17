@@ -145,10 +145,6 @@ export default function ProjectSlugPage({
             <p className="project-page__status">{project.role}</p>
           </section>
 
-          <section className="project-page__section">
-            <p className="eyebrow">Artwork</p>
-            <p className="project-page__text">{project.photoNote}</p>
-          </section>
 
           {related.length > 0 && (
             <section>

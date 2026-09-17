@@ -1,4 +1,4 @@
-export interface Project {
+﻿export interface Project {
   slug: string;
   title: string;
   subtitle: string;
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     status: "Released",
     year: "2025",
     role: "Composer / Editor",
-    photoNote: "Artwork photo coming from @shastriyakid",
+    photoNote: "",
     links: [
       {
         label: "Release notes",
@@ -85,7 +85,7 @@ export const projects: Project[] = [
     status: "Released",
     year: "2025",
     role: "Composer",
-    photoNote: "Cover photo coming from @shastriyakid",
+    photoNote: "",
     links: [
       {
         label: "Release notes",
@@ -126,7 +126,7 @@ export const projects: Project[] = [
     status: "Released",
     year: "2025",
     role: "Arranger / Orchestrator (original by Anshul Bopardikar)",
-    photoNote: "Artwork photo coming from @shastriyakid",
+    photoNote: "",
     links: [
       {
         label: "Release notes",
@@ -163,7 +163,7 @@ export const projects: Project[] = [
     status: "Live",
     year: "2026",
     role: "Designer / Developer + on-site technical head",
-    photoNote: "Festival photo coming from @shastriyakid",
+    photoNote: "",
     links: [{ label: "Live site", href: "https://nsff.in" }],
     visual: "terrain",
     visualAccent: "#c7f35a",
@@ -191,7 +191,7 @@ export const projects: Project[] = [
     status: "Shipped",
     year: "2026",
     role: "Designer / Developer",
-    photoNote: "App photo coming from @shastriyakid",
+    photoNote: "",
     links: [
       { label: "GitHub", href: "https://github.com/sashtriyasam/ParkEasy" },
     ],
@@ -221,7 +221,7 @@ export const projects: Project[] = [
     status: "Live",
     year: "2026",
     role: "Designer / Developer",
-    photoNote: "Festival photo coming from @shastriyakid",
+    photoNote: "",
     links: [{ label: "Live site", href: "https://kalamahotsaav.com" }],
     visual: "terrain",
     visualAccent: "#ffb347",
