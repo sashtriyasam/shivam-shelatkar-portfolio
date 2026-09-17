@@ -102,8 +102,8 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
     >
       <style>{`
         .wave-segment { display: block; will-change: transform; }
-        .animated-footer__link:hover, .animated-footer__link:focus-visible { color: #E4572E; }
-        .animated-footer__link:focus-visible, .animated-footer__to-top:focus-visible { outline: 2px solid #E4572E; outline-offset: 3px; border-radius: 4px; }
+        .animated-footer__link:hover { color: #E4572E; }
+        
         .animated-footer__to-top:hover { color: #E4572E; border-color: #E4572E; }
         @media (max-width: 640px) {
           .animated-footer__row { flex-direction: column; align-items: flex-start; }
@@ -184,3 +184,4 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
 }
 
 export default AnimatedFooter;
+

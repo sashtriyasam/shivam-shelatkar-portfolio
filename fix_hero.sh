@@ -1,3 +1,4 @@
+cat > /mnt/d/TESTWEB/components/hero/HeroFallback.tsx << EOF
 export function HeroFallback() {
   return (
     <section aria-labelledby=hero-fallback-heading className=hero__fallback>

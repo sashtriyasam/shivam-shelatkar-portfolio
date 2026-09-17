@@ -1,4 +1,3 @@
-"use client";
 
 import { use } from "react";
 import { notFound } from "next/navigation";
@@ -7,6 +6,49 @@ import Link from "next/link";
 import { getProjectBySlug, projects } from "@/lib/projects";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectVisual } from "@/lib/ProjectVisual";
+import { Metadata } from "next";
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+  
+  if (!project) {
+    return {
+      title: "Project Not Found — Shivam Shelatkar",
+      description: "The requested project could not be found.",
+    };
+  }
+
+  const title = `${project.title} — Shivam Shelatkar`;
+  const description = project.description;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: "/og-work.jpg",
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og-work.jpg"],
+    },
+  };
+}
 
 export default function ProjectSlugPage({
   params,
@@ -41,7 +83,7 @@ export default function ProjectSlugPage({
             <p className="eyebrow">{project.subtitle}</p>
             <h1 className="project-page__title display">{project.title}</h1>
             <p className="project-page__text">
-              {project.role} · {project.year} · {project.status}
+              {project.role} — {project.year} — {project.status}
             </p>
             <div className="project-page__stack">
               {project.tags.map((tag) => (

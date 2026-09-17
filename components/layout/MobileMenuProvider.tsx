@@ -1,12 +1,13 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useRef, RefObject } from "react";
 
 interface MobileMenuContextValue {
   open: boolean;
   openMenu: () => void;
   close: () => void;
   toggle: () => void;
+  triggerRef: RefObject<HTMLButtonElement | null>;
 }
 
 const MobileMenuContext = createContext<MobileMenuContextValue | null>(null);
@@ -19,6 +20,7 @@ export function useMobileMenu() {
 
 export function MobileMenuProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <MobileMenuContext.Provider
@@ -27,6 +29,7 @@ export function MobileMenuProvider({ children }: { children: ReactNode }) {
         openMenu: () => setOpen(true),
         close: () => setOpen(false),
         toggle: () => setOpen((v) => !v),
+        triggerRef,
       }}
     >
       {children}

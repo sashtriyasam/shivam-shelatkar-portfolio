@@ -157,6 +157,7 @@ export default function HomePage() {
 
   return (
     <div className="home-root" id="top">
+        <h1 className="sr-only">Shivam Shelatkar — Portfolio Home</h1>
       <style>{`
         .home-root {
           background-color: #FFF8EF;
@@ -165,12 +166,7 @@ export default function HomePage() {
           min-height: 100vh;
           overflow-x: hidden;
         }
-        .home-root a:focus-visible,
-        .home-root button:focus-visible {
-          outline: 2px solid #E4572E;
-          outline-offset: 3px;
-          border-radius: 4px;
-        }
+        
         .topbar {
           display: flex;
           justify-content: space-between;
@@ -862,3 +858,6 @@ export default function HomePage() {
     </div>
   );
 }
+
+
+

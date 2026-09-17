@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useMobileMenu } from "@/components/layout/MobileMenuProvider";
@@ -17,9 +17,16 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
+const homeNavLinks = [
+  { href: "#work", label: "Work" },
+  { href: "#about-preview", label: "About" },
+  { href: "#life", label: "Story" },
+  { href: "#contact", label: "Contact" },
+];
+
 export function SiteHeader() {
   const pathname = usePathname();
-  const { openMenu, open } = useMobileMenu();
+  const { openMenu, open, triggerRef } = useMobileMenu();
   const { scrollYProgress } = useScroll();
   const headerBgOpacity = useTransform(
     scrollYProgress,
@@ -28,7 +35,8 @@ export function SiteHeader() {
   );
   const headerBackground = useMotionTemplate`rgba(255, 255, 255, ${headerBgOpacity})`;
 
-  if (pathname === "/") return null;
+  const isHome = pathname === "/";
+  const links = isHome ? homeNavLinks : navLinks;
 
   return (
     <motion.header
@@ -49,7 +57,7 @@ export function SiteHeader() {
         </Link>
 
         <nav className="site-header__nav" aria-label="Primary">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.label}
               href={link.href}
@@ -59,15 +67,18 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="mailto:shelatkarshivam4@gmail.com"
-            className="btn btn--accent site-header__cta"
-          >
-            Start a project
-          </Link>
+          {!isHome && (
+            <Link
+              href="mailto:shelatkarshivam4@gmail.com"
+              className="btn btn--accent site-header__cta"
+            >
+              Start a project
+            </Link>
+          )}
         </nav>
 
         <button
+          ref={triggerRef}
           className="site-header__menu"
           style={{ minHeight: 44, minWidth: 44 }}
           onClick={openMenu}

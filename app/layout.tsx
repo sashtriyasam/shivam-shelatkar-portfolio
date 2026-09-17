@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Gideon_Roman, Ingrid_Darling } from "next/font/google";
 import "./globals.css";
 import { CursorProvider } from "@/components/cursor/CursorProvider";
@@ -90,6 +90,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable} ${gideon.variable} ${ingrid.variable}`} suppressHydrationWarning>
       <body>
+        <a href="#main" className="skip-link">Skip to main content</a>
         <MotionProvider>
           <CursorProvider>
             <MobileMenuProvider>

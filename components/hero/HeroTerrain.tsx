@@ -1,13 +1,15 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useMemo } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars, Float } from "@react-three/drei";
+import { useReducedMotion } from "motion/react";
 
 function TopoTerrain() {
   const meshRef = useRef<THREE.Mesh>(null);
   const wireRef = useRef<THREE.Mesh>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   const geometry = useMemo(() => {
     const geo = new THREE.PlaneGeometry(18, 18, 70, 70);
@@ -27,6 +29,7 @@ function TopoTerrain() {
   }, []);
 
   useFrame((state) => {
+    if (shouldReduceMotion) return;
     const t = state.clock.getElapsedTime();
     if (meshRef.current) {
       meshRef.current.rotation.z = t * 0.035;
@@ -63,8 +66,10 @@ function TopoTerrain() {
 
 function FloatingConstellation() {
   const group = useRef<THREE.Group>(null);
+  const shouldReduceMotion = useReducedMotion();
 
   useFrame((state) => {
+    if (shouldReduceMotion) return;
     if (group.current) {
       const t = state.clock.getElapsedTime();
       group.current.rotation.y = t * 0.02;
@@ -98,7 +103,10 @@ function FloatingConstellation() {
 }
 
 function InteractiveParallax() {
+  const shouldReduceMotion = useReducedMotion();
+
   useFrame(({ camera, pointer }) => {
+    if (shouldReduceMotion) return;
     camera.position.x += (pointer.x * 0.8 - camera.position.x) * 0.035;
     camera.position.y += (2.2 + pointer.y * 0.5 - camera.position.y) * 0.035;
     camera.lookAt(0, -0.4, -2);
@@ -107,6 +115,8 @@ function InteractiveParallax() {
 }
 
 export function HeroTerrain() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}>
       <Canvas
@@ -122,7 +132,7 @@ export function HeroTerrain() {
         <TopoTerrain />
         <FloatingConstellation />
         <Stars radius={60} depth={40} count={900} factor={3} saturation={0.5} fade speed={0.8} />
-        <InteractiveParallax />
+        {!shouldReduceMotion && <InteractiveParallax />}
       </Canvas>
     </div>
   );

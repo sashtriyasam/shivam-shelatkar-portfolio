@@ -174,11 +174,7 @@ body::after {
   background: radial-gradient(ellipse at 20% 30%, rgba(196,90,60,0.08), transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(30,58,95,0.06), transparent 50%);
 }
 
-:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
+:focus-visible { outline: 2px solid var(--color-focus, #00d4ff); outline-offset: 2px; border-radius: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -268,13 +264,7 @@ body::after {
 }
 
 .btn:hover,
-.btn:focus-visible {
-  background: var(--color-accent-warm);
-  color: var(--color-ink);
-  border-color: var(--color-accent-warm);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.45);
-}
+
 
 .btn--accent {
   background: transparent;
@@ -283,13 +273,7 @@ body::after {
 }
 
 .btn--accent:hover,
-.btn--accent:focus-visible {
-  background: var(--color-accent);
-  color: var(--color-ink);
-  border-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.45);
-}
+
 
 .link-underline {
   position: relative;
@@ -457,12 +441,7 @@ body::after {
 }
 
 .site-header__menu:hover,
-.site-header__menu:focus-visible {
-  background: var(--color-accent);
-  color: var(--color-ink);
-  border-color: var(--color-accent);
-  transform: translateY(-1px);
-}
+
 
 .mobile-menu {
   position: fixed;
@@ -501,9 +480,7 @@ body::after {
 }
 
 .mobile-menu__link:hover,
-.mobile-menu__link:focus-visible {
-  color: var(--color-accent);
-}
+
 
 .hero__fallback {
   position: absolute;
@@ -897,11 +874,7 @@ body::after {
 }
 
 .about__card:hover,
-.about__card:focus-visible {
-  border-color: var(--color-accent);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
-}
+
 
 .about__card:hover::before,
 .about__card:focus-visible::before {
@@ -1010,12 +983,7 @@ body::after {
 }
 
 .contact__link:hover,
-.contact__link:focus-visible {
-  border-color: var(--color-accent);
-  background: var(--color-ink-2);
-  transform: translateX(4px);
-  box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.55);
-}
+
 
 .contact__link-icon {
   display: grid;
@@ -1100,9 +1068,7 @@ body::after {
 }
 
 .site-footer__links a:hover,
-.site-footer__links a:focus-visible {
-  color: var(--color-paper);
-}
+
 
 .site-footer__links a:hover::after,
 .site-footer__links a:focus-visible::after {
@@ -1192,12 +1158,7 @@ body::after {
 }
 
 .site-header__cta:hover,
-.site-header__cta:focus-visible {
-  background: var(--color-accent-warm);
-  color: var(--color-ink);
-  border-color: var(--color-accent-warm);
-  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.5);
-}
+
 
 /* ---- Footer elevations ---- */
 
@@ -1222,9 +1183,7 @@ body::after {
 }
 
 .site-footer__nav-link:hover,
-.site-footer__nav-link:focus-visible {
-  color: var(--color-paper);
-}
+
 
 .site-footer__nav-link:hover svg,
 .site-footer__nav-link:focus-visible svg {
@@ -1269,9 +1228,7 @@ body::after {
 }
 
 .mobile-menu__link:hover,
-.mobile-menu__link:focus-visible {
-  color: var(--color-accent);
-}
+
 
 .mobile-menu__bottom {
   display: flex;
@@ -1291,9 +1248,7 @@ body::after {
 }
 
 .mobile-menu__contact:hover,
-.mobile-menu__contact:focus-visible {
-  color: var(--color-accent);
-}
+
 
 /* ---- About elevations (rewritten) ---- */
 
@@ -1384,11 +1339,7 @@ body::after {
 }
 
 .about__card:hover,
-.about__card:focus-visible {
-  border-color: var(--color-accent);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
-}
+
 
 .about__card:hover::before,
 .about__card:focus-visible::before {
@@ -1510,13 +1461,7 @@ body::after {
 }
 
 .project-card:hover,
-.project-card:focus-visible {
-  border-color: color-mix(in srgb, var(--card-accent) 55%, var(--color-line));
-  transform: translateY(-6px);
-  box-shadow:
-    0 30px 60px -28px rgba(0, 0, 0, 0.85),
-    0 0 0 1px color-mix(in srgb, var(--card-accent) 20%, transparent);
-}
+
 
 .project-card:hover::before,
 .project-card:focus-visible::before {
@@ -1758,11 +1703,8 @@ body { overflow-x: hidden; }
     border-color 320ms var(--motion-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
   will-change: transform;
 }
-.card-lift:hover,
-.card-lift:focus-visible {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
-}
+.card-lift:hover
+
 
 /* Emblem float: y +/-4px, 3.5s alternate. Apply .float-subtle to max 2 items only. */
 @keyframes emblem-float {
@@ -1816,11 +1758,7 @@ body { overflow-x: hidden; }
   }
   .card-lift,
   .card-lift:hover,
-  .card-lift:focus-visible {
-    transform: none;
-    box-shadow: none;
-    transition: none;
-  }
+  
   .float-subtle,
   .marquee-track {
     animation: none;
@@ -1832,3 +1770,16 @@ body { overflow-x: hidden; }
     transition: none;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
