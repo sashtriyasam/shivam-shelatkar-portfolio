@@ -1,173 +1,4 @@
-'use client';
-
-import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { sound } from "@/lib/audio";
-import { AnimatedFooter } from "@/components/ui/animated-footer";
-import { VariableFontHover } from "@/components/ui/variable-font-hover";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-const PILLS = [
-  "Tabla 10 yrs",
-  "Piano Trinity 6 yrs",
-  "Unity since 2017",
-  "Founder at Swarvibhaa",
-];
-
-const WORK = [
-  {
-    title: "Raatrani",
-    medium: "Film score, 2024, composer",
-    desc: "A night flower scored for strings and quiet textures, written for stage and film.",
-    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10",
-    cta: "Listen",
-    note: "Raatrani artwork coming from @shastriyakid",
-  },
-  {
-    title: "Thevita masthak deva",
-    medium: "Bhajan, 2025, arrangement",
-    desc: "A Marathi bhajan for Lord Vitthal, released on Ashadi Ekadashi with Tarang Sashte.",
-    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/thevita-masthak-deva-tuzha-payi-3",
-    cta: "Listen",
-    note: "Thevita photo coming from @shastriyakid",
-  },
-  {
-    title: "Saffron",
-    medium: "Interactive piece, Swarvibhaa original",
-    desc: "A quiet instrumental about feeling and change, played live and kept minimal.",
-    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/saffron-suraaval-9",
-    cta: "Listen",
-    note: "Saffron photo coming from @shastriyakid",
-  },
-];
-
-const CAPS = [
-  {
-    title: "Tabla",
-    meta: "10 yrs, Pandit Mukundraj Deo",
-    body: "Ten years of taal and accompaniment. Timing first, decoration last.",
-  },
-  {
-    title: "Piano",
-    meta: "6 yrs, Trinity College London",
-    body: "Six years of Western harmony and voicing, from grades to arranging.",
-  },
-  {
-    title: "Unity",
-    meta: "Since 2017",
-    body: "Small interactive worlds with rhythm systems hiding inside them.",
-  },
-];
-
-const TIMELINE = [
-  {
-    title: "Thane, born",
-    body: "Thane roots, first rhythms, long train rides nearby.",
-  },
-  {
-    title: "Mumbai, grown",
-    body: "Tabla, piano, and engineering. Cats at home, blue everywhere.",
-  },
-  {
-    title: "Swarvibhaa, 2023",
-    body: "Founder. Mumbai, Delhi, Gujarat. Hindustani meets Western classical.",
-  },
-];
-
-const SOCIALS = [
-  { href: "https://www.instagram.com/shastriyakid", label: "Instagram, @shastriyakid" },
-  { href: "https://linkedin.com/in/shivam-shelatkar-503305358", label: "LinkedIn, Shivam Shelatkar" },
-  { href: "https://github.com/sashtriyasam", label: "GitHub, sashtriyasam" },
-  { href: "https://www.imdb.com/name/nm17605062/", label: "IMDb, nm17605062" },
-];
-
-const CONTACT_LINES = ["Make", "something", "worth keeping."];
-
-const HOME_FOOTER_LEFT = [
-  { label: "Work", href: "/work" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
-
-const HOME_FOOTER_RIGHT = [
-  { label: "LinkedIn", href: "https://linkedin.com/in/shivam-shelatkar-503305358" },
-  { label: "GitHub", href: "https://github.com/sashtriyasam" },
-  { label: "Instagram", href: "https://www.instagram.com/shastriyakid" },
-  { label: "IMDb", href: "https://www.imdb.com/name/nm17605062/" },
-  { label: "Swarvibhaa", href: "https://swarvibhaa.odoo.com/" },
-];
-
-// Magnetic pull for the primary CTA: 6-12px toward the cursor (clamped to
-// 10px at a 0.2 follow ratio), easing back over 300ms. Enabled for fine
-// pointers without touch only; reduced-motion renders the resting state.
-function Magnetic({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [canMagnet, setCanMagnet] = useState(false);
-
-  useEffect(() => {
-    if (disabled) {
-      setCanMagnet(false);
-      return;
-    }
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    setCanMagnet(fine && !coarse && !hasTouch);
-  }, [disabled]);
-
-  const handleMove = (e: { clientX: number; clientY: number }) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const dx = e.clientX - (r.left + r.width / 2);
-    const dy = e.clientY - (r.top + r.height / 2);
-    const max = 10;
-    setPos({
-      x: Math.max(-max, Math.min(max, dx * 0.2)),
-      y: Math.max(-max, Math.min(max, dy * 0.2)),
-    });
-  };
-
-  const handleLeave = () => setPos({ x: 0, y: 0 });
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={canMagnet ? handleMove : undefined}
-      onMouseLeave={canMagnet ? handleLeave : undefined}
-      animate={{ x: canMagnet ? pos.x : 0, y: canMagnet ? pos.y : 0 }}
-      transition={{ duration: 0.3, ease: EASE }}
-      style={{ display: "inline-flex" }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-export default function HomePage() {
-  const shouldReduceMotion = useReducedMotion();
-  const reduced = Boolean(shouldReduceMotion);
-
-  const toTop = () => {
-    sound.playClick();
-    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
-  };
-
-  return (
-    <div className="home-root" id="top">
-        <h1 className="sr-only">Shivam Shelatkar — Portfolio Home</h1>
-      <style>{`
-        .home-root {
-          background-color: #FFF8EF;
-          color: #1A1512;
-          font-family: var(--font-body);
-          min-height: 100vh;
-          overflow-x: hidden;
-        }
-        
-        .wrap { max-width: 1120px; margin: 0 auto; }
+﻿        .wrap { max-width: 1120px; margin: 0 auto; }
         .section {
           padding: 120px clamp(20px, 4vw, 40px);
           border-top: 1px solid #EADDCB;
@@ -450,6 +281,17 @@ export default function HomePage() {
         }
       `}</style>
 
+      <header className="topbar">
+        <a href="#top" className="brand" onMouseEnter={() => sound.playHover()}>
+          shivam<em>*</em>
+        </a>
+        <nav className="topnav" aria-label="Sections">
+          <a href="#work" onMouseEnter={() => sound.playHover()}>Work</a>
+          <a href="#about-preview" onMouseEnter={() => sound.playHover()}>About</a>
+          <a href="#life" onMouseEnter={() => sound.playHover()}>Story</a>
+          <a href="#contact" onMouseEnter={() => sound.playHover()}>Contact</a>
+        </nav>
+      </header>
 
       <section className="section" aria-label="Introduction">
         <div className="wrap">
@@ -562,7 +404,7 @@ export default function HomePage() {
                     <h3 className="work-title">{w.title}</h3>
                     <p className="work-medium">{w.medium}</p>
                     <p className="work-desc">{w.desc}</p>
-                    <span className="work-link"><span>{w.cta}</span><span className="work-arrow" aria-hidden="true">→</span></span>
+                    <span className="work-link"><span>{w.cta}</span><span className="work-arrow" aria-hidden="true">â†’</span></span>
                   </div>
                 </a>
               </motion.div>
@@ -721,6 +563,83 @@ export default function HomePage() {
         </div>
       </section>
 
+      <footer id="contact" className="section" aria-label="Contact">
+        <div className="wrap">
+          <motion.span
+            className="eyebrow"
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3, margin: "-10%" }}
+            transition={{ duration: 0.6, ease: EASE }}
+          >
+            Contact
+          </motion.span>
+          <h2 className="contact-words">
+            {CONTACT_LINES.map((line, i) => (
+              <motion.span
+                key={line}
+                initial={reduced ? undefined : { opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3, margin: "-10%" }}
+                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
+              >
+                {line}
+              </motion.span>
+            ))}
+          </h2>
+          <motion.a
+            href="mailto:shelatkarshivam4@gmail.com"
+            className="email-big"
+            onMouseEnter={() => sound.playHover()}
+            onClick={() => sound.playClick()}
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3, margin: "-10%" }}
+            transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
+          >
+            shelatkarshivam4@gmail.com
+          </motion.a>
+          <div className="socials">
+            {SOCIALS.map((s, i) => (
+              <motion.a
+                key={s.href}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => sound.playHover()}
+                initial={reduced ? undefined : { opacity: 0, scale: 0.5 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+                transition={{ duration: 0.4, delay: 0.35 + i * 0.06, ease: EASE }}
+                style={{ transformOrigin: "left center" }}
+              >
+                {i < 2 && !reduced ? <span className="float-idle">{s.label}</span> : s.label}
+              </motion.a>
+            ))}
+          </div>
+          <motion.p
+            className="thanks"
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
+            transition={{ duration: 0.6, delay: 0.5, ease: EASE }}
+          >
+            Thanks for stopping by, I read every note and reply within a few days.
+          </motion.p>
+          <div className="footer-base">
+            <div>{new Date().getFullYear()} Shivam Shelatkar, Thane to Mumbai</div>
+            <button type="button" className="to-top" onClick={toTop} onMouseEnter={() => sound.playHover()}>
+              Back to top
+            </button>
+          </div>
+          <AnimatedFooter
+            leftLinks={HOME_FOOTER_LEFT}
+            rightLinks={HOME_FOOTER_RIGHT}
+            copyrightText={`Â© ${new Date().getFullYear()} Shivam Shelatkar Â· ThaneÂ·Mumbai â€” Founder @Swarvibhaa`}
+            barCount={23}
+          />
+        </div>
+      </footer>
     </div>
   );
 }

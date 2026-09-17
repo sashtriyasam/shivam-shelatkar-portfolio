@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "motion/react";
 import { Music, Layers, Cpu, Users } from "lucide-react";
