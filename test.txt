@@ -1,1 +1,0 @@
- use client`nimport { Music } from `lucide-react`;`const cards = [icon: Music, index: 01, title: Lineage, text: Hello];`export default function AboutPage() { return <div>Test</div>; } 
