@@ -1622,16 +1622,17 @@ body::after {
   background-size: 100px 12px;
 }
 
-/* Human header - paper not glass */
+/* Site header - obsidian dark blur */
 .site-header {
   background: var(--color-surface-overlay) !important;
-  backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid var(--color-border) !important;
-  color: var(--color-text-inverse) !important;
+  color: var(--color-text-primary) !important;
 }
-.site-header .logo { color: var(--color-text-inverse) !important; }
+.site-header .logo { color: var(--color-text-primary) !important; }
 .site-header .logo__mark { border-color: var(--color-border); color: var(--color-accent-primary); }
-.site-header__nav a { color: var(--color-text-inverse) !important; }
+.site-header__nav a { color: var(--color-text-secondary) !important; }
+.site-header__nav a:hover { color: var(--color-text-primary) !important; }
 
 /* Phone perfect 320-768: gutter reduction */
 @media (max-width: 480px) { :root { --gutter: 20px; } .content-max { padding-inline: 20px !important; } }

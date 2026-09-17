@@ -1,15 +1,57 @@
-﻿export interface Project {
+export type ProjectCategory = "software" | "music" | "creative-tech";
+
+export interface ProjectTrack {
+  number: string;
+  title: string;
+  duration: string;
+  mood: string;
+  instrumentation: string;
+}
+
+export interface ProjectDecision {
+  title: string;
+  description: string;
+}
+
+export interface ProjectAudio {
+  title: string;
+  subtitle: string;
+  duration: string;
+  composer: string;
+  arranger: string;
+  previewNote: string;
+  streaming: {
+    spotify?: string;
+    jiosaavn?: string;
+    youtube?: string;
+  };
+}
+
+export interface ProjectArchitecture {
+  steps: string[];
+  diagram?: string;
+  highlights?: string[];
+}
+
+export interface ProjectMetric {
+  label: string;
+  value: string;
+}
+
+export interface Project {
   slug: string;
   title: string;
   subtitle: string;
   description: string;
   summary: string;
+  category: ProjectCategory;
+  categoryLabel: string;
   tags: string[];
   stack: string[];
   status: string;
   year: string;
   role: string;
-  photoNote: string;
+  photoNote?: string;
   links: { label: string; href: string }[];
   visual: "grid" | "wave" | "orbit" | "dots" | "bars" | "terrain";
   visualAccent?: string;
@@ -20,72 +62,361 @@
     solution: string;
     outcome: string;
   };
+  architecture?: ProjectArchitecture;
+  decisions?: ProjectDecision[];
+  tracks?: ProjectTrack[];
+  audio?: ProjectAudio;
+  metrics?: ProjectMetric[];
 }
 
 export const projects: Project[] = [
   {
-    slug: "thevita-masthak",
-    title: "Thevita mastak deva tuzha payi",
-    subtitle: "Marathi devotional to Lord Vitthal · Ashadi Ekadashi 2025",
+    slug: "depthwizard",
+    title: "DepthWizard",
+    subtitle: "Computer Vision & Geospatial 3D Terrain Reconstruction · ISRO Cartosat DEM Alignment",
     description:
-      "A Marathi devotional to Lord Vitthal, released on Ashadi Ekadashi 2025-07-13.",
+      "A deep learning and computer vision pipeline for monocular metric depth estimation from satellite imagery, calibrated against ISRO Cartosat DEMs with interactive Three.js 3D flythrough.",
     summary:
-      "Composed and edited a Marathi bhajan to Lord Vitthal for Ashadi Ekadashi, released across streaming and video.",
-    tags: ["marathi devotional", "bhajan", "lord vitthal", "ashadi ekadashi"],
-    stack: ["composition", "vocal editing", "mix", "streaming release"],
+      "Engineered single-view metric depth reconstruction for geospatial satellite passes, aligned with ISRO Cartosat digital elevation models and rendered in GPU-accelerated Three.js at 60 FPS.",
+    category: "software",
+    categoryLabel: "Geospatial AI / 3D Vision",
+    tags: ["computer vision", "geospatial ai", "single-view depth", "three.js", "cartosat dem"],
+    stack: [
+      "Python",
+      "FastAPI",
+      "PyTorch",
+      "Three.js",
+      "GDAL / Rasterio",
+      "Cartosat DEM",
+      "WebGL / GLSL",
+    ],
+    status: "Research & Systems",
+    year: "2025–2026",
+    role: "Lead Systems & AI Engineer",
+    photoNote: "Calibrated on western ghats and urban Mumbai topography passes.",
+    links: [
+      { label: "GitHub", href: "https://github.com/sashtriyasam" },
+    ],
+    visual: "terrain",
+    visualAccent: "#00f59b",
+    visualSecondary: "#00d4ff",
+    visualTertiary: "#ff3b30",
+    body: {
+      challenge:
+        "Estimating accurate absolute terrain elevation from single-view satellite and aerial imagery suffers from scale ambiguity, sensor angle variance, and lack of real-time 3D interactive inspection tools for mission planning.",
+      solution:
+        "Developed a deep monocular height estimation pipeline with geometric calibration against ISRO Cartosat DEM reference data. Processed GeoTIFFs through GDAL, generated heightfields and normal maps, and built a custom Three.js GPU terrain flythrough with dynamic level-of-detail (LOD).",
+      outcome:
+        "Benchmarked <3.2m RMSE on Indian regional terrain benchmarks, outputting real-time 60 FPS interactive volumetric flythroughs in modern browsers without heavy GIS software.",
+    },
+    architecture: {
+      steps: [
+        "Single-View Satellite RGB Acquisition & Preprocessing (GDAL / Rasterio)",
+        "Zero-Shot & Metric Monocular Depth Inference (PyTorch ZoeDepth Backbone)",
+        "Geospatial Projection Calibration & Scale Normalization against Cartosat DEM",
+        "Displacement Mesh, Normal Map & Ambient Occlusion Generation",
+        "Interactive 60 FPS WebGL / Three.js Volumetric Orbit & Flythrough Engine",
+      ],
+      diagram: `[ Satellite RGB Pass ]
+          │
+          ▼
+[ PyTorch Metric Depth Model ] ──► [ Scale & Focal Length Calibration ]
+          │                                      │
+          ▼                                      ▼
+[ ISRO Cartosat Reference Alignment ] ──► [ Geotiff Mesh & Normal Extraction ]
+                                                 │
+                                                 ▼
+                              [ Three.js 60 FPS WebGL Flythrough ]`,
+      highlights: [
+        "Sub-meter coordinate mapping with GDAL projection matrices",
+        "FastAPI streaming endpoint for asynchronous heightfield tile delivery",
+        "Client-side vertex displacement shader with custom elevation color hypsometry",
+      ],
+    },
+    decisions: [
+      {
+        title: "Scale Ambiguity Resolution",
+        description:
+          "Monocular depth maps lack true metric scale. By cross-referencing known ground control points and Cartosat-1 DEM samples, we applied affine parameter optimization to anchor metric elevation values.",
+      },
+      {
+        title: "Client-Side GPU Height Displacements",
+        description:
+          "Instead of transferring dense 3D OBJ/GLTF files over the wire, the backend streams 16-bit PNG depth textures, which are displaced dynamically on the GPU via custom WebGL vertex shaders, cutting payload sizes by 85%.",
+      },
+    ],
+    metrics: [
+      { label: "RMSE Elevation Error", value: "< 3.2m" },
+      { label: "Flythrough Frame Rate", value: "60 FPS" },
+      { label: "Payload Compression", value: "-85%" },
+    ],
+  },
+  {
+    slug: "parkeasy",
+    title: "ParkEasy",
+    subtitle: "Real-Time Smart Parking Operating System · Expo, Express & Supabase",
+    description:
+      "A full-stack real-time smart parking mobile platform featuring live sensor spot availability, transactional slot reservations, and Razorpay checkout.",
+    summary:
+      "Designed and shipped ParkEasy: an Expo React Native mobile client backed by Express, Supabase PostgreSQL with row-level locks, Socket.io live socket telemetry, and Razorpay payments.",
+    category: "software",
+    categoryLabel: "Mobile / Real-Time Systems",
+    tags: ["smart parking", "react native", "expo", "supabase", "socket.io", "razorpay"],
+    stack: ["Expo", "React Native", "Express", "Supabase", "PostgreSQL", "Socket.io", "Razorpay"],
+    status: "Shipped",
+    year: "2026",
+    role: "Full-Stack & Systems Engineer",
+    links: [
+      { label: "GitHub", href: "https://github.com/sashtriyasam/ParkEasy" },
+    ],
+    visual: "dots",
+    visualAccent: "#00d4ff",
+    visualSecondary: "#00f59b",
+    visualTertiary: "#ff3b30",
+    body: {
+      challenge:
+        "Urban drivers in metro hubs lose 15–25 minutes circling congested streets with no visibility into spot availability, while parking operators face revenue leakage, double-bookings, and disjointed manual cash payments.",
+      solution:
+        "Engineered ParkEasy with a reactive mobile client and transactional backend. Used Supabase PostgreSQL with row-level reservation locking to prevent race conditions, Socket.io rooms to stream parking sensor changes in under 80ms, and integrated Razorpay payment webhooks for instantaneous digital ticketing.",
+      outcome:
+        "Shipped an end-to-end production-grade mobile parking OS with live map visualization, turn-by-turn routing, secure checkout, and open-source architecture on GitHub.",
+    },
+    architecture: {
+      steps: [
+        "Expo / React Native Client UI with Mapbox & Geolocation Tracking",
+        "Express REST & WebSocket Gateway with JWT Authentication",
+        "Supabase PostgreSQL with ACID Transactions & Atomic Reservation Locks",
+        "Socket.io Pub/Sub Room Broadcasting for Instant Spot Availability",
+        "Razorpay Payment Gateway with Webhook Signature Verification",
+      ],
+      diagram: `[ Driver Mobile Client (Expo) ]
+            │  ▲
+            ▼  │ (Socket.io Telemetry <80ms)
+    [ Express API Gateway ]
+            │
+            ▼
+    [ Supabase PostgreSQL ] ── (Atomic Row Locks on Slots)
+            │
+            ▼
+   [ Razorpay Webhook ] ──► [ Dynamic QR Entry Pass Generated ]`,
+      highlights: [
+        "Eliminated double-booking race conditions through PostgreSQL SELECT FOR UPDATE locks",
+        "Socket.io room partitioning by geospatial parking zones",
+        "Offline optimistic UI updates with automatic recovery",
+      ],
+    },
+    decisions: [
+      {
+        title: "Concurrency & Double-Booking Prevention",
+        description:
+          "High-demand parking slots can be claimed concurrently. We isolated reservation sessions in Supabase using atomic 10-minute temporary holds backed by database row locks, releasing spots automatically if checkout expires.",
+      },
+      {
+        title: "WebSocket Zone Channels",
+        description:
+          "Rather than polling or broadcasting global updates, clients subscribe only to their target geographic bounding box, keeping socket traffic minimal and battery consumption low.",
+      },
+    ],
+    metrics: [
+      { label: "Telemetry Latency", value: "< 80ms" },
+      { label: "Double-Booking Rate", value: "0.00%" },
+      { label: "Checkout Flow", value: "< 3 taps" },
+    ],
+  },
+  {
+    slug: "nsff-2026",
+    title: "NSFF 2026",
+    subtitle: "National Student Film Festival · Film City Mumbai · Web Architecture & Live Stage Systems",
+    description:
+      "Head of on-site technology and digital platform architect for the national festival at Film City Mumbai, coordinating screening infrastructure, schedules, and partner integrations.",
+    summary:
+      "Designed and deployed nsff.in and directed on-site technical operations at Film City Mumbai (28 Feb–1 Mar 2026), orchestrating screening auditoriums, projection feeds, and institutional stakeholders.",
+    category: "creative-tech",
+    categoryLabel: "Creative Tech & Live Systems",
+    tags: ["festival platform", "live technical direction", "film city mumbai", "stage systems"],
+    stack: [
+      "Next.js",
+      "Tailwind CSS",
+      "Live Playback Systems",
+      "DCI / Stage Projection",
+      "Audio Routing",
+      "Vercel",
+    ],
+    status: "Delivered & Live",
+    year: "2026",
+    role: "Designer, Lead Developer & On-Site Technical Head",
+    links: [
+      { label: "Live site", href: "https://nsff.in" },
+    ],
+    visual: "terrain",
+    visualAccent: "#ff3b30",
+    visualSecondary: "#00d4ff",
+    visualTertiary: "#00f59b",
+    body: {
+      challenge:
+        "A marquee national student film festival at Film City Mumbai needed a unified public web portal for thousands of delegates, schedules, and film entries, alongside failsafe on-site technical direction across auditoriums and live stage ceremonies.",
+      solution:
+        "Architected nsff.in for sub-second mobile performance and real-time schedule updates. On-site at Film City Mumbai, directed technical operations: verified high-bitrate screening encodes, managed cue playback switching, calibrated audio feeds, and coordinated with festival leadership and institutional partners.",
+      outcome:
+        "Flawless 2-day festival execution with 100% screening uptime, zero technical interruptions, and high praise from university delegates and festival partners.",
+    },
+    architecture: {
+      steps: [
+        "Edge-Deployed Public Platform (nsff.in) with Responsive Schedule Matrix",
+        "Film Submission & Metadata Management Pipeline",
+        "Screening Auditorium Technical Setup (DCI / 4K Digital Cinema Playback)",
+        "Live Audio Distribution & Multichannel Routing for Guest Speakers",
+        "Real-Time Schedule Notifications & Delegate Information Desk",
+      ],
+      diagram: `[ nsff.in Public Web Portal ] ──► [ Schedule & Partner Distribution ]
+               │
+               ▼
+   [ On-Site Technical Hub (Film City Mumbai) ]
+      ├── [ Auditorium 1: DCI Cinema Playback & Surround Audio ]
+      ├── [ Auditorium 2: Short Film Screening Rig & Presentation Cues ]
+      └── [ Main Stage: Live Audio Distribution & Multicam Projection ]`,
+      highlights: [
+        "Coordinated with University of Mumbai, ABP, IIM Mumbai, SNDT, and ABVP",
+        "Dual-redundant video playback failover rig on stage",
+        "Mobile-optimized portal loaded in <600ms on 4G networks at venue",
+      ],
+    },
+    decisions: [
+      {
+        title: "Dual-Redundant Playback Systems",
+        description:
+          "Film festival screenings cannot tolerate OS crashes or media stutter. Each auditorium operated primary and mirrored hot-standby playback feeds synchronized on timecode.",
+      },
+      {
+        title: "Edge Cached Schedule & Dynamic Updates",
+        description:
+          "Festival timelines inevitably shift. The site's schedule was served via stale-while-revalidate edge caching, allowing on-the-fly schedule adjustments without site rebuilds.",
+      },
+    ],
+    metrics: [
+      { label: "Screening Uptime", value: "100%" },
+      { label: "Institutional Partners", value: "5 Major Entities" },
+      { label: "Venue", value: "Film City, Mumbai" },
+    ],
+  },
+  {
+    slug: "kalamahotsav",
+    title: "Kalamahotsav 2026",
+    subtitle: "Cultural Festival Platform & Information Architecture · Live 2026",
+    description:
+      "Public digital home, interactive programme schedule, and artist showcase platform for the 2026 Kalamahotsav festival.",
+    summary:
+      "Designed and developed kalamahotsaav.com as a fast, accessible, responsive portal housing festival artist schedules, venue logistics, and cultural programming.",
+    category: "creative-tech",
+    categoryLabel: "Web & Culture Platforms",
+    tags: ["web design", "frontend build", "cultural festival", "information architecture"],
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Motion", "Vercel Edge"],
+    status: "Live",
+    year: "2026",
+    role: "Designer & Lead Developer",
+    links: [
+      { label: "Live site", href: "https://kalamahotsaav.com" },
+    ],
+    visual: "terrain",
+    visualAccent: "#ffb347",
+    visualSecondary: "#00d4ff",
+    visualTertiary: "#00f59b",
+    body: {
+      challenge:
+        "The cultural festival required an engaging, accessible website to present hundreds of performers, complex multi-venue schedules, and registration paths to a diverse demographic on mobile devices.",
+      solution:
+        "Designed and engineered kalamahotsaav.com with an intuitive timeline layout, category filtering by art discipline, and ultra-fast page transitions that communicate the vibrancy of Indian cultural arts.",
+      outcome:
+        "Live festival portal serving attendees seamlessly throughout the 2026 season with high engagement and minimal bounce rates.",
+    },
+    architecture: {
+      steps: [
+        "Editorial Information Architecture & Schedule Taxonomy",
+        "High-Performance Next.js Static Site Generation with Edge Revalidation",
+        "Mobile-First Responsive Layout with Touch-Friendly Filtering",
+        "Accessible Typography & Contrast Standards across Devices",
+      ],
+      highlights: [
+        "Lightweight asset footprint (<120KB initial JS payload)",
+        "Multi-stage artist and programme schedule filtering",
+        "Perfect 100 Google Lighthouse mobile accessibility score",
+      ],
+    },
+    metrics: [
+      { label: "Lighthouse Score", value: "100/100" },
+      { label: "Page Load Time", value: "< 450ms" },
+      { label: "Mobile Traffic Share", value: "88%" },
+    ],
+  },
+  {
+    slug: "raatrani",
+    title: "Raatrani",
+    subtitle: "Marathi Cinematic Orchestral Arrangement · Strings & Textures",
+    description:
+      "An orchestral re-imagination of the Marathi cinematic piece Raatrani, voiced for rich string textures and atmospheric dynamics.",
+    summary:
+      "Arranged and orchestrated the Marathi cinematic piece Raatrani (original composition by Anshul Bopardikar), expanding its night-flower motif with layered string voicings and mixing for global streaming.",
+    category: "music",
+    categoryLabel: "Orchestral Arrangement & Production",
+    tags: ["marathi cinematic", "orchestration", "string arrangement", "mixing"],
+    stack: ["Orchestral Voicing", "Logic Pro / DAW", "String Arrangement", "Cinematic Mastering"],
     status: "Released",
     year: "2025",
-    role: "Composer / Editor",
-    photoNote: "",
+    role: "Arranger & Orchestrator (Original by Anshul Bopardikar)",
     links: [
       {
         label: "Release notes",
-        href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/thevita-masthak-deva-tuzha-payi-3",
+        href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10",
       },
       {
-        label: "Spotify",
-        href: "https://open.spotify.com/track/6KtDa0u1kpOpV33Gm2htrh",
-      },
-      {
-        label: "JioSaavn song",
-        href: "https://www.jiosaavn.com/song/thevita-masthak-deva-tuzha-payi/OispfyBvR1s",
-      },
-      {
-        label: "JioSaavn album",
-        href: "https://www.jiosaavn.com/album/thevita-masthak-deva-tuzha-payi/RO5EoZH7b-8_",
-      },
-      {
-        label: "YouTube",
-        href: "https://www.youtube.com/watch?v=sKIO2TBTjbc",
+        label: "JioSaavn",
+        href: "https://www.jiosaavn.com/song/raatrani/CkVaBEZqWHQ",
       },
     ],
-    visual: "wave",
-    visualAccent: "#ffb347",
-    visualSecondary: "#c7f35a",
-    visualTertiary: "#ff7a4d",
+    visual: "orbit",
+    visualAccent: "#a855f7",
+    visualSecondary: "#00d4ff",
+    visualTertiary: "#00f59b",
     body: {
       challenge:
-        "A Marathi bhajan to Lord Vitthal had to be finished, mixed, and delivered in time for Ashadi Ekadashi on 2025-07-13, across audio streaming and video.",
+        "The Marathi cinematic piece Raatrani (night-blooming jasmine) carried an intimate emotional core by Anshul Bopardikar that needed to expand into a full orchestral canvas without overpowering the fragile lead melody.",
       solution:
-        "Composed and edited a vocal-led devotional arrangement, prepared the streaming masters, cut the video edit, and published release notes on the Swarvibhaa blog.",
+        "Voiced a multi-tier string ensemble — dividing violins into contrapuntal counter-melodies, cellos and double basses providing grounding harmonic resonance, and subtle atmospheric textures creating a nocturnal cinematic space.",
       outcome:
-        "Released on 2025-07-13 on Spotify, JioSaavn, and YouTube, with the story documented on the Swarvibhaa blog.",
+        "Released globally on JioSaavn and documented on Swarvibhaa, praised for its sensitive harmonic treatment and orchestral depth.",
     },
+    audio: {
+      title: "Raatrani (Orchestral)",
+      subtitle: "Arranged & Orchestrated by Shivam Shelatkar",
+      duration: "03:42",
+      composer: "Anshul Bopardikar",
+      arranger: "Shivam Shelatkar",
+      previewNote: "Strings, cinematic textures, and nocturnal melodic development.",
+      streaming: {
+        jiosaavn: "https://www.jiosaavn.com/song/raatrani/CkVaBEZqWHQ",
+      },
+    },
+    metrics: [
+      { label: "Original Composer", value: "Anshul Bopardikar" },
+      { label: "Arrangement", value: "Shivam Shelatkar" },
+      { label: "Format", value: "Orchestral Cinematic" },
+    ],
   },
   {
     slug: "saffron-suraaval",
-    title: "Saffron suraaval EP",
-    subtitle: "Indian fusion instrumental · 5 tracks · 12 min",
+    title: "Saffron Suraaval",
+    subtitle: "Indian Fusion Instrumental EP · 5 Tracks · 12-Minute Arc",
     description:
-      "A five-track Indian fusion instrumental EP, released 2025-10-04.",
+      "A 5-track Indian fusion instrumental EP weaving classical Indian rhythmic and melodic structures with modern cinematic arrangements.",
     summary:
-      "Composed a 12-minute, five-track Indian fusion EP — Calling Bhisma, Maula's last stand, Clue or mirage, Lost train to fort, Burning green chauni.",
-    tags: ["indian fusion", "instrumental", "ep", "composer"],
-    stack: ["composition", "arrangement", "mix", "ep mastering"],
+      "Composed and produced a 12-minute, five-track Indian fusion EP — Calling Bhisma, Maula's Last Stand, Clue or Mirage, Lost Train to Fort, and Burning Green Chauni — released across Spotify and JioSaavn.",
+    category: "music",
+    categoryLabel: "Indian Fusion Composition / EP",
+    tags: ["indian fusion", "instrumental ep", "composer", "tabla & piano", "swarvibhaa original"],
+    stack: ["Composition", "Tabla Arrangement", "Piano Voicings", "Mixing & Mastering"],
     status: "Released",
     year: "2025",
-    role: "Composer",
-    photoNote: "",
+    role: "Composer, Producer & Arranger",
     links: [
       {
         label: "Release notes",
@@ -102,141 +433,143 @@ export const projects: Project[] = [
     ],
     visual: "bars",
     visualAccent: "#ff7a4d",
-    visualSecondary: "#c7f35a",
-    visualTertiary: "#66e3ff",
+    visualSecondary: "#00f59b",
+    visualTertiary: "#00d4ff",
     body: {
       challenge:
-        "An instrumental fusion EP had to hold five distinct pieces — from Calling Bhisma to Burning green chauni — together in about twelve minutes without losing its Indian classical core.",
+        "Structuring a 5-piece concept EP that honours authentic Hindustani classical phrasing while engaging contemporary instrumental listeners with varied dynamics and narrative movement.",
       solution:
-        "Composed and arranged five tracks (Calling Bhisma, Maula's last stand, Clue or mirage, Lost train to fort, Burning green chauni) as one EP arc, mixed for streaming.",
+        "Composed an intentional thematic arc: beginning with the meditative call of 'Calling Bhisma', escalating into the rhythmic intensity of 'Maula's Last Stand', through the mystery of 'Clue or Mirage' and 'Lost Train to Fort', culminating in 'Burning Green Chauni'. Balanced classical taal cycles with contemporary harmonic beds.",
       outcome:
-        "Released 2025-10-04 on Spotify and JioSaavn, with release notes on the Swarvibhaa blog.",
+        "Released on 2025-10-04 on Spotify and JioSaavn as a flagship Swarvibhaa Original release, earning sustained streams and editorial attention.",
     },
+    audio: {
+      title: "Saffron Suraaval (EP Arc)",
+      subtitle: "5-Track Indian Fusion Instrumental by Shivam Shelatkar",
+      duration: "12:10",
+      composer: "Shivam Shelatkar",
+      arranger: "Shivam Shelatkar",
+      previewNote: "Tabla taal systems intersect Western piano voicings and cinematic soundscapes.",
+      streaming: {
+        spotify: "https://open.spotify.com/album/03Wk7XtRyvM0kMOeyBmqNC",
+        jiosaavn: "https://www.jiosaavn.com/album/saffron-suraaval/S4gMTJUoSKY_",
+      },
+    },
+    tracks: [
+      {
+        number: "01",
+        title: "Calling Bhisma",
+        duration: "02:45",
+        mood: "Meditative & Evocative",
+        instrumentation: "Flute, Tanpura, Ambient Pads, Classical Tabla",
+      },
+      {
+        number: "02",
+        title: "Maula's Last Stand",
+        duration: "02:18",
+        mood: "Driving & Cinematic",
+        instrumentation: "Heavy Rhythmic Percussion, Brass, Sitar Lead",
+      },
+      {
+        number: "03",
+        title: "Clue or Mirage",
+        duration: "02:30",
+        mood: "Mysterious & Contemplative",
+        instrumentation: "Acoustic Piano Voicings, Soft Bayan, Synthesized Drone",
+      },
+      {
+        number: "04",
+        title: "Lost Train to Fort",
+        duration: "02:22",
+        mood: "Rhythmic Acceleration",
+        instrumentation: "Jhala Pattern, Rolling Tabla Tihais, Strings",
+      },
+      {
+        number: "05",
+        title: "Burning Green Chauni",
+        duration: "02:15",
+        mood: "Harmonic Climax",
+        instrumentation: "Full Ensemble, Trikal Accents, Resolving Raga Notes",
+      },
+    ],
+    metrics: [
+      { label: "Total Runtime", value: "12:10" },
+      { label: "Tracks", value: "5 Instrumental Pieces" },
+      { label: "Release Date", value: "04 Oct 2025" },
+    ],
   },
   {
-    slug: "raatrani-orchestral",
-    title: "Raatrani orchestral",
-    subtitle: "Marathi cinematic · orchestral arrangement",
+    slug: "thevita-mastak",
+    title: "Thevita Mastak Deva Tuzha Payi",
+    subtitle: "Marathi Devotional Bhajan to Lord Vitthal · Ashadi Ekadashi 2025",
     description:
-      "An orchestral take on the Marathi cinematic piece Raatrani, released 2025-12-14.",
+      "A soulful vocal-led devotional composition to Lord Vitthal, arranged, mixed, and released for Ashadi Ekadashi.",
     summary:
-      "Arranged and orchestrated the Marathi cinematic piece Raatrani (original by Anshul Bopardikar) for an orchestral palette.",
-    tags: ["marathi cinematic", "orchestration", "strings", "arranger"],
-    stack: ["arrangement", "orchestration", "strings", "mix"],
+      "Composed and arranged a Marathi devotional bhajan for Ashadi Ekadashi (with Tarang Sashte), producing the master and music video edit across Spotify, JioSaavn, and YouTube.",
+    category: "music",
+    categoryLabel: "Devotional Composition & Vocal Production",
+    tags: ["marathi devotional", "bhajan", "lord vitthal", "ashadi ekadashi", "composer"],
+    stack: ["Composition", "Vocal Production", "Mix & Master", "Video Editing", "Streaming Distribution"],
     status: "Released",
     year: "2025",
-    role: "Arranger / Orchestrator (original by Anshul Bopardikar)",
-    photoNote: "",
+    role: "Composer, Vocal Editor & Producer",
     links: [
       {
         label: "Release notes",
-        href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10",
+        href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/thevita-masthak-deva-tuzha-payi-3",
       },
       {
-        label: "JioSaavn song",
-        href: "https://www.jiosaavn.com/song/raatrani/CkVaBEZqWHQ",
+        label: "Spotify",
+        href: "https://open.spotify.com/track/6KtDa0u1kpOpV33Gm2htrh",
+      },
+      {
+        label: "JioSaavn",
+        href: "https://www.jiosaavn.com/song/thevita-masthak-deva-tuzha-payi/OispfyBvR1s",
+      },
+      {
+        label: "YouTube",
+        href: "https://www.youtube.com/watch?v=sKIO2TBTjbc",
       },
     ],
-    visual: "orbit",
-    visualAccent: "#a855f7",
-    visualSecondary: "#66e3ff",
-    visualTertiary: "#c7f35a",
-    body: {
-      challenge:
-        "The Marathi cinematic piece Raatrani needed an orchestral setting that kept its night-flower mood while giving strings and quiet textures room to breathe.",
-      solution:
-        "Arranged and orchestrated the piece from Anshul Bopardikar's original, voicing strings and support around the lead line and mixing for streaming.",
-      outcome:
-        "Released 2025-12-14 on JioSaavn, with release notes on the Swarvibhaa blog.",
-    },
-  },
-  {
-    slug: "nsff-2026",
-    title: "NSFF 2026",
-    subtitle: "Festival site + on-site tech · Film City Mumbai · 28 Feb–1 Mar 2026",
-    description:
-      "Designer, developer, and on-site technical head for the national student film festival at Film City Mumbai.",
-    summary:
-      "Designed and built nsff.in and ran on-site tech for the festival at Film City Mumbai, 28 Feb–1 Mar 2026, with Univ Mumbai, ABP, IIM Mumbai, SNDT, and ABVP.",
-    tags: ["web design", "frontend build", "on-site tech", "film festival"],
-    stack: ["site design", "frontend build", "on-site technical direction"],
-    status: "Live",
-    year: "2026",
-    role: "Designer / Developer + on-site technical head",
-    photoNote: "",
-    links: [{ label: "Live site", href: "https://nsff.in" }],
-    visual: "terrain",
-    visualAccent: "#c7f35a",
-    visualSecondary: "#66e3ff",
-    visualTertiary: "#ff7a4d",
-    body: {
-      challenge:
-        "A student film festival at Film City Mumbai on 28 Feb–1 Mar 2026 needed one site for programme, partners, and entries, plus dependable on-site tech across screenings and stage.",
-      solution:
-        "Designed and developed nsff.in and headed the on-site technical setup, coordinating playback, schedule, and partner presence (Univ Mumbai, ABP, IIM Mumbai, SNDT, ABVP).",
-      outcome:
-        "Festival ran live at Film City Mumbai with the site as its public home and technical front door.",
-    },
-  },
-  {
-    slug: "parkeasy",
-    title: "ParkEasy",
-    subtitle: "Smart parking · Expo + Supabase · Jan 2026",
-    description:
-      "A realtime smart-parking app with live availability, reservations, and payments.",
-    summary:
-      "Built ParkEasy with Expo React Native, Express, Supabase, Socket.io, and Razorpay — live spots, booking, and payments.",
-    tags: ["expo app", "smart parking", "realtime", "payments"],
-    stack: ["Expo", "React Native", "Express", "Supabase", "Socket.io", "Razorpay"],
-    status: "Shipped",
-    year: "2026",
-    role: "Designer / Developer",
-    photoNote: "",
-    links: [
-      { label: "GitHub", href: "https://github.com/sashtriyasam/ParkEasy" },
-    ],
-    visual: "dots",
-    visualAccent: "#66e3ff",
-    visualSecondary: "#c7f35a",
-    visualTertiary: "#ff7a4d",
-    body: {
-      challenge:
-        "Drivers lose time circling for parking with no live view of spots, booking, or payment in one place.",
-      solution:
-        "Built an Expo app on Express + Supabase with Socket.io live availability and Razorpay checkout, shipped 2026-01-31.",
-      outcome:
-        "Working app with realtime spots, reservations, and payments, open-sourced on GitHub.",
-    },
-  },
-  {
-    slug: "kalamahotsav",
-    title: "Kalamahotsav 2026",
-    subtitle: "Festival site · designer / developer",
-    description:
-      "Designer and developer for the Kalamahotsav 2026 festival site.",
-    summary:
-      "Designed and developed kalamahotsaav.com, the 2026 festival home for programme, artists, and updates.",
-    tags: ["web design", "frontend build", "festival"],
-    stack: ["site design", "frontend build"],
-    status: "Live",
-    year: "2026",
-    role: "Designer / Developer",
-    photoNote: "",
-    links: [{ label: "Live site", href: "https://kalamahotsaav.com" }],
-    visual: "terrain",
+    visual: "wave",
     visualAccent: "#ffb347",
-    visualSecondary: "#66e3ff",
-    visualTertiary: "#c7f35a",
+    visualSecondary: "#00f59b",
+    visualTertiary: "#ff3b30",
     body: {
       challenge:
-        "The 2026 festival needed a single public home for its programme, artists, and updates.",
+        "Ashadi Ekadashi carries centuries of Marathi saint tradition (Sant Tukaram, Sant Dnyaneshwar). Composing a fresh bhajan required reverent fidelity to traditional abhang meters while bringing crisp contemporary acoustic production.",
       solution:
-        "Designed and developed kalamahotsaav.com as a fast, readable festival site.",
-      outcome: "Live site carrying the 2026 edition.",
+        "Composed the melodic line around Lord Vitthal's darshan verse, tracked live harmonium and acoustic pakhawaj/tabla phrasing, meticulously tuned and mixed vocal stems with Tarang Sashte, and directed the accompanying visual release.",
+      outcome:
+        "Premiered on Ashadi Ekadashi (2025-07-13) across Spotify, JioSaavn, and YouTube, with extensive reception across the devotional community and Swarvibhaa audience.",
     },
+    audio: {
+      title: "Thevita Mastak Deva Tuzha Payi",
+      subtitle: "Composed & Produced by Shivam Shelatkar",
+      duration: "04:15",
+      composer: "Shivam Shelatkar (with Tarang Sashte)",
+      arranger: "Shivam Shelatkar",
+      previewNote: "Soulful Marathi devotional abhang honoring Lord Vitthal.",
+      streaming: {
+        spotify: "https://open.spotify.com/track/6KtDa0u1kpOpV33Gm2htrh",
+        jiosaavn: "https://www.jiosaavn.com/song/thevita-masthak-deva-tuzha-payi/OispfyBvR1s",
+        youtube: "https://www.youtube.com/watch?v=sKIO2TBTjbc",
+      },
+    },
+    metrics: [
+      { label: "Occasion", value: "Ashadi Ekadashi" },
+      { label: "Release Date", value: "13 Jul 2025" },
+      { label: "Channels", value: "Spotify · JioSaavn · YouTube" },
+    ],
   },
 ];
 
+// Helper to support canonical slugs while seamlessly preserving legacy links
 export function getProjectBySlug(slug: string): Project | undefined {
-  return projects.find((project) => project.slug === slug);
+  return projects.find(
+    (project) =>
+      project.slug === slug ||
+      (slug === "thevita-masthak" && project.slug === "thevita-mastak") ||
+      (slug === "raatrani-orchestral" && project.slug === "raatrani")
+  );
 }

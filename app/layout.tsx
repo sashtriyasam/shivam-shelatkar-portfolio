@@ -39,34 +39,34 @@ const ingrid = Ingrid_Darling({
 export const metadata: Metadata = {
   metadataBase: new URL("https://shivam.runs-on.dev"),
   title: {
-    default: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
+    default: "Shivam Shelatkar — Music Technologist, Composer & Engineer",
     template: "%s | Shivam Shelatkar",
   },
   description:
-    "Shivam Shelatkar, founder of Swarvibhaa from Thane and Mumbai, plays tabla and piano and crafts interactive music tools, lessons and Unity worlds with code.",
+    "Shivam Shelatkar is a music technologist, composer, and systems engineer from Thane and Mumbai. Founder of Swarvibhaa, classical tabla with Pt. Mukundraj Deo, Trinity piano, and builder of real-time software, geospatial AI, and live festival technologies.",
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "https://shivam.runs-on.dev",
     siteName: "Shivam Shelatkar",
-    title: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
+    title: "Shivam Shelatkar — Music Technologist, Composer & Engineer",
     description:
-      "Shivam Shelatkar, founder of Swarvibhaa from Thane and Mumbai, plays tabla and piano and crafts interactive music tools, lessons and Unity worlds with code.",
+      "Shivam Shelatkar is a music technologist, composer, and systems engineer from Thane and Mumbai. Founder of Swarvibhaa, classical tabla with Pt. Mukundraj Deo, Trinity piano, and builder of real-time software, geospatial AI, and live festival technologies.",
     images: [
       {
-        url: "/opengraph-image",
+        url: "/og-default.svg",
         width: 1200,
         height: 630,
-        alt: "Shivam Shelatkar — Rooted in tradition. Wired with code.",
+        alt: "Shivam Shelatkar — Music Technologist, Composer & Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shivam Shelatkar — founder of Swarvibhaa, tabla and piano, building with code",
+    title: "Shivam Shelatkar — Music Technologist, Composer & Engineer",
     description:
-      "Shivam Shelatkar, founder of Swarvibhaa from Thane and Mumbai, plays tabla and piano and crafts interactive music tools, lessons and Unity worlds with code.",
-    images: ["/opengraph-image"],
+      "Shivam Shelatkar is a music technologist, composer, and systems engineer from Thane and Mumbai. Founder of Swarvibhaa, classical tabla with Pt. Mukundraj Deo, Trinity piano, and builder of real-time software, geospatial AI, and live festival technologies.",
+    images: ["/og-default.svg"],
   },
   icons: {
     icon: "/favicon.svg",

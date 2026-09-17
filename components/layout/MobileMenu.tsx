@@ -9,6 +9,7 @@ import { useMobileMenu } from "./MobileMenuProvider";
 const links = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
+  { href: "/cv", label: "CV" },
   { href: "/contact", label: "Contact" },
 ];
 

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useRef, useState } from "react";
 import { sound } from "@/lib/audio";
@@ -9,6 +9,7 @@ interface TiltCardProps {
   style?: React.CSSProperties;
   maxTilt?: number;
   href?: string;
+  accentColor?: string;
   onClick?: () => void;
 }
 
@@ -18,6 +19,7 @@ export function TiltCard({
   style = {},
   maxTilt = 8,
   href,
+  accentColor,
   onClick,
 }: TiltCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -86,7 +88,9 @@ export function TiltCard({
           pointerEvents: "none",
           zIndex: 2,
           borderRadius: "inherit",
-          background: `radial-gradient(400px circle at ${glarePos.x}% ${glarePos.y}%, rgba(255, 255, 255, ${glarePos.opacity}), transparent 60%)`,
+          background: accentColor
+            ? `radial-gradient(400px circle at ${glarePos.x}% ${glarePos.y}%, ${accentColor}33, transparent 65%)`
+            : `radial-gradient(400px circle at ${glarePos.x}% ${glarePos.y}%, rgba(255, 255, 255, ${glarePos.opacity}), transparent 60%)`,
           transition: "opacity 0.25s ease",
         }}
       />

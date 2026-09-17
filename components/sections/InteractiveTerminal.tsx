@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import { sound } from "@/lib/audio";
-import { Terminal as TerminalIcon, Sparkles } from "lucide-react";
+import { Terminal as TerminalIcon } from "lucide-react";
 
 interface HistoryItem {
   command: string;
@@ -16,7 +16,7 @@ export function InteractiveTerminal() {
       command: "welcome",
       output: (
         <div style={{ color: "#8be4ff", lineHeight: 1.6 }}>
-          <span>✦ SHIVAM-OS [v2.4.0-production]</span>
+          <span>✦ SHIVAM-OS [v2026-production]</span>
           <br />
           <span style={{ color: "rgba(255,255,255,0.6)" }}>
             Interactive terminal connected. Type a command or click a quick-chip below.
@@ -43,14 +43,15 @@ export function InteractiveTerminal() {
     switch (cmd) {
       case "help":
         res = (
-          <div style={{ color: "#c7f35a", lineHeight: 1.7 }}>
+          <div style={{ color: "#00f59b", lineHeight: 1.7 }}>
             <div>Available system routines:</div>
             <div style={{ paddingLeft: "1rem", color: "rgba(255,255,255,0.85)" }}>
               <div>• <strong>projects</strong> — Inspect shipped case studies</div>
-              <div>• <strong>skills</strong> — Core design & engineering stack</div>
-              <div>• <strong>about</strong> — Background, location & focus</div>
-              <div>• <strong>contact</strong> — Direct channels & coordinates</div>
-              <div>• <strong>matrix</strong> — Trigger visual data stream</div>
+              <div>• <strong>skills</strong> — Engineering & creative tech stack</div>
+              <div>• <strong>about</strong> — Background, lineage & education</div>
+              <div>• <strong>cv</strong> — View and download curriculum vitae</div>
+              <div>• <strong>contact</strong> — Direct email and social channels</div>
+              <div>• <strong>matrix</strong> — Trigger telemetry data stream</div>
               <div>• <strong>clear</strong> — Flush terminal buffer</div>
             </div>
           </div>
@@ -60,16 +61,28 @@ export function InteractiveTerminal() {
       case "projects":
         res = (
           <div style={{ lineHeight: 1.7 }}>
-            <div style={{ color: "#ff7a4d", marginBottom: "0.4rem" }}>✦ Selected High-Consequence Systems:</div>
+            <div style={{ color: "#ff7a4d", marginBottom: "0.4rem" }}>✦ Canonical Works & Case Studies:</div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem", paddingLeft: "0.8rem" }}>
-              <a href="/work/depthwizard" style={{ color: "#66e3ff", textDecoration: "underline" }}>
-                01. DepthWizard (ISRO Geospatial Intelligence Platform) ↗
+              <a href="/work/depthwizard" style={{ color: "#00f59b", textDecoration: "underline" }}>
+                01. DepthWizard — Single-View 3D Terrain & ISRO Cartosat DEM Alignment ↗
               </a>
-              <a href="/work/projection-ai" style={{ color: "#c7f35a", textDecoration: "underline" }}>
-                02. Projection AI (Predictive Revenue Modeling Workspace) ↗
+              <a href="/work/parkeasy" style={{ color: "#00d4ff", textDecoration: "underline" }}>
+                02. ParkEasy — Real-Time Smart Parking Mobile OS (Expo & Supabase) ↗
               </a>
-              <a href="/work/park-easy" style={{ color: "#ff3b82", textDecoration: "underline" }}>
-                03. ParkEasy (Urban IoT Parking Operating System) ↗
+              <a href="/work/nsff-2026" style={{ color: "#ff3b30", textDecoration: "underline" }}>
+                03. NSFF 2026 — Film City Mumbai Web Portal & Live Stage Tech ↗
+              </a>
+              <a href="/work/kalamahotsav" style={{ color: "#ffb347", textDecoration: "underline" }}>
+                04. Kalamahotsav 2026 — Cultural Festival Platform ↗
+              </a>
+              <a href="/work/raatrani" style={{ color: "#a855f7", textDecoration: "underline" }}>
+                05. Raatrani — Marathi Cinematic Orchestral Arrangement ↗
+              </a>
+              <a href="/work/saffron-suraaval" style={{ color: "#ff7a4d", textDecoration: "underline" }}>
+                06. Saffron Suraaval — 5-Track Indian Fusion Instrumental EP ↗
+              </a>
+              <a href="/work/thevita-mastak" style={{ color: "#ffb347", textDecoration: "underline" }}>
+                07. Thevita Mastak Deva Tuzha Payi — Devotional Bhajan Release ↗
               </a>
             </div>
           </div>
@@ -79,13 +92,17 @@ export function InteractiveTerminal() {
       case "skills":
         res = (
           <div style={{ color: "#e5e5e5", lineHeight: 1.7 }}>
-            <div style={{ color: "#c7f35a" }}>ENGINEERING:</div>
+            <div style={{ color: "#00f59b" }}>LANGUAGES:</div>
             <div style={{ color: "rgba(255,255,255,0.7)", paddingLeft: "0.8rem" }}>
-              Next.js 16, React 19, TypeScript, WebGL, Three.js, Mapbox GL, D3.js, GSAP
+              C, C++, C#, Python, TypeScript, JavaScript, SQL, GLSL
             </div>
-            <div style={{ color: "#66e3ff", marginTop: "0.4rem" }}>DESIGN:</div>
+            <div style={{ color: "#00d4ff", marginTop: "0.4rem" }}>WEB & SYSTEMS:</div>
             <div style={{ color: "rgba(255,255,255,0.7)", paddingLeft: "0.8rem" }}>
-              Interaction Architecture, Spatial UX, Design Systems, Motion Choreography
+              Next.js 16, React 19, React Native (Expo), Express, FastAPI, Supabase, PostgreSQL, Socket.io, Docker
+            </div>
+            <div style={{ color: "#ff3b30", marginTop: "0.4rem" }}>CREATIVE TECH & MUSIC:</div>
+            <div style={{ color: "rgba(255,255,255,0.7)", paddingLeft: "0.8rem" }}>
+              Three.js, WebGL, Unity (C#), Web Audio API, Logic Pro, Ableton Live, DCI Stage Playback
             </div>
           </div>
         );
@@ -94,10 +111,27 @@ export function InteractiveTerminal() {
       case "about":
         res = (
           <div style={{ color: "rgba(255,255,255,0.85)", lineHeight: 1.7 }}>
-            <div><strong>Shivam Shelatkar</strong> — Creative Technologist & Product Designer</div>
-            <div>Location: Thane·Mumbai, India · Remote-ready</div>
+            <div><strong>Shivam Shelatkar</strong> — Music Technologist, Composer & Engineer</div>
+            <div>Location: Thane — Mumbai, India</div>
+            <div>Education: Computer Engineering · University of Mumbai</div>
+            <div>Lineage: 10 yrs Tabla with Pandit Mukundraj Deo · Trinity College London Piano</div>
             <div style={{ marginTop: "0.4rem", color: "rgba(255,255,255,0.6)" }}>
-              Specialized in high-density data visualization, geospatial interfaces, and real-time operations tools.
+              Founder of Swarvibhaa (est. 2023). Building at the intersection of classical arts, systems engineering, and live festival technologies.
+            </div>
+          </div>
+        );
+        break;
+
+      case "cv":
+        res = (
+          <div style={{ lineHeight: 1.7 }}>
+            <div style={{ color: "#00d4ff" }}>✦ Curriculum Vitae Available:</div>
+            <div style={{ paddingLeft: "0.8rem", color: "rgba(255,255,255,0.8)" }}>
+              Experience: Swarvibhaa, NSFF 2026 (Film City), DepthWizard, ParkEasy.<br />
+              Education: B.E. in Computer Engineering, University of Mumbai.<br />
+              <a href="/cv" style={{ color: "#00f59b", textDecoration: "underline", display: "inline-block", marginTop: 4 }}>
+                Open Printable & Downloadable CV ↗
+              </a>
             </div>
           </div>
         );
@@ -106,9 +140,10 @@ export function InteractiveTerminal() {
       case "contact":
         res = (
           <div style={{ lineHeight: 1.7 }}>
-            <div>Email: <a href="mailto:shelatkarshivam4@gmail.com" style={{ color: "#c7f35a" }}>shelatkarshivam4@gmail.com</a></div>
-            <div>LinkedIn: <a href="https://linkedin.com/in/shivam-shelatkar" target="_blank" rel="noreferrer" style={{ color: "#66e3ff" }}>linkedin.com/in/shivam-shelatkar ↗</a></div>
-            <div>GitHub: <a href="https://github.com" target="_blank" rel="noreferrer" style={{ color: "#ff7a4d" }}>github.com ↗</a></div>
+            <div>Email: <a href="mailto:shelatkarshivam4@gmail.com" style={{ color: "#00f59b" }}>shelatkarshivam4@gmail.com</a></div>
+            <div>LinkedIn: <a href="https://linkedin.com/in/shivam-shelatkar-503305358" target="_blank" rel="noreferrer" style={{ color: "#00d4ff" }}>linkedin.com/in/shivam-shelatkar ↗</a></div>
+            <div>GitHub: <a href="https://github.com/sashtriyasam" target="_blank" rel="noreferrer" style={{ color: "#ff7a4d" }}>github.com/sashtriyasam ↗</a></div>
+            <div>Instagram: <a href="https://instagram.com/shastriyakid" target="_blank" rel="noreferrer" style={{ color: "#ff3b30" }}>@shastriyakid ↗</a></div>
           </div>
         );
         break;
@@ -118,7 +153,7 @@ export function InteractiveTerminal() {
           <div style={{ color: "#00f59b", fontFamily: "var(--font-mono)", fontSize: "0.68rem" }}>
             01001001 01010011 01010010 01001111 00100000 01010011 01000001 01010100<br />
             01000100 01000101 01010000 01010100 01001000 01010111 01001001 01011010<br />
-            [SYSTEM OVERRIDE: COGNITIVE OVERHEAD MINIMIZED // ALL SYSTEMS NOMINAL]
+            [DEPTHWIZARD: CARTOSAT CALIBRATION COMPLETE // 60 FPS FLYTHROUGH ONLINE]
           </div>
         );
         break;
@@ -196,7 +231,7 @@ export function InteractiveTerminal() {
         <span style={{ fontSize: "0.58rem", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em" }}>
           QUICK:
         </span>
-        {["projects", "skills", "about", "contact", "matrix", "clear"].map((q) => (
+        {["projects", "skills", "about", "cv", "contact", "matrix", "clear"].map((q) => (
           <button
             key={q}
             type="button"
@@ -264,7 +299,7 @@ export function InteractiveTerminal() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type 'help' and press Enter..."
+          placeholder="Type 'help' or click a chip above..."
           style={{
             flex: 1,
             background: "transparent",
@@ -278,7 +313,7 @@ export function InteractiveTerminal() {
         <button
           type="submit"
           style={{
-            background: "var(--accent-red, #ff3b30)",
+            background: "var(--color-accent-primary, #ff3b30)",
             color: "#fff",
             border: "none",
             borderRadius: 6,

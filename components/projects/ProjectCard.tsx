@@ -6,6 +6,7 @@ import { motion, useMotionValue, useTransform } from "motion/react";
 import { useRef } from "react";
 import type { Project } from "@/lib/projects";
 import { ProjectVisual } from "@/lib/ProjectVisual";
+import { sound } from "@/lib/audio";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -46,8 +47,16 @@ export function ProjectCard({ project }: { project: Project }) {
       prefetch={false}
       ref={cardRef}
       onMouseMove={handleMove}
+      onMouseEnter={() => sound.playHover()}
+      onClick={() => sound.playClick()}
       onMouseLeave={handleLeave}
       data-cursor-label="VIEW"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        position: "relative",
+      }}
     >
       <div className="project-card__visual" ref={visualRef}>
         <motion.div
@@ -68,38 +77,60 @@ export function ProjectCard({ project }: { project: Project }) {
         </motion.div>
       </div>
 
-      <div className="project-card__meta">
-        <motion.h3
-          className="project-card__title"
+      <div style={{ padding: "0 4px", display: "flex", flexDirection: "column", flexGrow: 1 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "14px 0 8px" }}>
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: project.visualAccent || "var(--color-accent-primary)",
+              fontWeight: 600,
+            }}
+          >
+            {project.categoryLabel}
+          </span>
+          <span className="tag" style={{ fontSize: 11, padding: "2px 8px" }}>
+            {project.year}
+          </span>
+        </div>
+
+        <div className="project-card__meta" style={{ marginTop: 0 }}>
+          <motion.h3
+            className="project-card__title"
+            style={{
+              x: useTransform(x, (v) => v * 12),
+              y: useTransform(y, (v) => v * 6),
+            }}
+          >
+            {project.title}
+          </motion.h3>
+        </div>
+
+        <p className="project-card__summary" style={{ flexGrow: 1, margin: "8px 0 16px" }}>
+          {project.summary}
+        </p>
+
+        <div className="project-card__tags" style={{ marginBottom: 16 }}>
+          {project.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="tag">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <motion.span
+          className="project-card__action"
           style={{
-            x: useTransform(x, (v) => v * 12),
-            y: useTransform(y, (v) => v * 6),
+            x: useTransform(x, (v) => v * 18),
+            y: useTransform(y, (v) => v * 10),
+            marginTop: "auto",
           }}
         >
-          {project.title}
-        </motion.h3>
-        <span className="tag">{project.year}</span>
+          View case study <ArrowUpRight size={14} />
+        </motion.span>
       </div>
-
-      <p className="project-card__summary">{project.summary}</p>
-
-      <div className="project-card__tags">
-        {project.tags.map((tag) => (
-          <span key={tag} className="tag">
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <motion.span
-        className="project-card__action"
-        style={{
-          x: useTransform(x, (v) => v * 18),
-          y: useTransform(y, (v) => v * 10),
-        }}
-      >
-        View case study <ArrowUpRight size={14} />
-      </motion.span>
     </Link>
   );
 }

@@ -1,729 +1,880 @@
-'use client';
+"use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { sound } from "@/lib/audio";
-import { AnimatedFooter } from "@/components/ui/animated-footer";
-import { VariableFontHover } from "@/components/ui/variable-font-hover";
+import { projects } from "@/lib/projects";
+import { ProjectCard } from "@/components/projects/ProjectCard";
+import { HeroTerrain } from "@/components/hero/HeroTerrain";
+import { SpatialShowcase } from "@/components/sections/SpatialShowcase";
+import { InteractiveTerminal } from "@/components/sections/InteractiveTerminal";
+import { TiltCard } from "@/components/projects/TiltCard";
+import { ArrowUpRight, ArrowRight, Sparkles, Terminal, Layers, Compass, Music, Code2, Radio, CheckCircle2 } from "lucide-react";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-const PILLS = [
-  "Tabla 10 yrs",
-  "Piano Trinity 6 yrs",
-  "Unity since 2017",
-  "Founder at Swarvibhaa",
+const CREDENTIAL_CHIPS = [
+  "10 Yrs Classical Tabla (Pt. Mukundraj Deo)",
+  "Piano (Trinity College London)",
+  "Computer Engineering · Univ of Mumbai",
+  "Founder @ Swarvibhaa",
 ];
 
-const WORK = [
+const METRICS_STRIP = [
+  { value: "07", label: "Works Released", sub: "Software, Music & Live Systems" },
+  { value: "10+", label: "Years Classical Taal", sub: "Gurushishya Parampara" },
+  { value: "< 3.2m", label: "Geospatial RMSE", sub: "DepthWizard · ISRO Cartosat" },
+  { value: "100%", label: "Live Screening Uptime", sub: "Film City Mumbai · NSFF 2026" },
+];
+
+const WHAT_I_BUILD = [
   {
-    title: "Raatrani",
-    medium: "Film score, 2024, composer",
-    desc: "A night flower scored for strings and quiet textures, written for stage and film.",
-    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10",
-    cta: "Listen",
-    note: "Raatrani artwork coming from @shastriyakid",
+    category: "Music",
+    icon: Music,
+    accent: "#ff7a4d",
+    items: [
+      "Original Composition & Scoring",
+      "Orchestral Arrangement & Voicings",
+      "Indian Classical & Fusion Production",
+      "Multi-track Mixing & Mastering",
+      "Sound Design & Stage Audio Routing",
+    ],
   },
   {
-    title: "Thevita masthak deva",
-    medium: "Bhajan, 2025, arrangement",
-    desc: "A Marathi bhajan for Lord Vitthal, released on Ashadi Ekadashi with Tarang Sashte.",
-    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/thevita-masthak-deva-tuzha-payi-3",
-    cta: "Listen",
-    note: "Thevita photo coming from @shastriyakid",
+    category: "Software & Systems",
+    icon: Code2,
+    accent: "#00f59b",
+    items: [
+      "Production Web Applications (Next.js)",
+      "Mobile Operating Systems (React Native / Expo)",
+      "Real-Time Telemetry & WebSockets (Socket.io)",
+      "Transactional Backends (PostgreSQL / Supabase)",
+      "AI & Computer Vision (PyTorch / Monocular Depth)",
+    ],
   },
   {
-    title: "Saffron",
-    medium: "Interactive piece, Swarvibhaa original",
-    desc: "A quiet instrumental about feeling and change, played live and kept minimal.",
-    href: "https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/saffron-suraaval-9",
-    cta: "Listen",
-    note: "Saffron photo coming from @shastriyakid",
+    category: "Creative Technology",
+    icon: Layers,
+    accent: "#00d4ff",
+    items: [
+      "3D Spatial & GPU Shaders (Three.js / WebGL)",
+      "Interactive Audio (Web Audio API)",
+      "Live Stage Projection & Playback Cues",
+      "Interactive Game Worlds (Unity C#)",
+      "Festival Technical Direction",
+    ],
+  },
+  {
+    category: "Leadership & Cultural",
+    icon: Compass,
+    accent: "#ff3b30",
+    items: [
+      "Founder & Director @ Swarvibhaa",
+      "On-Site Technical Head @ NSFF Film City",
+      "Student Activity Convening in Thane",
+      "Interdisciplinary Artist Collaboration",
+      "Cultural Festival Infrastructure",
+    ],
   },
 ];
 
-const CAPS = [
+const NOW_STATUS = [
   {
-    title: "Tabla",
-    meta: "10 yrs, Pandit Mukundraj Deo",
-    body: "Ten years of taal and accompaniment. Timing first, decoration last.",
+    area: "Building",
+    title: "DepthWizard",
+    detail: "Refining monocular height estimation algorithms against ISRO Cartosat DEM data with Three.js flythrough.",
+    badge: "AI / GEOSPATIAL",
+    badgeColor: "#00f59b",
   },
   {
-    title: "Piano",
-    meta: "6 yrs, Trinity College London",
-    body: "Six years of Western harmony and voicing, from grades to arranging.",
+    area: "Engineering",
+    title: "Computer Engineering",
+    detail: "Coursework and applied research at University of Mumbai, bridging algorithms and low-latency systems.",
+    badge: "ACADEMICS",
+    badgeColor: "#00d4ff",
   },
   {
-    title: "Unity",
-    meta: "Since 2017",
-    body: "Small interactive worlds with rhythm systems hiding inside them.",
-  },
-];
-
-const TIMELINE = [
-  {
-    title: "Thane, born",
-    body: "Thane roots, first rhythms, long train rides nearby.",
+    area: "Music",
+    title: "Swarvibhaa Originals",
+    detail: "Writing and producing the next suite of Indian fusion and devotional compositions across Mumbai and Gujarat.",
+    badge: "COMPOSITION",
+    badgeColor: "#ff7a4d",
   },
   {
-    title: "Mumbai, grown",
-    body: "Tabla, piano, and engineering. Cats at home, blue everywhere.",
-  },
-  {
-    title: "Swarvibhaa, 2023",
-    body: "Founder. Mumbai, Delhi, Gujarat. Hindustani meets Western classical.",
+    area: "Live Tech",
+    title: "Stage & Festival Infrastructure",
+    detail: "Standardizing failsafe projection switching and edge schedule platforms for large-scale cultural events.",
+    badge: "OPERATIONS",
+    badgeColor: "#ff3b30",
   },
 ];
-
-const SOCIALS = [
-  { href: "https://www.instagram.com/shastriyakid", label: "Instagram, @shastriyakid" },
-  { href: "https://linkedin.com/in/shivam-shelatkar-503305358", label: "LinkedIn, Shivam Shelatkar" },
-  { href: "https://github.com/sashtriyasam", label: "GitHub, sashtriyasam" },
-  { href: "https://www.imdb.com/name/nm17605062/", label: "IMDb, nm17605062" },
-];
-
-const CONTACT_LINES = ["Make", "something", "worth keeping."];
-
-const HOME_FOOTER_LEFT = [
-  { label: "Work", href: "/work" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
-
-const HOME_FOOTER_RIGHT = [
-  { label: "LinkedIn", href: "https://linkedin.com/in/shivam-shelatkar-503305358" },
-  { label: "GitHub", href: "https://github.com/sashtriyasam" },
-  { label: "Instagram", href: "https://www.instagram.com/shastriyakid" },
-  { label: "IMDb", href: "https://www.imdb.com/name/nm17605062/" },
-  { label: "Swarvibhaa", href: "https://swarvibhaa.odoo.com/" },
-];
-
-// Magnetic pull for the primary CTA: 6-12px toward the cursor (clamped to
-// 10px at a 0.2 follow ratio), easing back over 300ms. Enabled for fine
-// pointers without touch only; reduced-motion renders the resting state.
-function Magnetic({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [canMagnet, setCanMagnet] = useState(false);
-
-  useEffect(() => {
-    if (disabled) {
-      setCanMagnet(false);
-      return;
-    }
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    setCanMagnet(fine && !coarse && !hasTouch);
-  }, [disabled]);
-
-  const handleMove = (e: { clientX: number; clientY: number }) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const dx = e.clientX - (r.left + r.width / 2);
-    const dy = e.clientY - (r.top + r.height / 2);
-    const max = 10;
-    setPos({
-      x: Math.max(-max, Math.min(max, dx * 0.2)),
-      y: Math.max(-max, Math.min(max, dy * 0.2)),
-    });
-  };
-
-  const handleLeave = () => setPos({ x: 0, y: 0 });
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={canMagnet ? handleMove : undefined}
-      onMouseLeave={canMagnet ? handleLeave : undefined}
-      animate={{ x: canMagnet ? pos.x : 0, y: canMagnet ? pos.y : 0 }}
-      transition={{ duration: 0.3, ease: EASE }}
-      style={{ display: "inline-flex" }}
-    >
-      {children}
-    </motion.div>
-  );
-}
 
 export default function HomePage() {
   const shouldReduceMotion = useReducedMotion();
   const reduced = Boolean(shouldReduceMotion);
 
-  const toTop = () => {
-    sound.playClick();
-    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
-  };
+  // 6 canonical projects alternating Software, Music, Creative Tech
+  const selectedWork = [
+    projects.find((p) => p.slug === "depthwizard")!,
+    projects.find((p) => p.slug === "raatrani")!,
+    projects.find((p) => p.slug === "parkeasy")!,
+    projects.find((p) => p.slug === "saffron-suraaval")!,
+    projects.find((p) => p.slug === "nsff-2026")!,
+    projects.find((p) => p.slug === "thevita-mastak")!,
+  ].filter(Boolean);
 
   return (
-    <div className="home-root" id="top">
-        <h1 className="sr-only">Shivam Shelatkar — Portfolio Home</h1>
-      <style>{`
-        .home-root {
-          background-color: #FFF8EF;
-          color: #1A1512;
-          font-family: var(--font-body);
-          min-height: 100vh;
-          overflow-x: hidden;
-        }
-        
-        .wrap { max-width: 1120px; margin: 0 auto; }
-        .section {
-          padding: 120px clamp(20px, 4vw, 40px);
-          border-top: 1px solid #EADDCB;
-        }
-        .section:first-of-type { border-top: 0; }
-        .eyebrow {
-          display: block;
-          font-family: var(--font-mono);
-          font-size: 12px;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #7A7168;
-          margin: 0 0 16px;
-        }
-        .h2 {
-          margin: 0 0 12px;
-          font-size: clamp(28px, 3.5vw, 40px);
-          font-weight: 800;
-          letter-spacing: -0.03em;
-          line-height: 1.1;
-        }
-        .lede {
-          margin: 0;
-          font-size: 16px;
-          line-height: 1.7;
-          color: #7A7168;
-          max-width: 60ch;
-        }
-        .hero-name { margin: 0; }
-        .hero-first {
-          display: block;
-          font-size: clamp(72px, 14vw, 168px);
-          line-height: 0.9;
-          letter-spacing: -0.05em;
-          font-weight: 800;
-          color: #1A1512;
-        }
-        .hero-last {
-          display: block;
-          margin-top: 10px;
-          font-size: clamp(26px, 4vw, 44px);
-          font-weight: 400;
-          letter-spacing: -0.03em;
-          color: #7A7168;
-        }
-        .hero-intro {
-          margin: 24px 0 0;
-          font-size: 17px;
-          line-height: 1.7;
-          max-width: 60ch;
-          color: #1A1512;
-        }
-        .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-        .pill {
-          font-family: var(--font-mono);
-          font-size: 12px;
-          padding: 8px 16px;
-          border-radius: 999px;
-          border: 1px solid #2F5D50;
-          color: #2F5D50;
-          background: transparent;
-          white-space: nowrap;
-        }
-        .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-        .btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          padding: 14px 28px;
-          border-radius: 999px;
-          font-size: 15px;
-          font-weight: 600;
-          text-decoration: none;
-          min-height: 48px;
-          border: 1px solid #1A1512;
-        }
-        .btn-primary { background: #E4572E; border-color: #E4572E; color: #FFF8EF; transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease; will-change: transform; }
-        .btn-primary:hover { background: #1A1512; border-color: #1A1512; color: #FFF8EF; }
-        .btn-outline { background: transparent; color: #1A1512; }
-        .btn-outline:hover { border-color: #E4572E; color: #E4572E; }
-        .work-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 24px;
-          margin-top: 40px;
-        }
-        .work-card {
-          display: flex;
-          flex-direction: column;
-          border: 1px solid #EADDCB;
-          border-radius: 24px;
-          overflow: hidden;
-          background: #FFFEFA;
-          text-decoration: none;
-          color: inherit;
-          transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1), border-color 300ms ease;
-        }
-        .work-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26, 21, 18, 0.12); border-color: #1A1512; }
-        .work-reveal { display: flex; min-width: 0; }
-        .work-reveal > .work-card { flex: 1 1 auto; width: 100%; }
-        .work-media {
-          background: #141820;
-          aspect-ratio: 4 / 3;
-          display: grid;
-          place-items: center;
-          padding: 24px;
-          text-align: center;
-          overflow: hidden;
-        }
-        .work-media span {
-          display: block;
-          font-family: var(--font-mono);
-          font-size: 12px;
-          line-height: 1.6;
-          color: rgba(255, 255, 255, 0.55);
-          transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: transform;
-        }
-        .work-card:hover .work-media span { transform: scale(1.05); }
-        .work-body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 0; }
-        .work-title { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-        .work-medium { margin: 6px 0 0; font-family: var(--font-mono); font-size: 12px; color: #7A7168; }
-        .work-desc { margin: 12px 0 0; font-size: 15px; line-height: 1.65; }
-        .work-link { margin-top: 14px; font-size: 14px; font-weight: 700; display: inline-flex; gap: 6px; align-items: center; }
-        .work-link i { font-style: normal; color: #E4572E; }
-        .work-arrow { display: inline-block; color: #E4572E; transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
-        .work-card:hover .work-arrow { transform: translateX(10px); }
-        .thesis {
-          font-family: Georgia, "Times New Roman", serif;
-          font-size: clamp(28px, 4vw, 44px);
-          line-height: 1.25;
-          letter-spacing: -0.02em;
-          text-align: center;
-          max-width: 24ch;
-          margin: 0 auto;
-        }
-        .thesis em { font-style: italic; color: #E4572E; }
-        .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
-        .cap {
-          border: 1px solid #EADDCB;
-          border-radius: 24px;
-          padding: 28px;
-          background: #FFFEFA;
-        }
-        .cap-num { display: block; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: #E4572E; margin-bottom: 10px; }
-        .cap h3 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-        .cap-meta { margin: 6px 0 0; font-family: var(--font-mono); font-size: 12px; color: #7A7168; }
-        .cap p:last-child { margin: 12px 0 0; font-size: 15px; line-height: 1.65; }
-        .strip {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          border: 1px solid #EADDCB;
-          border-radius: 24px;
-          overflow: hidden;
-          background: #FFFEFA;
-          margin-top: 40px;
-        }
-        .strip div { padding: 24px; }
-        .timeline-cell { position: relative; }
-        .strip .timeline-rule {
-          position: absolute;
-          left: 0;
-          top: 0;
-          bottom: 0;
-          width: 2px;
-          margin: 0;
-          padding: 0;
-          background: #E4572E;
-          transform-origin: top;
-        }
-        .strip div + div { border-left: 1px solid #EADDCB; }
-        .strip strong { display: block; font-size: 16px; letter-spacing: -0.01em; }
-        .strip span { display: block; margin-top: 6px; font-size: 14px; line-height: 1.6; color: #7A7168; }
-        .life-note { margin: 24px 0 0; font-size: 15px; line-height: 1.7; max-width: 68ch; }
-        .life-note a { color: #1A1512; text-underline-offset: 3px; }
-        .quiet-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-end;
-          flex-wrap: wrap;
-          gap: 16px;
-        }
-        .quiet-link {
-          font-size: 15px;
-          font-weight: 700;
-          color: #1A1512;
-          text-decoration: none;
-          border-bottom: 1px solid #EADDCB;
-          padding-bottom: 2px;
-          display: inline-flex;
-          gap: 6px;
-          align-items: center;
-        }
-        .quiet-link:hover { border-bottom-color: #E4572E; color: #E4572E; }
-        .quiet-link i { font-style: normal; }
-        .contact-words { margin: 0; }
-        .contact-words span {
-          display: block;
-          font-size: clamp(48px, 9vw, 112px);
-          line-height: 0.95;
-          letter-spacing: -0.04em;
-          font-weight: 800;
-        }
-        .email-big {
-          position: relative;
-          display: inline-block;
-          margin-top: 32px;
-          font-size: clamp(18px, 2.5vw, 28px);
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          color: #1A1512;
-          text-decoration: none;
-          border-bottom: 2px solid #E4572E;
-          padding-bottom: 4px;
-          overflow-wrap: anywhere;
-        }
-        .email-big:hover { background: #E4572E; color: #FFF8EF; border-bottom-color: #E4572E; }
-        .email-big::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: -2px;
-          height: 2px;
-          background: #1A1512;
-          transform: scaleX(0);
-          transform-origin: left;
-          transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .email-big:hover::after { transform: scaleX(1); }
-        @keyframes drift {
-          from { transform: translateY(-4px); }
-          to { transform: translateY(4px); }
-        }
-        .float-idle { display: inline-block; animation: drift 3.5s ease-in-out infinite alternate; will-change: transform; }
-        .socials { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; font-size: 15px; }
-        .socials a { color: #1A1512; text-decoration: none; border-bottom: 1px solid transparent; width: fit-content; }
-        .socials a:hover { border-bottom-color: #1A1512; }
-        .thanks { margin: 32px 0 0; font-size: 15px; color: #7A7168; }
-        .footer-base {
-          margin-top: 64px;
-          padding-top: 24px;
-          border-top: 1px solid #EADDCB;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 12px;
-          font-size: 13px;
-          color: #7A7168;
-        }
-        .to-top {
-          background: transparent;
-          border: 0;
-          padding: 8px 0;
-          color: #1A1512;
-          font-size: 14px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-        .to-top:hover { color: #E4572E; }
-        @media (max-width: 960px) {
-          .work-grid { grid-template-columns: 1fr; }
-          .cap-grid { grid-template-columns: 1fr; }
-          .strip { grid-template-columns: 1fr; }
-          .strip div + div { border-left: 0; border-top: 1px solid #EADDCB; }
-          .topnav { gap: 18px; }
-        }
-        @media (max-width: 640px) {
-          .topnav a:nth-child(3) { display: none; }
-        }
-        @media (max-width: 768px) {
-          .section { padding: 72px 20px; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .home-root *, .home-root *::before, .home-root *::after {
-            animation: none !important;
-            transition: none !important;
-          }
-        }
-      `}</style>
-
-
-      <section className="section" aria-label="Introduction">
-        <div className="wrap">
-          <motion.p
-            className="eyebrow"
-            initial={reduced ? undefined : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-          >
-            Founder at Swarvibhaa, Thane to Mumbai
-          </motion.p>
-          <h1 className="hero-name">
-            <motion.span
-              className="hero-first"
-              initial={reduced ? undefined : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: EASE }}
-            >
-              <VariableFontHover text="Shivam Shelatkar" />
-            </motion.span>
-            <motion.span
-              className="hero-last"
-              initial={reduced ? undefined : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.04, ease: EASE }}
-            >
-              music and code
-            </motion.span>
-          </h1>
-          <motion.p
-            className="hero-intro"
-            initial={reduced ? undefined : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.26, ease: EASE }}
-          >
-            Thane-born, Mumbai-grown. Ten years of tabla with Pandit Mukundraj Deo,
-            six years of piano through Trinity, founder of Swarvibhaa in 2023,
-            building small worlds in Unity since 2017.
-          </motion.p>
-          <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.32, ease: EASE }}
-          >
-            <div className="pills" aria-label="Focus areas">
-              {PILLS.map((p) => (
-                <span key={p} className="pill">{p}</span>
-              ))}
-            </div>
-            <div className="hero-ctas">
-              <Magnetic disabled={reduced}>
-                <motion.a
-                  href="https://swarvibhaa.odoo.com/blog/swarvibhaa-originals-4/raatrani-10"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary"
-                  onMouseEnter={() => sound.playHover()}
-                  onClick={() => sound.playClick()}
-                  whileHover={reduced ? undefined : { scale: 1.02, transition: { duration: 0.2, ease: EASE } }}
-                  whileTap={reduced ? undefined : { scale: 0.97, transition: { duration: 0.15, ease: EASE } }}
-                >
-                  <span>Listen to Raatrani</span>
-                </motion.a>
-              </Magnetic>
-              <a
-                href="#work"
-                className="btn btn-outline"
-                onMouseEnter={() => sound.playHover()}
-                onClick={() => sound.playClick()}
-              >
-                <span>See work</span>
-              </a>
-            </div>
-          </motion.div>
+    <div className="home-container" style={{ position: "relative", minHeight: "100vh", overflowX: "hidden" }}>
+      
+      {/* ===================== HERO SECTION ===================== */}
+      <section
+        className="hero-section"
+        style={{
+          position: "relative",
+          minHeight: "92vh",
+          display: "flex",
+          alignItems: "center",
+          padding: "clamp(80px, 12vh, 140px) clamp(20px, 4vw, 40px) 60px",
+          overflow: "hidden",
+        }}
+      >
+        {/* Interactive 3D Terrain background */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 0,
+            opacity: 0.85,
+          }}
+        >
+          <HeroTerrain />
         </div>
-      </section>
 
-      <section id="work" className="section" aria-label="Selected work">
-        <div className="wrap">
+        {/* Ambient radial scrim */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "radial-gradient(ellipse at 30% 40%, rgba(6,7,9,0.3) 0%, rgba(6,7,9,0.85) 65%, #060709 100%)",
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+        />
+
+        <div className="content-max" style={{ position: "relative", zIndex: 2, width: "100%" }}>
           <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.5, ease: EASE }}
-          >
-            <span className="eyebrow">Selected work</span>
-            <h2 className="h2">Three pieces I keep returning to.</h2>
-            <p className="lede">Film, bhajan, and one quiet instrumental. Each one taught me something about restraint.</p>
-          </motion.div>
-          <div className="work-grid">
-            {WORK.map((w, i) => (
-              <motion.div
-                key={w.title}
-                className="work-reveal"
-                initial={reduced ? undefined : { opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2, margin: "-10%" }}
-                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
-              >
-                <a
-                  href={w.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="work-card"
-                  onMouseEnter={() => sound.playHover()}
-                  onClick={() => sound.playClick()}
-                  aria-label={`${w.title}, ${w.medium}`}
-                >
-                  <div className="work-body">
-                    <h3 className="work-title">{w.title}</h3>
-                    <p className="work-medium">{w.medium}</p>
-                    <p className="work-desc">{w.desc}</p>
-                    <span className="work-link"><span>{w.cta}</span><span className="work-arrow" aria-hidden="true">→</span></span>
-                  </div>
-                </a>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="about-preview" className="section" aria-label="About">
-        <div className="wrap">
-          <motion.p
-            className="thesis"
-            initial={reduced ? undefined : { opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3, margin: "-10%" }}
-            transition={{ duration: 0.5, ease: EASE }}
-          >
-            Heritage stays alive<br />when it is <em>played</em> and built with care.
-          </motion.p>
-        </div>
-      </section>
-
-      <section id="philosophy" className="section" aria-label="Capabilities">
-        <div className="wrap">
-          <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.5, ease: EASE }}
-          >
-            <span className="eyebrow">Capabilities</span>
-            <h2 className="h2">What I do well.</h2>
-            <p className="lede">Practice room habits that run my engineering too.</p>
-          </motion.div>
-          <div className="cap-grid">
-            {CAPS.map((c, i) => (
-              <motion.div
-                key={c.title}
-                className="cap"
-                initial={reduced ? undefined : { opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
-              >
-                <span className="cap-num" aria-hidden="true">0{i + 1}</span>
-                <h3>{c.title}</h3>
-                <p className="cap-meta">{c.meta}</p>
-                <p>{c.body}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="life" className="section" aria-label="Story">
-        <div className="wrap">
-          <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.5, ease: EASE }}
-          >
-            <span className="eyebrow">Story</span>
-            <h2 className="h2">Thane to Mumbai.</h2>
-            <p className="lede">Born in Thane, grown in Mumbai, working across three states.</p>
-          </motion.div>
-          <div className="strip">
-            {TIMELINE.map((t, i) => (
-              <motion.div
-                key={t.title}
-                className="timeline-cell"
-                initial={reduced ? undefined : { opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-                transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
-              >
-                <motion.span
-                  className="timeline-rule"
-                  aria-hidden="true"
-                  initial={reduced ? undefined : { opacity: 0, scaleY: 0 }}
-                  whileInView={{ opacity: 1, scaleY: 1 }}
-                  viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-                  transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
-                  style={{ transformOrigin: "top" }}
-                />
-                <strong>{t.title}</strong>
-                <span>{t.body}</span>
-              </motion.div>
-            ))}
-          </div>
-          <motion.p
-            className="life-note"
             initial={reduced ? undefined : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.5, ease: EASE }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            style={{ marginBottom: 20 }}
           >
-            Outside music I convene student activities for ABVP in Thane, speak English,
-            Hindi, Malayalam, Gujarati, and Marathi, and share work as
-            @shastriyakid. Screen credits on IMDb nm17605062.
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "6px 16px",
+                borderRadius: 999,
+                background: "rgba(255, 59, 48, 0.12)",
+                border: "1px solid rgba(255, 59, 48, 0.3)",
+                color: "#ff3b30",
+                fontSize: 12,
+                fontFamily: "var(--font-mono)",
+                fontWeight: 600,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              <Sparkles size={13} /> COMPOSER · ENGINEER · FOUNDER · MUSIC TECHNOLOGIST
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={reduced ? undefined : { opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
+            style={{
+              fontSize: "clamp(42px, 8.5vw, 100px)",
+              fontWeight: 800,
+              letterSpacing: "-0.04em",
+              lineHeight: 0.95,
+              margin: "0 0 16px",
+              color: "#ffffff",
+              textTransform: "uppercase",
+            }}
+          >
+            Shivam Shelatkar
+          </motion.h1>
+
+          <motion.p
+            initial={reduced ? undefined : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+            style={{
+              fontSize: "clamp(20px, 3vw, 32px)",
+              fontWeight: 400,
+              letterSpacing: "-0.02em",
+              color: "rgba(255, 255, 255, 0.85)",
+              margin: "0 0 20px",
+              maxWidth: "50ch",
+            }}
+          >
+            Music technologist, composer & engineer.
           </motion.p>
-        </div>
-      </section>
 
-      <section id="spatial" className="section" aria-label="Interactive work">
-        <div className="wrap">
-          <motion.div
-            className="quiet-row"
-            initial={reduced ? undefined : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.6, ease: EASE }}
+          <motion.p
+            initial={reduced ? undefined : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+            style={{
+              fontSize: "clamp(16px, 1.8vw, 19px)",
+              lineHeight: 1.65,
+              color: "rgba(255, 255, 255, 0.65)",
+              margin: "0 0 32px",
+              maxWidth: "64ch",
+            }}
           >
-            <div>
-              <span className="eyebrow">Spatial</span>
-              <h2 className="h2">Interactive work since 2017.</h2>
-              <p className="lede">Unity builds with rhythm systems inside. Code lives on GitHub.</p>
-            </div>
-            <a
-              href="https://github.com/sashtriyasam"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="quiet-link"
+            I build at the intersection of music, technology, and culture — from software and interactive systems to compositions, live technical environments, and Swarvibhaa.
+          </motion.p>
+
+          {/* Lineage & Credentials Chips */}
+          <motion.div
+            initial={reduced ? undefined : { opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4, ease: EASE }}
+            style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 36 }}
+          >
+            {CREDENTIAL_CHIPS.map((chip) => (
+              <span
+                key={chip}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: 999,
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.12)",
+                  fontSize: 12,
+                  fontFamily: "var(--font-mono)",
+                  color: "rgba(255, 255, 255, 0.8)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {chip}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* Action CTAs */}
+          <motion.div
+            initial={reduced ? undefined : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+            style={{ display: "flex", flexWrap: "wrap", gap: 14 }}
+          >
+            <Link
+              href="/work"
+              className="btn btn--accent"
+              style={{
+                fontSize: 14,
+                padding: "14px 28px",
+                borderRadius: 999,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+              }}
               onMouseEnter={() => sound.playHover()}
               onClick={() => sound.playClick()}
             >
-              <span>Browse on GitHub</span>
-            </a>
-          </motion.div>
-        </div>
-      </section>
+              View Work <ArrowRight size={16} />
+            </Link>
 
-      <section id="terminal" className="section" aria-label="More">
-        <div className="wrap">
-          <motion.div
-            className="quiet-row"
-            initial={reduced ? undefined : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25, margin: "-10%" }}
-            transition={{ duration: 0.6, ease: EASE }}
-          >
-            <div>
-              <span className="eyebrow">Terminal</span>
-              <h2 className="h2">Prefer the full story.</h2>
-              <p className="lede">Longer notes on training, Swarvibhaa, and how I work.</p>
-            </div>
-            <a
+            <Link
               href="/about"
-              className="quiet-link"
+              className="btn"
+              style={{
+                fontSize: 14,
+                padding: "14px 26px",
+                borderRadius: 999,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+              }}
               onMouseEnter={() => sound.playHover()}
               onClick={() => sound.playClick()}
             >
-              <span>Read about me</span>
-            </a>
+              About Me
+            </Link>
+
+            <Link
+              href="/cv"
+              className="btn"
+              style={{
+                fontSize: 14,
+                padding: "14px 24px",
+                borderRadius: 999,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "rgba(255, 255, 255, 0.03)",
+              }}
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              Curriculum Vitae
+            </Link>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ===================== PROOF STRIP / METRICS ===================== */}
+      <section
+        style={{
+          borderTop: "1px solid var(--color-border)",
+          borderBottom: "1px solid var(--color-border)",
+          background: "rgba(12, 14, 20, 0.7)",
+          padding: "36px clamp(20px, 4vw, 40px)",
+        }}
+      >
+        <div className="content-max">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: 24,
+            }}
+          >
+            {METRICS_STRIP.map((m, idx) => (
+              <motion.div
+                key={m.label}
+                initial={reduced ? undefined : { opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1, ease: EASE }}
+                style={{ padding: "0 8px" }}
+              >
+                <div
+                  style={{
+                    fontSize: "clamp(32px, 4vw, 44px)",
+                    fontWeight: 800,
+                    letterSpacing: "-0.03em",
+                    color: "#ffffff",
+                    lineHeight: 1,
+                  }}
+                >
+                  {m.value}
+                </div>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: "var(--color-text-secondary)",
+                    marginTop: 8,
+                  }}
+                >
+                  {m.label}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "var(--font-mono)",
+                    color: "var(--color-text-tertiary)",
+                    marginTop: 2,
+                  }}
+                >
+                  {m.sub}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== SELECTED WORK (EDITORIAL GRID) ===================== */}
+      <section
+        id="selected-work"
+        style={{
+          padding: "100px clamp(20px, 4vw, 40px)",
+          borderBottom: "1px solid var(--color-border)",
+        }}
+      >
+        <div className="content-max">
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, gap: 20 }}>
+            <div>
+              <span className="eyebrow">Selected Canonical Work</span>
+              <h2
+                style={{
+                  fontSize: "clamp(28px, 4vw, 48px)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                  margin: "0 0 12px",
+                  color: "#ffffff",
+                }}
+              >
+                Software, Music & Creative Systems
+              </h2>
+              <p style={{ margin: 0, fontSize: 16, color: "var(--color-text-secondary)", maxWidth: "60ch" }}>
+                A curated intersection: deep learning height estimation, real-time IoT operating systems, festival live tech, and commercial compositions.
+              </p>
+            </div>
+
+            <Link
+              href="/work"
+              className="btn btn--accent"
+              style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              All 7 Works with Audio & Diagrams <ArrowRight size={15} />
+            </Link>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: 28,
+            }}
+          >
+            {selectedWork.map((project, idx) => (
+              <motion.div
+                key={project.slug}
+                initial={reduced ? undefined : { opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: idx * 0.08, ease: EASE }}
+              >
+                <TiltCard
+                  accentColor={project.visualAccent || "#ff3b30"}
+                  style={{ height: "100%" }}
+                >
+                  <ProjectCard project={project} />
+                </TiltCard>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== WHAT I BUILD ===================== */}
+      <section
+        style={{
+          padding: "100px clamp(20px, 4vw, 40px)",
+          borderBottom: "1px solid var(--color-border)",
+          background: "rgba(8, 10, 14, 0.5)",
+        }}
+      >
+        <div className="content-max">
+          <div style={{ marginBottom: 54 }}>
+            <span className="eyebrow">Scope & Practice</span>
+            <h2
+              style={{
+                fontSize: "clamp(28px, 4vw, 44px)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                margin: "0 0 12px",
+                color: "#ffffff",
+              }}
+            >
+              What I Build
+            </h2>
+            <p style={{ margin: 0, fontSize: 16, color: "var(--color-text-secondary)", maxWidth: "60ch" }}>
+              Disciplined systems from the acoustic studio to production cloud runtimes.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: 24,
+            }}
+          >
+            {WHAT_I_BUILD.map((pillar, idx) => {
+              const Icon = pillar.icon;
+              return (
+                <motion.div
+                  key={pillar.category}
+                  initial={reduced ? undefined : { opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.08, ease: EASE }}
+                  style={{
+                    padding: "28px 24px",
+                    borderRadius: 20,
+                    background: "rgba(12, 14, 20, 0.7)",
+                    border: "1px solid var(--color-border)",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 44,
+                      height: 44,
+                      borderRadius: 12,
+                      background: `${pillar.accent}18`,
+                      border: `1px solid ${pillar.accent}35`,
+                      color: pillar.accent,
+                      marginBottom: 18,
+                    }}
+                  >
+                    <Icon size={20} />
+                  </div>
+
+                  <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 16px", color: "#ffffff" }}>
+                    {pillar.category}
+                  </h3>
+
+                  <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 10, flexGrow: 1 }}>
+                    {pillar.items.map((item) => (
+                      <li
+                        key={item}
+                        style={{
+                          fontSize: 13,
+                          color: "var(--color-text-secondary)",
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: 8,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        <span style={{ color: pillar.accent, fontSize: 14 }}>•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Lineage & Training Callout */}
+          <div
+            style={{
+              marginTop: 40,
+              padding: "24px 28px",
+              borderRadius: 18,
+              background: "rgba(255, 255, 255, 0.02)",
+              border: "1px solid var(--color-border)",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 20,
+            }}
+          >
+            <div>
+              <div style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "#ff7a4d", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                TRAINING & CLASSICAL LINEAGE
+              </div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#ffffff", marginTop: 4 }}>
+                10 Years Tabla under Pandit Mukundraj Deo · 6 Years Piano via Trinity College London
+              </div>
+            </div>
+
+            <Link
+              href="/about"
+              className="link-underline"
+              style={{ fontSize: 13, fontFamily: "var(--font-mono)" }}
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              Read Full Story & Lineage →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== SPATIAL SHOWCASE ===================== */}
+      <section
+        style={{
+          padding: "100px clamp(20px, 4vw, 40px)",
+          borderBottom: "1px solid var(--color-border)",
+        }}
+      >
+        <div className="content-max">
+          <div style={{ marginBottom: 36 }}>
+            <span className="eyebrow">Deep Dive Systems</span>
+            <h2
+              style={{
+                fontSize: "clamp(28px, 4vw, 44px)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                margin: "0 0 10px",
+                color: "#ffffff",
+              }}
+            >
+              Spatial Systems & Architecture
+            </h2>
+            <p style={{ margin: 0, fontSize: 16, color: "var(--color-text-secondary)" }}>
+              Interactive telemetry inspection for DepthWizard, ParkEasy, and NSFF Film City Mumbai.
+            </p>
+          </div>
+
+          <SpatialShowcase />
+        </div>
+      </section>
+
+      {/* ===================== COMMAND WORKSTATION CONSOLE ===================== */}
+      <section
+        style={{
+          padding: "90px clamp(20px, 4vw, 40px)",
+          borderBottom: "1px solid var(--color-border)",
+          background: "rgba(6, 7, 9, 0.75)",
+        }}
+      >
+        <div className="content-max">
+          <div style={{ marginBottom: 32 }}>
+            <span className="eyebrow">Interactive CLI Workstation</span>
+            <h2
+              style={{
+                fontSize: "clamp(24px, 3.5vw, 38px)",
+                fontWeight: 800,
+                letterSpacing: "-0.03em",
+                margin: "0 0 10px",
+                color: "#ffffff",
+              }}
+            >
+              Developer Console
+            </h2>
+            <p style={{ margin: 0, fontSize: 15, color: "var(--color-text-secondary)" }}>
+              Direct terminal access for engineers and recruiters. Type commands or click quick action chips.
+            </p>
+          </div>
+
+          <InteractiveTerminal />
+        </div>
+      </section>
+
+      {/* ===================== "NOW" LIVE STATUS RADAR ===================== */}
+      <section
+        style={{
+          padding: "90px clamp(20px, 4vw, 40px)",
+          borderBottom: "1px solid var(--color-border)",
+          background: "rgba(10, 12, 16, 0.4)",
+        }}
+      >
+        <div className="content-max">
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: 9,
+                height: 9,
+                borderRadius: "50%",
+                background: "#00f59b",
+                boxShadow: "0 0 12px #00f59b",
+              }}
+            />
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 12,
+                color: "#00f59b",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
+              LIVE RADAR · MUMBAI
+            </span>
+          </div>
+
+          <h2
+            style={{
+              fontSize: "clamp(26px, 4vw, 40px)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              margin: "0 0 36px",
+              color: "#ffffff",
+            }}
+          >
+            What I&apos;m Actively Building Now
+          </h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: 20,
+            }}
+          >
+            {NOW_STATUS.map((item, idx) => (
+              <motion.div
+                key={item.area}
+                initial={reduced ? undefined : { opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.07, ease: EASE }}
+                style={{
+                  padding: 24,
+                  borderRadius: 18,
+                  background: "rgba(255, 255, 255, 0.02)",
+                  border: "1px solid var(--color-border)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 11,
+                        color: "var(--color-text-tertiary)",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                      }}
+                    >
+                      {item.area}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontFamily: "var(--font-mono)",
+                        padding: "2px 8px",
+                        borderRadius: 999,
+                        background: `${item.badgeColor}18`,
+                        border: `1px solid ${item.badgeColor}35`,
+                        color: item.badgeColor,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: 17, fontWeight: 700, margin: "0 0 8px", color: "#ffffff" }}>
+                    {item.title}
+                  </h3>
+
+                  <p style={{ fontSize: 13, lineHeight: 1.6, color: "var(--color-text-secondary)", margin: 0 }}>
+                    {item.detail}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== FINAL HIGH-IMPACT CALL TO ACTION ===================== */}
+      <section
+        style={{
+          padding: "110px clamp(20px, 4vw, 40px)",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "600px",
+            height: "400px",
+            borderRadius: "50%",
+            background: "radial-gradient(ellipse, rgba(255, 59, 48, 0.08) 0%, rgba(0, 212, 255, 0.03) 50%, transparent 80%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div className="content-max" style={{ position: "relative", zIndex: 2 }}>
+          <span className="eyebrow" style={{ color: "var(--color-accent-primary)" }}>
+            Next Steps
+          </span>
+
+          <h2
+            style={{
+              fontSize: "clamp(32px, 5.5vw, 64px)",
+              fontWeight: 800,
+              letterSpacing: "-0.04em",
+              margin: "0 0 16px",
+              color: "#ffffff",
+            }}
+          >
+            Have something worth building?
+          </h2>
+
+          <p
+            style={{
+              fontSize: "clamp(16px, 2vw, 20px)",
+              color: "var(--color-text-secondary)",
+              maxWidth: "52ch",
+              margin: "0 auto 36px",
+              lineHeight: 1.6,
+            }}
+          >
+            Music. Software. Creative technology. Let&apos;s engineer and score it together.
+          </p>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 16,
+              marginBottom: 44,
+            }}
+          >
+            <Link
+              href="/contact"
+              className="btn btn--accent"
+              style={{
+                fontSize: 15,
+                padding: "16px 36px",
+                borderRadius: 999,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              Start a Project <ArrowRight size={16} />
+            </Link>
+
+            <Link
+              href="/cv"
+              className="btn"
+              style={{
+                fontSize: 15,
+                padding: "16px 32px",
+                borderRadius: 999,
+              }}
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              Download CV
+            </Link>
+          </div>
+
+          <a
+            href="mailto:shelatkarshivam4@gmail.com"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "clamp(16px, 2.5vw, 24px)",
+              color: "var(--color-text-primary)",
+              textDecoration: "none",
+              borderBottom: "1px solid var(--color-border-strong)",
+              paddingBottom: 4,
+              display: "inline-block",
+              transition: "border-color 200ms ease, color 200ms ease",
+            }}
+            onMouseEnter={() => sound.playHover()}
+            onClick={() => sound.playClick()}
+          >
+            shelatkarshivam4@gmail.com
+          </a>
         </div>
       </section>
 
     </div>
   );
 }
-
-
-

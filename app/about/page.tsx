@@ -1,58 +1,92 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Music, Layers, Cpu, Users } from "lucide-react";
+import { Music, Layers, Cpu, Users, ArrowRight, FileText, Code2, Terminal, Globe, Award } from "lucide-react";
+import Link from "next/link";
+import { sound } from "@/lib/audio";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-const viewport = { once: true, margin: "-100px" } as const;
+const viewport = { once: true, margin: "-80px" } as const;
 
-const cards = [
+const SKILL_GROUPS = [
+  {
+    title: "Programming Languages",
+    skills: ["C", "C++", "C#", "Python", "TypeScript", "JavaScript", "SQL", "GLSL"],
+  },
+  {
+    title: "Web & Mobile Frameworks",
+    skills: ["Next.js (App Router)", "React", "React Native (Expo)", "Node.js", "Express", "FastAPI", "Tailwind CSS"],
+  },
+  {
+    title: "Systems & Infrastructure",
+    skills: ["Supabase", "PostgreSQL", "Socket.io", "Redis", "Docker", "Git", "GDAL / Rasterio", "Linux"],
+  },
+  {
+    title: "Creative Technology & 3D",
+    skills: ["Three.js", "React Three Fiber", "Unity (C#)", "WebGL", "Web Audio API", "DCI Playback", "Stage Routing"],
+  },
+  {
+    title: "Composition & Production",
+    skills: ["Orchestral Voicing", "Logic Pro", "Ableton Live", "Sibelius", "Tabla & Taal Systems", "Western Harmony"],
+  },
+  {
+    title: "Currently Exploring",
+    skills: ["Monocular Depth Estimation", "ISRO Geospatial AI", "Spatial Audio", "Real-Time Creative Coding"],
+  },
+];
+
+const PILLARS = [
   {
     icon: Music,
     index: "01",
-    title: "Lineage",
-    text: "Ten years of tabla with Pandit Mukundraj Deo, six years of Trinity piano. Timing first, decoration last.",
+    title: "Music Lineage & Discipline",
+    text: "Ten years of intensive tabla training under Pandit Mukundraj Deo (Punjab & Farrukhabad gharana nuances, layakaari, accompaniment). Six years of classical piano via Trinity College London. Timing first, decoration last.",
   },
   {
     icon: Layers,
     index: "02",
-    title: "Swarvibhaa ecosystem",
-    text: "Founder at Swarvibhaa across Mumbai, Delhi and Gujarat. Rooted in tradition. Wired with code. Quietly building art that speaks. Co-founded with Sharvee Kulkarni, a Bharatanatyam dancer. Work lives on kalamahotsaav.com.",
+    title: "Swarvibhaa Ecosystem",
+    text: "Founder of Swarvibhaa, established in 2023 across Mumbai, Delhi, and Gujarat. An independent creative platform where Hindustani classical discipline converges with contemporary production and Western harmony.",
   },
   {
     icon: Cpu,
     index: "03",
-    title: "Tech and live systems",
-    text: "Unity developer since about 2017. Tech head for NSFF 2026 at Film City. ParkEasy built on Expo, Express, Supabase, Socket, Razorpay and Docker.",
+    title: "Systems & Creative Tech",
+    text: "Lead engineer for DepthWizard (ISRO Cartosat single-view depth estimation) and ParkEasy (Expo + Express + Supabase real-time OS). On-site technical director for NSFF 2026 at Film City Mumbai.",
   },
   {
     icon: Users,
     index: "04",
-    title: "Community work",
-    text: "ABVP Thane convenor in a 4M+ organisation, plus live tech for NSFF-type shows where cues, sound and lights have to land together.",
+    title: "Community & Leadership",
+    text: "Convenor of student initiatives in Thane, coordinating large-scale cultural programs, tech workshops, and youth forums across colleges and universities in Maharashtra.",
   },
 ];
 
-const timeline = [
+const TIMELINE = [
   {
-    year: "Training",
-    title: "Tabla and piano",
-    body: "Ten years tabla, six years piano. Practice room habits that still run my engineering.",
+    period: "Lineage",
+    title: "Tabla & Classical Piano",
+    desc: "A decade of classical taal, improvisation, and Western harmonic foundation that directly informs my engineering precision.",
   },
   {
-    year: "2023",
-    title: "Swarvibhaa founded",
-    body: "Founder across Mumbai, Delhi and Gujarat. Hindustani meets western classical, built quietly.",
+    period: "2023",
+    title: "Founded Swarvibhaa",
+    desc: "Launched Swarvibhaa to produce original fusion compositions, score films, and host collaborative performances across cities.",
   },
   {
-    year: "2026",
-    title: "NSFF tech head",
-    body: "Running live tech at Film City. Cues, projection and sound as one system.",
+    period: "2025–2026",
+    title: "DepthWizard & ParkEasy",
+    desc: "Engineered geospatial computer vision pipelines and shipped full-stack real-time mobile parking infrastructure.",
   },
   {
-    year: "Now",
-    title: "Second year engineering",
-    body: "Computer engineering at Mumbai University, based in Thane, Mumbai. Composing and shipping between classes.",
+    period: "2026",
+    title: "NSFF Technical Direction",
+    desc: "Directed on-site technical operations at Film City Mumbai for the National Student Film Festival across screening auditoriums.",
+  },
+  {
+    period: "Ongoing",
+    title: "Computer Engineering · Univ of Mumbai",
+    desc: "Pursuing Bachelor of Engineering in Computer Engineering at the University of Mumbai, applying core algorithms to creative systems.",
   },
 ];
 
@@ -60,19 +94,21 @@ export default function AboutPage() {
   return (
     <div className="about">
       <div className="content-max">
+        
+        {/* Header */}
         <header className="about__header">
-          <p className="eyebrow">About</p>
+          <span className="eyebrow">Identity & Background</span>
           <motion.h1
             className="about__title display"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={viewport}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease }}
           >
-            Namaste, I am Shivam. Composer and builder.
+            Namaste, I am Shivam Shelatkar. Music technologist, composer & engineer.
           </motion.h1>
         </header>
 
+        {/* Lead Bio Grid */}
         <div className="about__grid">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -81,20 +117,15 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease }}
           >
             <p className="about__lead">
-              Music composer and Unity developer from Thane, Mumbai. Second
-              year computer engineering at Mumbai University, founder at
-              Swarvibhaa.
+              Thane-born, Mumbai-grown. I build at the intersection of music, technology, and culture — from software and interactive systems to compositions, live technical environments, and Swarvibhaa.
             </p>
             <p className="about__copy">
-              I write for film, theatre and indie releases, and I build
-              interactive systems to stage them. Swarvibhaa is the home for
-              that work across Mumbai, Delhi and Gujarat. Rooted in
-              tradition. Wired with code. Quietly building art that speaks.
+              I compose for stage, screen, and global streaming; develop real-time web, mobile, and geospatial AI tools; and direct live technical infrastructure for national festivals. Where classical musicians see rhythm, I see algorithms; where engineers see data, I hear harmony.
             </p>
             <aside className="about__facts" aria-label="Snapshot">
-              <span className="about__fact">Thane, Mumbai</span>
-              <span className="about__fact">Mumbai University</span>
-              <span className="about__fact">Founder at Swarvibhaa</span>
+              <span className="about__fact">Thane — Mumbai</span>
+              <span className="about__fact">Computer Engineering · Univ of Mumbai</span>
+              <span className="about__fact">Founder @ Swarvibhaa</span>
             </aside>
           </motion.div>
 
@@ -103,18 +134,43 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewport}
             transition={{ duration: 0.8, delay: 0.1, ease }}
+            style={{
+              padding: "24px 28px",
+              borderRadius: 20,
+              background: "rgba(255, 255, 255, 0.02)",
+              border: "1px solid var(--color-border)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+            }}
           >
-            <h2 className="about__subtitle">Training</h2>
-            <ul className="about__list">
-              <li>Tabla, ten years with Pandit Mukundraj Deo</li>
-              <li>Piano, six years Trinity College London</li>
-              <li>Unity, building since about 2017</li>
-              <li>Live tech, NSFF 2026 at Film City</li>
+            <h2 className="about__subtitle" style={{ margin: 0, fontSize: 18 }}>
+              Quick Credentials
+            </h2>
+            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 14, lineHeight: 1.8, color: "var(--color-text-secondary)" }}>
+              <li><strong>Tabla:</strong> 10 years with Pandit Mukundraj Deo</li>
+              <li><strong>Piano:</strong> 6 years through Trinity College London</li>
+              <li><strong>Degree:</strong> B.E. Computer Engineering, University of Mumbai</li>
+              <li><strong>Live Tech:</strong> Technical Head, NSFF 2026 at Film City Mumbai</li>
+              <li><strong>Ecosystem:</strong> Founder of Swarvibhaa (est. 2023)</li>
             </ul>
+
+            <div style={{ marginTop: "auto", paddingTop: 12 }}>
+              <Link
+                href="/cv"
+                className="btn btn--accent"
+                style={{ width: "100%", justifyContent: "center", display: "inline-flex", gap: 8 }}
+                onMouseEnter={() => sound.playHover()}
+                onClick={() => sound.playClick()}
+              >
+                <FileText size={15} /> View Full Curriculum Vitae
+              </Link>
+            </div>
           </motion.div>
         </div>
 
-        <section className="about__interests">
+        {/* 4 Core Pillars */}
+        <section className="about__interests" style={{ marginTop: 64 }}>
           <motion.div
             className="about__interests-head"
             initial={{ opacity: 0, y: 20 }}
@@ -122,24 +178,24 @@ export default function AboutPage() {
             viewport={viewport}
             transition={{ duration: 0.7, ease }}
           >
-            <h2 className="about__subtitle">What I do</h2>
+            <h2 className="about__subtitle">Four Pillars of Practice</h2>
             <p className="about__interests-kicker">
               <span className="about__kicker-line" />
-              <span>04 / music, systems, stage</span>
+              <span>Music · Software · Creative Tech · Leadership</span>
             </p>
           </motion.div>
 
           <div className="about__cards">
-            {cards.map((item, i) => {
+            {PILLARS.map((item, i) => {
               const Icon = item.icon;
               return (
                 <motion.div
                   key={item.title}
                   className="about__card"
-                  initial={{ opacity: 0, y: 40 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={viewport}
-                  transition={{ duration: 0.7, delay: i * 0.1, ease }}
+                  transition={{ duration: 0.6, delay: i * 0.08, ease }}
                 >
                   <span className="about__card-index" aria-hidden="true">
                     {item.index}
@@ -155,7 +211,78 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="about__tools">
+        {/* Comprehensive Technical Skills Matrix */}
+        <section style={{ margin: "80px 0" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={viewport}
+            transition={{ duration: 0.7, ease }}
+            style={{ marginBottom: 32 }}
+          >
+            <span className="eyebrow">Engineering Matrix</span>
+            <h2 className="about__subtitle" style={{ fontSize: "clamp(24px, 4vw, 36px)" }}>
+              Technical Competencies & Systems Stack
+            </h2>
+            <p style={{ margin: "8px 0 0", fontSize: 15, color: "var(--color-text-secondary)", maxWidth: "60ch" }}>
+              A dual foundation: algorithmic rigour from computer engineering paired with creative audio processing and spatial 3D environments.
+            </p>
+          </motion.div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: 20,
+            }}
+          >
+            {SKILL_GROUPS.map((group, idx) => (
+              <motion.div
+                key={group.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={viewport}
+                transition={{ duration: 0.5, delay: idx * 0.06, ease }}
+                style={{
+                  padding: 24,
+                  borderRadius: 18,
+                  background: "rgba(12, 14, 20, 0.7)",
+                  border: "1px solid var(--color-border)",
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 700,
+                    margin: "0 0 14px",
+                    color: "var(--color-text-primary)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <Code2 size={16} color="var(--color-accent-primary)" />
+                  {group.title}
+                </h3>
+
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {group.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="tag"
+                      style={{ fontSize: 12, padding: "4px 10px" }}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Spoken Languages */}
+        <section className="about__tools" style={{ marginBottom: 64 }}>
           <motion.div
             className="about__tools-head"
             initial={{ opacity: 0, y: 20 }}
@@ -163,7 +290,7 @@ export default function AboutPage() {
             viewport={viewport}
             transition={{ duration: 0.7, ease }}
           >
-            <h2 className="about__subtitle">Languages</h2>
+            <h2 className="about__subtitle">Spoken Languages</h2>
             <span className="about__tools-line" aria-hidden="true" />
           </motion.div>
           <motion.p
@@ -173,11 +300,11 @@ export default function AboutPage() {
             viewport={viewport}
             transition={{ duration: 0.7, delay: 0.1, ease }}
           >
-            English, Marathi, Hindi and Malayalam, with elementary Gujarati.
-            I write and rehearse across these languages for stage and screen.
+            English, Marathi, Hindi, and Malayalam, with elementary Gujarati. I write, direct, and collaborate across these languages for stage, screen, and cross-cultural ensembles.
           </motion.p>
         </section>
 
+        {/* Chronological Trajectory */}
         <section className="about__interests" aria-label="Timeline">
           <motion.div
             className="about__interests-head"
@@ -186,31 +313,72 @@ export default function AboutPage() {
             viewport={viewport}
             transition={{ duration: 0.7, ease }}
           >
-            <h2 className="about__subtitle">Timeline</h2>
+            <h2 className="about__subtitle">Chronology & Trajectory</h2>
             <p className="about__interests-kicker">
               <span className="about__kicker-line" />
-              <span>04 / where it stands</span>
+              <span>Tradition → Systems → Live Operations</span>
             </p>
           </motion.div>
+
           <div className="about__cards">
-            {timeline.map((t, i) => (
+            {TIMELINE.map((t, i) => (
               <motion.div
                 key={t.title}
                 className="about__card"
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={viewport}
-                transition={{ duration: 0.7, delay: i * 0.08, ease }}
+                transition={{ duration: 0.6, delay: i * 0.08, ease }}
               >
                 <span className="about__card-index" aria-hidden="true">
-                  {t.year}
+                  {t.period}
                 </span>
                 <h3 className="about__card-title">{t.title}</h3>
-                <p className="about__card-text">{t.body}</p>
+                <p className="about__card-text">{t.desc}</p>
               </motion.div>
             ))}
           </div>
         </section>
+
+        {/* Bottom CTA */}
+        <section
+          style={{
+            margin: "80px 0 40px",
+            padding: "48px 32px",
+            borderRadius: 24,
+            background: "linear-gradient(135deg, rgba(255, 59, 48, 0.08) 0%, rgba(0, 212, 255, 0.04) 100%)",
+            border: "1px solid var(--color-border)",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 800, margin: "0 0 12px", color: "var(--color-text-primary)" }}>
+            Let&apos;s build something exceptional.
+          </h2>
+          <p style={{ fontSize: 16, color: "var(--color-text-secondary)", maxWidth: "55ch", margin: "0 auto 28px", lineHeight: 1.6 }}>
+            Whether you need custom software systems, a film or theatre score, festival live technical direction, or Swarvibhaa collaborations.
+          </p>
+
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 14 }}>
+            <Link
+              href="/work"
+              className="btn"
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              Explore Selected Work <ArrowRight size={15} />
+            </Link>
+
+            <Link
+              href="/contact"
+              className="btn btn--accent"
+              onMouseEnter={() => sound.playHover()}
+              onClick={() => sound.playClick()}
+            >
+              Start a Project
+            </Link>
+          </div>
+        </section>
+
       </div>
     </div>
   );
