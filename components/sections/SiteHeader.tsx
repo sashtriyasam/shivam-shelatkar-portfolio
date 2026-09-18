@@ -10,7 +10,7 @@ import { sound } from "@/lib/audio";
 const navLinks = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
-  { href: "/cv", label: "CV" },
+  { href: "/story", label: "Story" },
   { href: "/contact", label: "Contact" },
 ];
 

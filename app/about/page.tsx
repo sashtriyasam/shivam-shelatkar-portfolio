@@ -46,13 +46,13 @@ const PILLARS = [
     icon: Layers,
     index: "02",
     title: "Swarvibhaa Ecosystem",
-    text: "Founder of Swarvibhaa, established in 2023 across Mumbai, Delhi, and Gujarat. An independent creative platform where Hindustani classical discipline converges with contemporary production and Western harmony.",
+    text: "Swarvibhaa � pan-India collective for Hindustani, Western classical, dance Swarvibhaa 2014 pan-India collective for Hindustani, Western classical, dance \Swarvibhaa — pan-India collective for Hindustani, Western classical, dance & visual art. Mumbai · Delhi · Gujarat. Co-founder: Sharvee Kulkarni, Bharatanatyam dancer. Founded 2023. visual art. Mumbai 00b7 Delhi 00b7 Gujarat. Co-founder: Sharvee Kulkarni, Bharatanatyam dancer. Founded 2023. visual art. Mumbai � Delhi � Gujarat. Co-founder: Sharvee Kulkarni, Bharatanatyam dancer. Founded 2023.",
   },
   {
     icon: Cpu,
     index: "03",
     title: "Systems & Creative Tech",
-    text: "Lead engineer for DepthWizard (ISRO Cartosat single-view depth estimation) and ParkEasy (Expo + Express + Supabase real-time OS). On-site technical director for NSFF 2026 at Film City Mumbai.",
+    text: "NSFF 2026 tech head. ParkEasy stack: Next.js, React, Supabase, PostgreSQL, Socket.io, Docker. ABVP Thane convenor.",
   },
   {
     icon: Users,
@@ -104,9 +104,14 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease }}
           >
-            Namaste, I am Shivam Shelatkar. Music technologist, composer & engineer.
+            Namaste, I am Shivam. Composer and builder.
           </motion.h1>
         </header>
+
+        {/* Intro paragraph */}
+        <p className="about__lead">
+          Music composer and Unity developer from Thane, Mumbai. Computer Engineering, University of Mumbai. Founder at Swarvibhaa.
+        </p>
 
         {/* Lead Bio Grid */}
         <div className="about__grid">

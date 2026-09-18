@@ -1,0 +1,69 @@
+<section className='section' aria-label='Introduction'>
+        <div className='wrap'>
+          <motion.p
+            className='eyebrow'
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+          >
+            Music technologist, composer & engineer.
+          </motion.p>
+          <h1 className='hero-name'>
+            <motion.span
+              className='hero-first'
+              initial={reduced ? undefined : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: EASE }}
+            >
+              <VariableFontHover text='SHIVAM SHELATKAR' />
+            </motion.span>
+            <motion.span
+              className='hero-last'
+              initial={reduced ? undefined : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.04, ease: EASE }}
+            >
+              music and code
+            </motion.span>
+          </h1>
+          <motion.p
+            className='hero-subtitle'
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.26, ease: EASE }}
+          >
+            Music technologist, composer & engineer. I build at the intersection of music, technology and culture — from software and interactive systems to compositions, live technical environments and Swarvibhaa.
+          </motion.p>
+          <div className='proof-strip' aria-label='Proof categories'>
+            <span className='proof-item'>COMPOSER</span>
+            <span className='proof-item'>ENGINEER</span>
+            <span className='proof-item'>FOUNDER</span>
+            <span className='proof-item'>MUSIC TECHNOLOGIST</span>
+          </div>
+          <motion.div
+            initial={reduced ? undefined : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.32, ease: EASE }}
+          >
+            <div className='pills' aria-label='Focus areas'>
+              {PILLS.map((p) => (
+                <span key={p} className='pill'>\</span>
+              ))}
+            </div>
+            <div className='hero-ctas'>
+              <a
+                href='/work'
+                className='btn btn-primary'
+              >
+                <span>View work ?</span>
+              </a>
+              <a
+                href='/about'
+                className='btn btn-outline'
+              >
+                <span>About me ?</span>
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
