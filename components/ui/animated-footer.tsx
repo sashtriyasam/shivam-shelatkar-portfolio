@@ -14,25 +14,39 @@ export interface FooterProps {
   barCount?: number;
 }
 
-export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount = 23 }: FooterProps) {
+export function AnimatedFooter({
+  leftLinks,
+  rightLinks,
+  copyrightText,
+  barCount = 23,
+}: FooterProps) {
   const footerRef = useRef<HTMLDivElement>(null);
   const waveRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const [isVisible, setIsVisible] = useState(false);
+  const isVisibleRef = useRef(false);
+  const [, forceUpdate] = useState(0);
 
   useEffect(() => {
     const node = footerRef.current;
     if (!node) return;
     if (typeof IntersectionObserver === "undefined") {
-      setIsVisible(true);
+      queueMicrotask(() => {
+        isVisibleRef.current = true;
+        forceUpdate((n) => n + 1);
+      });
       return;
     }
     const observer = new IntersectionObserver(
       (entries) => {
+        let changed = false;
         for (const entry of entries) {
-          setIsVisible(entry.isIntersecting);
+          if (isVisibleRef.current !== entry.isIntersecting) {
+            isVisibleRef.current = entry.isIntersecting;
+            changed = true;
+          }
         }
+        if (changed) forceUpdate((n) => n + 1);
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -40,7 +54,7 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
 
   useEffect(() => {
     waveRefs.current.length = barCount;
-    if (!isVisible) return;
+    if (!isVisibleRef.current) return;
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let frame = 0;
@@ -56,7 +70,7 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [isVisible, barCount]);
+  }, [barCount]);
 
   const scrollToTop = () => {
     const reducedMotion =
@@ -115,7 +129,13 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
       <div
         className="animated-footer__wave"
         aria-hidden="true"
-        style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 72, marginBottom: 24 }}
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          gap: 6,
+          height: 72,
+          marginBottom: 24,
+        }}
       >
         {Array.from({ length: barCount }).map((_, index) => (
           <div
@@ -136,12 +156,35 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
       </div>
       <div
         className="animated-footer__row"
-        style={{ display: "flex", flexWrap: "wrap", gap: "16px 32px", justifyContent: "space-between" }}
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "16px 32px",
+          justifyContent: "space-between",
+        }}
       >
-        <nav aria-label="Footer" className="animated-footer__links" style={{ display: "flex", flexWrap: "wrap", gap: "8px 20px", alignItems: "center" }}>
+        <nav
+          aria-label="Footer"
+          className="animated-footer__links"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "8px 20px",
+            alignItems: "center",
+          }}
+        >
           {renderLinks(leftLinks)}
         </nav>
-        <nav aria-label="Social" className="animated-footer__links" style={{ display: "flex", flexWrap: "wrap", gap: "8px 20px", alignItems: "center" }}>
+        <nav
+          aria-label="Social"
+          className="animated-footer__links"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "8px 20px",
+            alignItems: "center",
+          }}
+        >
           {renderLinks(rightLinks)}
         </nav>
       </div>
@@ -158,7 +201,14 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
           paddingTop: 16,
         }}
       >
-        <p className="animated-footer__copy" style={{ margin: 0, fontSize: 13, color: "rgba(255, 248, 239, 0.62)" }}>
+        <p
+          className="animated-footer__copy"
+          style={{
+            margin: 0,
+            fontSize: 13,
+            color: "rgba(255, 248, 239, 0.62)",
+          }}
+        >
           {copyrightText}
         </p>
         <button
@@ -184,4 +234,3 @@ export function AnimatedFooter({ leftLinks, rightLinks, copyrightText, barCount 
 }
 
 export default AnimatedFooter;
-

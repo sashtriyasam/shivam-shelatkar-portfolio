@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowUpRight, Compass, Shield, Zap, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { sound } from "@/lib/audio";
 
 const SHOWCASE_ITEMS = [
@@ -17,7 +17,12 @@ const SHOWCASE_ITEMS = [
     desc: "Single-view deep monocular height estimation from satellite passes, calibrated against ISRO Cartosat Digital Elevation Models with real-time 60 FPS Three.js GPU flythrough.",
     href: "/work/depthwizard",
     photoNote: "Western ghats & Mumbai topography calibration pass",
-    features: ["PyTorch Metric Depth", "ISRO Cartosat DEM Calibration", "Three.js 60 FPS Flythrough", "16-bit Heightfield Shaders"],
+    features: [
+      "PyTorch Metric Depth",
+      "ISRO Cartosat DEM Calibration",
+      "Three.js 60 FPS Flythrough",
+      "16-bit Heightfield Shaders",
+    ],
   },
   {
     id: "02",
@@ -30,7 +35,12 @@ const SHOWCASE_ITEMS = [
     desc: "Full-stack mobile parking operating system with live sensor availability, atomic database slot locks in Supabase, and instant Razorpay checkout.",
     href: "/work/parkeasy",
     photoNote: "Expo mobile client with zone-partitioned WebSockets",
-    features: ["Expo React Native", "Supabase Row Locks", "Socket.io Zone Telemetry", "Razorpay Webhooks"],
+    features: [
+      "Expo React Native",
+      "Supabase Row Locks",
+      "Socket.io Zone Telemetry",
+      "Razorpay Webhooks",
+    ],
   },
   {
     id: "03",
@@ -43,7 +53,12 @@ const SHOWCASE_ITEMS = [
     desc: "Directed on-site technical operations at Film City Mumbai for the National Student Film Festival: DCI playback, projection failovers, and the official public platform.",
     href: "/work/nsff-2026",
     photoNote: "Film City Mumbai screening auditoriums & main stage",
-    features: ["Dual-Redundant Playback", "Stage Cue Automation", "Edge Schedule Platform", "Multi-partner Integration"],
+    features: [
+      "Dual-Redundant Playback",
+      "Stage Cue Automation",
+      "Edge Schedule Platform",
+      "Multi-partner Integration",
+    ],
   },
 ];
 
@@ -59,7 +74,8 @@ export function SpatialShowcase() {
   return (
     <div
       style={{
-        background: "linear-gradient(180deg, #060709 0%, #0c0e14 50%, #060709 100%)",
+        background:
+          "linear-gradient(180deg, #060709 0%, #0c0e14 50%, #060709 100%)",
         border: "1px solid rgba(255, 255, 255, 0.08)",
         borderRadius: 24,
         padding: "clamp(2rem, 4vw, 3.5rem)",
@@ -140,7 +156,10 @@ export function SpatialShowcase() {
               onClick={() => handleSelect(idx)}
               onMouseEnter={() => sound.playHover()}
               style={{
-                background: activeIdx === idx ? "rgba(255, 255, 255, 0.15)" : "transparent",
+                background:
+                  activeIdx === idx
+                    ? "rgba(255, 255, 255, 0.15)"
+                    : "transparent",
                 color: activeIdx === idx ? "#fff" : "rgba(255, 255, 255, 0.5)",
                 border: "none",
                 borderRadius: 999,
@@ -188,12 +207,35 @@ export function SpatialShowcase() {
               background: "#000",
             }}
           >
-            {/* Photo placeholder: replace this div with a real image, e.g. <img src="/photos/[slug].jpg" alt="project photo" />. Real photos TODO from @shastriyakid/Swarvibhaa. */}<div style={{ width: "100%", minHeight: 380, background: "#141820", display: "grid", placeItems: "center", padding: "32px", textAlign: "center" }}><span style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", lineHeight: 1.6, color: "rgba(255, 255, 255, 0.45)" }}>{active.photoNote}</span></div>
+            {/* Photo placeholder: replace this div with a real image, e.g. <img src="/photos/[slug].jpg" alt="project photo" />. Real photos TODO from @shastriyakid/Swarvibhaa. */}
+            <div
+              style={{
+                width: "100%",
+                minHeight: 380,
+                background: "#141820",
+                display: "grid",
+                placeItems: "center",
+                padding: "32px",
+                textAlign: "center",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.75rem",
+                  lineHeight: 1.6,
+                  color: "rgba(255, 255, 255, 0.45)",
+                }}
+              >
+                {active.photoNote}
+              </span>
+            </div>
             <div
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(0deg, rgba(6,7,9,0.9) 0%, transparent 60%)",
+                background:
+                  "linear-gradient(0deg, rgba(6,7,9,0.9) 0%, transparent 60%)",
               }}
             />
 
@@ -325,7 +367,13 @@ export function SpatialShowcase() {
               >
                 KEY ARCHITECTURAL HIGHLIGHTS:
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "0.6rem",
+                }}
+              >
                 {active.features.map((feat) => (
                   <div
                     key={feat}

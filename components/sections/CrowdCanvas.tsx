@@ -66,7 +66,7 @@ const CrowdCanvas = ({ src, rows = 15, cols = 7 }: CrowdCanvasProps) => {
     };
 
     const normalWalk = ({ peep, props }: { peep: any; props: any }) => {
-      const { startX, startY, endX } = props;
+      const { startX: _startX, startY, endX } = props;
       const xDuration = 10;
       const yDuration = 0.25;
 
@@ -278,9 +278,12 @@ const CrowdCanvas = ({ src, rows = 15, cols = 7 }: CrowdCanvasProps) => {
       });
     };
   }, [src, rows, cols]);
-  
+
   return (
-    <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />
+    <canvas
+      ref={canvasRef}
+      style={{ width: "100%", height: "100%", display: "block" }}
+    />
   );
 };
 

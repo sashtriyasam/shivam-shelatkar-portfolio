@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars, Float } from "@react-three/drei";
@@ -81,21 +81,36 @@ function FloatingConstellation() {
       <Float speed={1.8} rotationIntensity={0.5} floatIntensity={0.8}>
         <mesh position={[-3.5, 1.8, -2]}>
           <octahedronGeometry args={[0.3, 0]} />
-          <meshStandardMaterial color="#00f59b" emissive="#00f59b" emissiveIntensity={0.6} wireframe />
+          <meshStandardMaterial
+            color="#00f59b"
+            emissive="#00f59b"
+            emissiveIntensity={0.6}
+            wireframe
+          />
         </mesh>
       </Float>
 
       <Float speed={2.2} rotationIntensity={0.6} floatIntensity={1.0}>
         <mesh position={[3.8, 1.2, -3]}>
           <icosahedronGeometry args={[0.35, 0]} />
-          <meshStandardMaterial color="#00d4ff" emissive="#00d4ff" emissiveIntensity={0.6} wireframe />
+          <meshStandardMaterial
+            color="#00d4ff"
+            emissive="#00d4ff"
+            emissiveIntensity={0.6}
+            wireframe
+          />
         </mesh>
       </Float>
 
       <Float speed={1.5} rotationIntensity={0.4} floatIntensity={0.7}>
         <mesh position={[1.2, 2.8, -4]}>
           <dodecahedronGeometry args={[0.25, 0]} />
-          <meshStandardMaterial color="#ff3b30" emissive="#ff3b30" emissiveIntensity={0.6} wireframe />
+          <meshStandardMaterial
+            color="#ff3b30"
+            emissive="#ff3b30"
+            emissiveIntensity={0.6}
+            wireframe
+          />
         </mesh>
       </Float>
     </group>
@@ -118,20 +133,34 @@ export function HeroTerrain() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}>
+    <div
+      style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}
+    >
       <Canvas
         camera={{ position: [0, 2.2, 6], fov: 48 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.5} />
-        <directionalLight position={[4, 8, 3]} intensity={1.8} color="#00d4ff" />
+        <directionalLight
+          position={[4, 8, 3]}
+          intensity={1.8}
+          color="#00d4ff"
+        />
         <pointLight position={[-4, 3, 2]} intensity={2.0} color="#ff3b30" />
         <pointLight position={[0, -1, 3]} intensity={1.2} color="#00f59b" />
 
         <TopoTerrain />
         <FloatingConstellation />
-        <Stars radius={60} depth={40} count={900} factor={3} saturation={0.5} fade speed={0.8} />
+        <Stars
+          radius={60}
+          depth={40}
+          count={900}
+          factor={3}
+          saturation={0.5}
+          fade
+          speed={0.8}
+        />
         {!shouldReduceMotion && <InteractiveParallax />}
       </Canvas>
     </div>

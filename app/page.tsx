@@ -1,9 +1,14 @@
-'use client';
+"use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { motion } from "motion/react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { sound } from "@/lib/audio";
-import { AnimatedFooter } from "@/components/ui/animated-footer";
 import { VariableFontHover } from "@/components/ui/variable-font-hover";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -75,23 +80,32 @@ const TIMELINE = [
   },
 ];
 
-const SOCIALS = [
-  { href: "https://www.instagram.com/shastriyakid", label: "Instagram, @shastriyakid" },
-  { href: "https://linkedin.com/in/shivam-shelatkar-503305358", label: "LinkedIn, Shivam Shelatkar" },
+const _SOCIALS = [
+  {
+    href: "https://www.instagram.com/shastriyakid",
+    label: "Instagram, @shastriyakid",
+  },
+  {
+    href: "https://linkedin.com/in/shivam-shelatkar-503305358",
+    label: "LinkedIn, Shivam Shelatkar",
+  },
   { href: "https://github.com/sashtriyasam", label: "GitHub, sashtriyasam" },
   { href: "https://www.imdb.com/name/nm17605062/", label: "IMDb, nm17605062" },
 ];
 
-const CONTACT_LINES = ["Make", "something", "worth keeping."];
+const _CONTACT_LINES = ["Make", "something", "worth keeping."];
 
-const HOME_FOOTER_LEFT = [
+const _HOME_FOOTER_LEFT = [
   { label: "Work", href: "/work" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
-const HOME_FOOTER_RIGHT = [
-  { label: "LinkedIn", href: "https://linkedin.com/in/shivam-shelatkar-503305358" },
+const _HOME_FOOTER_RIGHT = [
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com/in/shivam-shelatkar-503305358",
+  },
   { label: "GitHub", href: "https://github.com/sashtriyasam" },
   { label: "Instagram", href: "https://www.instagram.com/shastriyakid" },
   { label: "IMDb", href: "https://www.imdb.com/name/nm17605062/" },
@@ -101,21 +115,26 @@ const HOME_FOOTER_RIGHT = [
 // Magnetic pull for the primary CTA: 6-12px toward the cursor (clamped to
 // 10px at a 0.2 follow ratio), easing back over 300ms. Enabled for fine
 // pointers without touch only; reduced-motion renders the resting state.
-function Magnetic({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
+function Magnetic({
+  children,
+  disabled,
+}: {
+  children: ReactNode;
+  disabled?: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [canMagnet, setCanMagnet] = useState(false);
-
-  useEffect(() => {
-    if (disabled) {
-      setCanMagnet(false);
-      return;
-    }
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    setCanMagnet(fine && !coarse && !hasTouch);
-  }, [disabled]);
+  const canMagnet = useSyncExternalStore(
+    () => () => {},
+    () => {
+      if (disabled) return false;
+      const fine = window.matchMedia("(pointer: fine)").matches;
+      const coarse = window.matchMedia("(pointer: coarse)").matches;
+      const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      return fine && !coarse && !hasTouch;
+    },
+    () => false,
+  );
 
   const handleMove = (e: { clientX: number; clientY: number }) => {
     const el = ref.current;
@@ -147,17 +166,21 @@ function Magnetic({ children, disabled }: { children: ReactNode; disabled?: bool
 }
 
 export default function HomePage() {
-  const shouldReduceMotion = useReducedMotion();
-  const reduced = Boolean(shouldReduceMotion);
-
-  const toTop = () => {
-    sound.playClick();
-    window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
-  };
+  // Hydration-safe reduced-motion detection: server and first client render
+  // both see `false`, so prerendered HTML matches. Updates after mount.
+  const [reduceState, setReduceState] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduceState(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  const reduced = reduceState;
 
   return (
     <div className="home-root" id="top">
-        <h1 className="sr-only">Shivam Shelatkar — Portfolio Home</h1>
+      <h1 className="sr-only">Shivam Shelatkar — Portfolio Home</h1>
       <style>{`
         .home-root {
           background-color: #FFF8EF;
@@ -450,7 +473,6 @@ export default function HomePage() {
         }
       `}</style>
 
-
       <section className="section" aria-label="Introduction">
         <div className="wrap">
           <motion.p
@@ -485,9 +507,9 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.26, ease: EASE }}
           >
-            Thane-born, Mumbai-grown. Ten years of tabla with Pandit Mukundraj Deo,
-            six years of piano through Trinity, founder of Swarvibhaa in 2023,
-            building small worlds in Unity since 2017.
+            Thane-born, Mumbai-grown. Ten years of tabla with Pandit Mukundraj
+            Deo, six years of piano through Trinity, founder of Swarvibhaa in
+            2023, building small worlds in Unity since 2017.
           </motion.p>
           <motion.div
             initial={reduced ? undefined : { opacity: 0, y: 16 }}
@@ -496,7 +518,9 @@ export default function HomePage() {
           >
             <div className="pills" aria-label="Focus areas">
               {PILLS.map((p) => (
-                <span key={p} className="pill">{p}</span>
+                <span key={p} className="pill">
+                  {p}
+                </span>
               ))}
             </div>
             <div className="hero-ctas">
@@ -508,8 +532,22 @@ export default function HomePage() {
                   className="btn btn-primary"
                   onMouseEnter={() => sound.playHover()}
                   onClick={() => sound.playClick()}
-                  whileHover={reduced ? undefined : { scale: 1.02, transition: { duration: 0.2, ease: EASE } }}
-                  whileTap={reduced ? undefined : { scale: 0.97, transition: { duration: 0.15, ease: EASE } }}
+                  whileHover={
+                    reduced
+                      ? undefined
+                      : {
+                          scale: 1.02,
+                          transition: { duration: 0.2, ease: EASE },
+                        }
+                  }
+                  whileTap={
+                    reduced
+                      ? undefined
+                      : {
+                          scale: 0.97,
+                          transition: { duration: 0.15, ease: EASE },
+                        }
+                  }
                 >
                   <span>Listen to Raatrani</span>
                 </motion.a>
@@ -537,7 +575,10 @@ export default function HomePage() {
           >
             <span className="eyebrow">Selected work</span>
             <h2 className="h2">Three pieces I keep returning to.</h2>
-            <p className="lede">Film, bhajan, and one quiet instrumental. Each one taught me something about restraint.</p>
+            <p className="lede">
+              Film, bhajan, and one quiet instrumental. Each one taught me
+              something about restraint.
+            </p>
           </motion.div>
           <div className="work-grid">
             {WORK.map((w, i) => (
@@ -562,7 +603,12 @@ export default function HomePage() {
                     <h3 className="work-title">{w.title}</h3>
                     <p className="work-medium">{w.medium}</p>
                     <p className="work-desc">{w.desc}</p>
-                    <span className="work-link"><span>{w.cta}</span><span className="work-arrow" aria-hidden="true">→</span></span>
+                    <span className="work-link">
+                      <span>{w.cta}</span>
+                      <span className="work-arrow" aria-hidden="true">
+                        →
+                      </span>
+                    </span>
                   </div>
                 </a>
               </motion.div>
@@ -580,7 +626,9 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.3, margin: "-10%" }}
             transition={{ duration: 0.5, ease: EASE }}
           >
-            Heritage stays alive<br />when it is <em>played</em> and built with care.
+            Heritage stays alive
+            <br />
+            when it is <em>played</em> and built with care.
           </motion.p>
         </div>
       </section>
@@ -595,7 +643,9 @@ export default function HomePage() {
           >
             <span className="eyebrow">Capabilities</span>
             <h2 className="h2">What I do well.</h2>
-            <p className="lede">Practice room habits that run my engineering too.</p>
+            <p className="lede">
+              Practice room habits that run my engineering too.
+            </p>
           </motion.div>
           <div className="cap-grid">
             {CAPS.map((c, i) => (
@@ -607,7 +657,9 @@ export default function HomePage() {
                 viewport={{ once: true, amount: 0.25, margin: "-10%" }}
                 transition={{ duration: 0.5, delay: i * 0.04, ease: EASE }}
               >
-                <span className="cap-num" aria-hidden="true">0{i + 1}</span>
+                <span className="cap-num" aria-hidden="true">
+                  0{i + 1}
+                </span>
                 <h3>{c.title}</h3>
                 <p className="cap-meta">{c.meta}</p>
                 <p>{c.body}</p>
@@ -627,7 +679,9 @@ export default function HomePage() {
           >
             <span className="eyebrow">Story</span>
             <h2 className="h2">Thane to Mumbai.</h2>
-            <p className="lede">Born in Thane, grown in Mumbai, working across three states.</p>
+            <p className="lede">
+              Born in Thane, grown in Mumbai, working across three states.
+            </p>
           </motion.div>
           <div className="strip">
             {TIMELINE.map((t, i) => (
@@ -660,8 +714,8 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.25, margin: "-10%" }}
             transition={{ duration: 0.5, ease: EASE }}
           >
-            Outside music I convene student activities for ABVP in Thane, speak English,
-            Hindi, Malayalam, Gujarati, and Marathi, and share work as
+            Outside music I convene student activities for ABVP in Thane, speak
+            English, Hindi, Malayalam, Gujarati, and Marathi, and share work as
             @shastriyakid. Screen credits on IMDb nm17605062.
           </motion.p>
         </div>
@@ -679,7 +733,9 @@ export default function HomePage() {
             <div>
               <span className="eyebrow">Spatial</span>
               <h2 className="h2">Interactive work since 2017.</h2>
-              <p className="lede">Unity builds with rhythm systems inside. Code lives on GitHub.</p>
+              <p className="lede">
+                Unity builds with rhythm systems inside. Code lives on GitHub.
+              </p>
             </div>
             <a
               href="https://github.com/sashtriyasam"
@@ -707,7 +763,9 @@ export default function HomePage() {
             <div>
               <span className="eyebrow">Terminal</span>
               <h2 className="h2">Prefer the full story.</h2>
-              <p className="lede">Longer notes on training, Swarvibhaa, and how I work.</p>
+              <p className="lede">
+                Longer notes on training, Swarvibhaa, and how I work.
+              </p>
             </div>
             <a
               href="/about"
@@ -720,10 +778,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
     </div>
   );
 }
-
-
-

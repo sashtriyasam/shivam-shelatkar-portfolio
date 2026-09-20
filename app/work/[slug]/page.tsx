@@ -1,6 +1,13 @@
 import { use } from "react";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ExternalLink, CheckCircle2, Layers, Cpu, Music2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  CheckCircle2 as _CheckCircle2,
+  Layers as _Layers,
+  Cpu,
+  Music2,
+} from "lucide-react";
 import Link from "next/link";
 import { getProjectBySlug, projects } from "@/lib/projects";
 import { ProjectCard } from "@/components/projects/ProjectCard";
@@ -59,14 +66,21 @@ export default function ProjectSlugPage({
   const project = getProjectBySlug(slug);
   if (!project) return notFound();
 
-  const related = projects
-    .filter((p) => p.slug !== project.slug)
-    .slice(0, 2);
+  const related = projects.filter((p) => p.slug !== project.slug).slice(0, 2);
 
   return (
     <article className="project-page">
       <div className="content-max">
-        <Link href="/work" className="link-underline" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
+        <Link
+          href="/work"
+          className="link-underline"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 24,
+          }}
+        >
           <ArrowLeft size={16} /> Back to all work
         </Link>
 
@@ -203,7 +217,14 @@ export default function ProjectSlugPage({
                 margin: "32px 0",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginBottom: 16,
+                }}
+              >
                 <Cpu size={18} color="var(--color-focus)" />
                 <h3
                   style={{
@@ -239,7 +260,15 @@ export default function ProjectSlugPage({
 
               <div style={{ marginBottom: 20 }}>
                 <p className="eyebrow">Pipeline Stages</p>
-                <ol style={{ paddingLeft: 20, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+                <ol
+                  style={{
+                    paddingLeft: 20,
+                    margin: 0,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 10,
+                  }}
+                >
                   {project.architecture.steps.map((step, idx) => (
                     <li
                       key={idx}
@@ -249,16 +278,32 @@ export default function ProjectSlugPage({
                         color: "var(--color-text-secondary)",
                       }}
                     >
-                      <strong style={{ color: "var(--color-text-primary)" }}>Stage {idx + 1}:</strong> {step}
+                      <strong style={{ color: "var(--color-text-primary)" }}>
+                        Stage {idx + 1}:
+                      </strong>{" "}
+                      {step}
                     </li>
                   ))}
                 </ol>
               </div>
 
               {project.architecture.highlights && (
-                <div style={{ borderTop: "1px solid var(--color-border)", paddingTop: 16 }}>
+                <div
+                  style={{
+                    borderTop: "1px solid var(--color-border)",
+                    paddingTop: 16,
+                  }}
+                >
                   <p className="eyebrow">Key Engineering Decisions</p>
-                  <ul style={{ paddingLeft: 20, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+                  <ul
+                    style={{
+                      paddingLeft: 20,
+                      margin: 0,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 8,
+                    }}
+                  >
                     {project.architecture.highlights.map((h, i) => (
                       <li
                         key={i}
@@ -281,7 +326,13 @@ export default function ProjectSlugPage({
           {project.decisions && project.decisions.length > 0 && (
             <section className="project-page__section">
               <p className="eyebrow">Technical Deep Dive</p>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                  gap: 20,
+                }}
+              >
                 {project.decisions.map((d) => (
                   <div
                     key={d.title}
@@ -292,10 +343,24 @@ export default function ProjectSlugPage({
                       borderRadius: 14,
                     }}
                   >
-                    <h4 style={{ margin: "0 0 8px", fontSize: 16, fontWeight: 700, color: "var(--color-text-primary)" }}>
+                    <h4
+                      style={{
+                        margin: "0 0 8px",
+                        fontSize: 16,
+                        fontWeight: 700,
+                        color: "var(--color-text-primary)",
+                      }}
+                    >
                       {d.title}
                     </h4>
-                    <p style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: "var(--color-text-secondary)" }}>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: 14,
+                        lineHeight: 1.65,
+                        color: "var(--color-text-secondary)",
+                      }}
+                    >
                       {d.description}
                     </p>
                   </div>
@@ -316,14 +381,30 @@ export default function ProjectSlugPage({
                 margin: "32px 0",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginBottom: 20,
+                }}
+              >
                 <Music2 size={18} color="var(--color-accent-primary)" />
-                <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: "var(--color-text-primary)" }}>
+                <h3
+                  style={{
+                    margin: 0,
+                    fontSize: 18,
+                    fontWeight: 700,
+                    color: "var(--color-text-primary)",
+                  }}
+                >
                   EP Tracklist & Movement Breakdown
                 </h3>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: 14 }}
+              >
                 {project.tracks.map((t) => (
                   <div
                     key={t.number}
@@ -339,7 +420,13 @@ export default function ProjectSlugPage({
                       gap: 12,
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 14 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: 14,
+                      }}
+                    >
                       <span
                         style={{
                           fontFamily: "var(--font-mono)",
@@ -351,16 +438,30 @@ export default function ProjectSlugPage({
                         {t.number}
                       </span>
                       <div>
-                        <div style={{ fontSize: 16, fontWeight: 700, color: "var(--color-text-primary)" }}>
+                        <div
+                          style={{
+                            fontSize: 16,
+                            fontWeight: 700,
+                            color: "var(--color-text-primary)",
+                          }}
+                        >
                           {t.title}
                         </div>
-                        <div style={{ fontSize: 13, color: "var(--color-text-tertiary)", marginTop: 2 }}>
+                        <div
+                          style={{
+                            fontSize: 13,
+                            color: "var(--color-text-tertiary)",
+                            marginTop: 2,
+                          }}
+                        >
                           {t.instrumentation}
                         </div>
                       </div>
                     </div>
 
-                    <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                    <div
+                      style={{ display: "flex", alignItems: "center", gap: 16 }}
+                    >
                       <span
                         style={{
                           fontSize: 12,
@@ -414,12 +515,15 @@ export default function ProjectSlugPage({
           </section>
 
           {related.length > 0 && (
-            <section style={{ marginTop: 48, borderTop: "1px solid var(--color-border)", paddingTop: 40 }}>
+            <section
+              style={{
+                marginTop: 48,
+                borderTop: "1px solid var(--color-border)",
+                paddingTop: 40,
+              }}
+            >
               <p className="eyebrow">Explore More Work</p>
-              <div
-                className="work__grid"
-                style={{ marginTop: "1.5rem" }}
-              >
+              <div className="work__grid" style={{ marginTop: "1.5rem" }}>
                 {related.map((p) => (
                   <ProjectCard key={p.slug} project={p} />
                 ))}

@@ -7,7 +7,7 @@ const ScrollStroke = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   return (
@@ -27,24 +27,75 @@ const ScrollStroke = () => {
         borderTop: "1px solid var(--color-line)",
       }}
     >
-      <div style={{ position: "relative", zIndex: 10, textAlign: "center", marginTop: "15vh" }}>
-        <h1 style={{ fontFamily: "var(--font-ingrid)", fontSize: "clamp(4rem, 10vw, 8rem)", lineHeight: 1, margin: 0, textTransform: "uppercase" }}>
-          The Path <br /> Isn't Straight
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          textAlign: "center",
+          marginTop: "15vh",
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: "var(--font-ingrid)",
+            fontSize: "clamp(4rem, 10vw, 8rem)",
+            lineHeight: 1,
+            margin: 0,
+            textTransform: "uppercase",
+          }}
+        >
+          The Path <br /> Isn&apos;t Straight
         </h1>
-        <p style={{ fontFamily: `"Geist Mono", monospace`, fontSize: "0.85rem", marginTop: "2rem", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+        <p
+          style={{
+            fontFamily: `"Geist Mono", monospace`,
+            fontSize: "0.85rem",
+            marginTop: "2rem",
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+          }}
+        >
           (Keep scrolling to follow the journey)
         </p>
       </div>
 
       {/* Background SVG that spans the height */}
-      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, opacity: 0.25, display: "flex", justifyContent: "center" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          opacity: 0.25,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <LinePath scrollYProgress={scrollYProgress} />
       </div>
 
-      <div style={{ position: "absolute", bottom: "30vh", zIndex: 10, textAlign: "center" }}>
-         <h2 style={{ fontFamily: "var(--font-ingrid)", fontSize: "clamp(3rem, 8vw, 6rem)", margin: 0, textTransform: "uppercase", textShadow: "0 0 20px var(--color-paper-2), 0 0 40px var(--color-paper-2)" }}>
-           But we always <br /> get there
-         </h2>
+      <div
+        style={{
+          position: "absolute",
+          bottom: "30vh",
+          zIndex: 10,
+          textAlign: "center",
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: "var(--font-ingrid)",
+            fontSize: "clamp(3rem, 8vw, 6rem)",
+            margin: 0,
+            textTransform: "uppercase",
+            textShadow:
+              "0 0 20px var(--color-paper-2), 0 0 40px var(--color-paper-2)",
+          }}
+        >
+          But we always <br /> get there
+        </h2>
       </div>
     </section>
   );

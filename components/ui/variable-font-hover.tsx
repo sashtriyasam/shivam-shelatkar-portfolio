@@ -1,13 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { CSSProperties, ElementType } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 type Props = {
   text: string;
   className?: string;
   as?: ElementType;
 };
-const MIN = 400, MAX = 900, STEP = 125, LIFT = -4;
+const MIN = 400,
+  MAX = 900,
+  STEP = 125,
+  LIFT = -4;
 const EASE = [0.16, 1, 0.3, 1] as const;
 function wght(i: number, at: number | null): number {
   if (at === null) return MIN;
@@ -16,15 +19,24 @@ function wght(i: number, at: number | null): number {
 }
 export function VariableFontHover({ text, className, as: T }: Props) {
   const Tag = (T ?? "span") as ElementType;
-  const reduce = useReducedMotion();
+  // Hydration-safe reduced-motion detection: server and first client render
+  // both see `false`, so the DOM structure matches. Updates after mount.
+  const [reduce, setReduce] = useState(false);
   const [at, setAt] = useState<number | null>(null);
   const [fine, setFine] = useState(false);
   useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncReduce = () => setReduce(mq.matches);
+    syncReduce();
+    mq.addEventListener("change", syncReduce);
     const q = window.matchMedia("(pointer: fine)");
     const sync = () => setFine(q.matches);
     sync();
     q.addEventListener("change", sync);
-    return () => q.removeEventListener("change", sync);
+    return () => {
+      mq.removeEventListener("change", syncReduce);
+      q.removeEventListener("change", sync);
+    };
   }, []);
   if (reduce) {
     return <Tag className={className}>{text}</Tag>;
@@ -62,14 +74,14 @@ export function VariableFontHover({ text, className, as: T }: Props) {
                 display: "inline-block",
                 color: "inherit",
                 willChange: "transform",
-                fontVariationSettings: "\"wght\" " + wght(i, at),
+                fontVariationSettings: '"wght" ' + wght(i, at),
                 transition: "font-variation-settings 200ms ease",
               } as CSSProperties
             }
           >
             {c}
           </motion.span>
-        )
+        ),
       )}
     </Tag>
   );

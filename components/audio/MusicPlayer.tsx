@@ -9,7 +9,10 @@ interface MusicPlayerProps {
   colorAccent?: string;
 }
 
-export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps) {
+export function MusicPlayer({
+  audio,
+  colorAccent = "#ff7a4d",
+}: MusicPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState("00:00");
@@ -17,7 +20,10 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
 
   // Synthesizer nodes for fallback preview
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const synthNodesRef = useRef<{ oscs: OscillatorNode[]; gain: GainNode } | null>(null);
+  const synthNodesRef = useRef<{
+    oscs: OscillatorNode[];
+    gain: GainNode;
+  } | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Total seconds parsed from duration string (e.g., "03:42")
@@ -32,7 +38,8 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
   // Start peaceful ambient melodic preview
   const startSynth = () => {
     try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioCtx =
+        window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
 
       if (!audioCtxRef.current) {
@@ -48,8 +55,8 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
       const baseFreq = audio.title.includes("Thevita")
         ? 146.83 // D3
         : audio.title.includes("Raatrani")
-        ? 130.81 // C3 (Nocturnal)
-        : 164.81; // E3 (Saffron)
+          ? 130.81 // C3 (Nocturnal)
+          : 164.81; // E3 (Saffron)
 
       const masterGain = ctx.createGain();
       masterGain.gain.setValueAtTime(0.001, ctx.currentTime);
@@ -95,11 +102,11 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
             try {
               o.stop();
               o.disconnect();
-            } catch (e) {}
+            } catch {}
           });
           synthNodesRef.current = null;
         }, 700);
-      } catch (e) {}
+      } catch {}
     }
   };
 
@@ -126,7 +133,9 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
 
         const m = Math.floor(currentSec / 60);
         const s = Math.floor(currentSec % 60);
-        setCurrentTime(`${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`);
+        setCurrentTime(
+          `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`,
+        );
       }, 1000);
     }
   };
@@ -137,7 +146,9 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
     const currentSec = (val / 100) * totalSeconds;
     const m = Math.floor(currentSec / 60);
     const s = Math.floor(currentSec % 60);
-    setCurrentTime(`${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`);
+    setCurrentTime(
+      `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`,
+    );
   };
 
   const toggleMute = () => {
@@ -190,9 +201,24 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
         }}
       />
 
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: 16,
+        }}
+      >
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 6,
+            }}
+          >
             <span
               style={{
                 display: "inline-block",
@@ -242,14 +268,26 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
         </div>
 
         {/* Equalizer animation bars */}
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 28, paddingBottom: 4 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            gap: 3,
+            height: 28,
+            paddingBottom: 4,
+          }}
+        >
           {[18, 24, 12, 28, 16, 22, 10, 26].map((h, i) => (
             <span
               key={i}
               style={{
                 width: 3,
-                height: isPlaying ? `${Math.max(6, (h * (progress % 7 + 1)) / 4)}px` : "4px",
-                background: isPlaying ? colorAccent : "rgba(255, 255, 255, 0.2)",
+                height: isPlaying
+                  ? `${Math.max(6, (h * ((progress % 7) + 1)) / 4)}px`
+                  : "4px",
+                background: isPlaying
+                  ? colorAccent
+                  : "rgba(255, 255, 255, 0.2)",
                 borderRadius: 2,
                 transition: "height 200ms ease, background 300ms ease",
               }}
@@ -349,7 +387,14 @@ export function MusicPlayer({ audio, colorAccent = "#ff7a4d" }: MusicPlayerProps
         </div>
 
         {/* Official Streaming Badges */}
-        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
           <span
             style={{
               fontSize: 11,

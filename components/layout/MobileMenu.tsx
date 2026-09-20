@@ -14,7 +14,7 @@ const links = [
 ];
 
 export function MobileMenu() {
-  const { open, close, triggerRef } = useMobileMenu();
+  const { open, close, triggerRef: _triggerRef } = useMobileMenu();
   const menuRef = useRef<HTMLDivElement>(null);
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
@@ -26,8 +26,9 @@ export function MobileMenu() {
       if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
-    const focusableElements = menuRef.current?.querySelectorAll<HTMLElement>(
-      'a[href], button, [tabindex]:not([tabindex="-1"])'
+    const menuNode = menuRef.current;
+    const focusableElements = menuNode?.querySelectorAll<HTMLElement>(
+      'a[href], button, [tabindex]:not([tabindex="-1"])',
     );
     const firstElement = focusableElements?.[0];
     const lastElement = focusableElements?.[focusableElements.length - 1];
@@ -43,13 +44,13 @@ export function MobileMenu() {
       }
     };
 
-    menuRef.current?.addEventListener("keydown", handleTab);
+    menuNode?.addEventListener("keydown", handleTab);
     firstElement?.focus();
 
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
-      menuRef.current?.removeEventListener("keydown", handleTab);
+      menuNode?.removeEventListener("keydown", handleTab);
       previousActiveElement.current?.focus();
     };
   }, [open, close]);

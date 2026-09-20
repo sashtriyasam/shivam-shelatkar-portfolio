@@ -10,7 +10,6 @@ import { sound } from "@/lib/audio";
 const navLinks = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
-  { href: "/story", label: "Story" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -64,13 +63,19 @@ export function SiteHeader() {
             type="button"
             onClick={toggleSound}
             onMouseEnter={() => sound.playHover()}
-            title={audioActive ? "Tactile Audio: Enabled" : "Tactile Audio: Disabled"}
-            aria-label={audioActive ? "Disable tactile audio" : "Enable tactile audio"}
+            title={
+              audioActive ? "Tactile Audio: Enabled" : "Tactile Audio: Disabled"
+            }
+            aria-label={
+              audioActive ? "Disable tactile audio" : "Enable tactile audio"
+            }
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: 6,
-              background: audioActive ? "rgba(0, 245, 155, 0.12)" : "rgba(255, 255, 255, 0.05)",
+              background: audioActive
+                ? "rgba(0, 245, 155, 0.12)"
+                : "rgba(255, 255, 255, 0.05)",
               color: audioActive ? "#00f59b" : "rgba(255, 255, 255, 0.6)",
               border: `1px solid ${audioActive ? "rgba(0, 245, 155, 0.3)" : "rgba(255, 255, 255, 0.1)"}`,
               borderRadius: 999,

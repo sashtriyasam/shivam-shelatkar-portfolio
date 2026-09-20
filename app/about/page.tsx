@@ -1,9 +1,21 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Music, Layers, Cpu, Users, ArrowRight, FileText, Code2, Terminal, Globe, Award } from "lucide-react";
+import {
+  Music,
+  Layers,
+  Cpu,
+  Users,
+  ArrowRight,
+  FileText,
+  Code2,
+  Terminal as _Terminal,
+  Globe as _Globe,
+  Award as _Award,
+} from "lucide-react";
 import Link from "next/link";
 import { sound } from "@/lib/audio";
+import { InteractiveTerminal } from "@/components/sections/InteractiveTerminal";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const viewport = { once: true, margin: "-80px" } as const;
@@ -11,27 +23,73 @@ const viewport = { once: true, margin: "-80px" } as const;
 const SKILL_GROUPS = [
   {
     title: "Programming Languages",
-    skills: ["C", "C++", "C#", "Python", "TypeScript", "JavaScript", "SQL", "GLSL"],
+    skills: [
+      "C",
+      "C++",
+      "C#",
+      "Python",
+      "TypeScript",
+      "JavaScript",
+      "SQL",
+      "GLSL",
+    ],
   },
   {
     title: "Web & Mobile Frameworks",
-    skills: ["Next.js (App Router)", "React", "React Native (Expo)", "Node.js", "Express", "FastAPI", "Tailwind CSS"],
+    skills: [
+      "Next.js (App Router)",
+      "React",
+      "React Native (Expo)",
+      "Node.js",
+      "Express",
+      "FastAPI",
+      "Tailwind CSS",
+    ],
   },
   {
     title: "Systems & Infrastructure",
-    skills: ["Supabase", "PostgreSQL", "Socket.io", "Redis", "Docker", "Git", "GDAL / Rasterio", "Linux"],
+    skills: [
+      "Supabase",
+      "PostgreSQL",
+      "Socket.io",
+      "Redis",
+      "Docker",
+      "Git",
+      "GDAL / Rasterio",
+      "Linux",
+    ],
   },
   {
     title: "Creative Technology & 3D",
-    skills: ["Three.js", "React Three Fiber", "Unity (C#)", "WebGL", "Web Audio API", "DCI Playback", "Stage Routing"],
+    skills: [
+      "Three.js",
+      "React Three Fiber",
+      "Unity (C#)",
+      "WebGL",
+      "Web Audio API",
+      "DCI Playback",
+      "Stage Routing",
+    ],
   },
   {
     title: "Composition & Production",
-    skills: ["Orchestral Voicing", "Logic Pro", "Ableton Live", "Sibelius", "Tabla & Taal Systems", "Western Harmony"],
+    skills: [
+      "Orchestral Voicing",
+      "Logic Pro",
+      "Ableton Live",
+      "Sibelius",
+      "Tabla & Taal Systems",
+      "Western Harmony",
+    ],
   },
   {
     title: "Currently Exploring",
-    skills: ["Monocular Depth Estimation", "ISRO Geospatial AI", "Spatial Audio", "Real-Time Creative Coding"],
+    skills: [
+      "Monocular Depth Estimation",
+      "ISRO Geospatial AI",
+      "Spatial Audio",
+      "Real-Time Creative Coding",
+    ],
   },
 ];
 
@@ -94,7 +152,6 @@ export default function AboutPage() {
   return (
     <div className="about">
       <div className="content-max">
-        
         {/* Header */}
         <header className="about__header">
           <span className="eyebrow">Identity & Background</span>
@@ -110,7 +167,8 @@ export default function AboutPage() {
 
         {/* Intro paragraph */}
         <p className="about__lead">
-          Music composer and Unity developer from Thane, Mumbai. Computer Engineering, University of Mumbai. Founder at Swarvibhaa.
+          Music composer and Unity developer from Thane, Mumbai. Computer
+          Engineering, University of Mumbai. Founder at Swarvibhaa.
         </p>
 
         {/* Lead Bio Grid */}
@@ -122,14 +180,22 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease }}
           >
             <p className="about__lead">
-              Thane-born, Mumbai-grown. I build at the intersection of music, technology, and culture — from software and interactive systems to compositions, live technical environments, and Swarvibhaa.
+              Thane-born, Mumbai-grown. I build at the intersection of music,
+              technology, and culture — from software and interactive systems to
+              compositions, live technical environments, and Swarvibhaa.
             </p>
             <p className="about__copy">
-              I compose for stage, screen, and global streaming; develop real-time web, mobile, and geospatial AI tools; and direct live technical infrastructure for national festivals. Where classical musicians see rhythm, I see algorithms; where engineers see data, I hear harmony.
+              I compose for stage, screen, and global streaming; develop
+              real-time web, mobile, and geospatial AI tools; and direct live
+              technical infrastructure for national festivals. Where classical
+              musicians see rhythm, I see algorithms; where engineers see data,
+              I hear harmony.
             </p>
             <aside className="about__facts" aria-label="Snapshot">
               <span className="about__fact">Thane — Mumbai</span>
-              <span className="about__fact">Computer Engineering · Univ of Mumbai</span>
+              <span className="about__fact">
+                Computer Engineering · Univ of Mumbai
+              </span>
               <span className="about__fact">Founder @ Swarvibhaa</span>
             </aside>
           </motion.div>
@@ -152,19 +218,44 @@ export default function AboutPage() {
             <h2 className="about__subtitle" style={{ margin: 0, fontSize: 18 }}>
               Quick Credentials
             </h2>
-            <ul style={{ margin: 0, paddingLeft: 20, fontSize: 14, lineHeight: 1.8, color: "var(--color-text-secondary)" }}>
-              <li><strong>Tabla:</strong> 10 years with Pandit Mukundraj Deo</li>
-              <li><strong>Piano:</strong> 6 years through Trinity College London</li>
-              <li><strong>Degree:</strong> B.E. Computer Engineering, University of Mumbai</li>
-              <li><strong>Live Tech:</strong> Technical Head, NSFF 2026 at Film City Mumbai</li>
-              <li><strong>Ecosystem:</strong> Founder of Swarvibhaa (est. 2023)</li>
+            <ul
+              style={{
+                margin: 0,
+                paddingLeft: 20,
+                fontSize: 14,
+                lineHeight: 1.8,
+                color: "var(--color-text-secondary)",
+              }}
+            >
+              <li>
+                <strong>Tabla:</strong> 10 years with Pandit Mukundraj Deo
+              </li>
+              <li>
+                <strong>Piano:</strong> 6 years through Trinity College London
+              </li>
+              <li>
+                <strong>Degree:</strong> B.E. Computer Engineering, University
+                of Mumbai
+              </li>
+              <li>
+                <strong>Live Tech:</strong> Technical Head, NSFF 2026 at Film
+                City Mumbai
+              </li>
+              <li>
+                <strong>Ecosystem:</strong> Founder of Swarvibhaa (est. 2023)
+              </li>
             </ul>
 
             <div style={{ marginTop: "auto", paddingTop: 12 }}>
               <Link
                 href="/cv"
                 className="btn btn--accent"
-                style={{ width: "100%", justifyContent: "center", display: "inline-flex", gap: 8 }}
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                  display: "inline-flex",
+                  gap: 8,
+                }}
                 onMouseEnter={() => sound.playHover()}
                 onClick={() => sound.playClick()}
               >
@@ -226,11 +317,22 @@ export default function AboutPage() {
             style={{ marginBottom: 32 }}
           >
             <span className="eyebrow">Engineering Matrix</span>
-            <h2 className="about__subtitle" style={{ fontSize: "clamp(24px, 4vw, 36px)" }}>
+            <h2
+              className="about__subtitle"
+              style={{ fontSize: "clamp(24px, 4vw, 36px)" }}
+            >
               Technical Competencies & Systems Stack
             </h2>
-            <p style={{ margin: "8px 0 0", fontSize: 15, color: "var(--color-text-secondary)", maxWidth: "60ch" }}>
-              A dual foundation: algorithmic rigour from computer engineering paired with creative audio processing and spatial 3D environments.
+            <p
+              style={{
+                margin: "8px 0 0",
+                fontSize: 15,
+                color: "var(--color-text-secondary)",
+                maxWidth: "60ch",
+              }}
+            >
+              A dual foundation: algorithmic rigour from computer engineering
+              paired with creative audio processing and spatial 3D environments.
             </p>
           </motion.div>
 
@@ -305,7 +407,9 @@ export default function AboutPage() {
             viewport={viewport}
             transition={{ duration: 0.7, delay: 0.1, ease }}
           >
-            English, Marathi, Hindi, and Malayalam, with elementary Gujarati. I write, direct, and collaborate across these languages for stage, screen, and cross-cultural ensembles.
+            English, Marathi, Hindi, and Malayalam, with elementary Gujarati. I
+            write, direct, and collaborate across these languages for stage,
+            screen, and cross-cultural ensembles.
           </motion.p>
         </section>
 
@@ -345,25 +449,54 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Interactive Terminal */}
+        <section style={{ margin: "80px 0" }} aria-label="Interactive terminal">
+          <InteractiveTerminal />
+        </section>
+
         {/* Bottom CTA */}
         <section
           style={{
             margin: "80px 0 40px",
             padding: "48px 32px",
             borderRadius: 24,
-            background: "linear-gradient(135deg, rgba(255, 59, 48, 0.08) 0%, rgba(0, 212, 255, 0.04) 100%)",
+            background:
+              "linear-gradient(135deg, rgba(255, 59, 48, 0.08) 0%, rgba(0, 212, 255, 0.04) 100%)",
             border: "1px solid var(--color-border)",
             textAlign: "center",
           }}
         >
-          <h2 style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 800, margin: "0 0 12px", color: "var(--color-text-primary)" }}>
+          <h2
+            style={{
+              fontSize: "clamp(24px, 4vw, 36px)",
+              fontWeight: 800,
+              margin: "0 0 12px",
+              color: "var(--color-text-primary)",
+            }}
+          >
             Let&apos;s build something exceptional.
           </h2>
-          <p style={{ fontSize: 16, color: "var(--color-text-secondary)", maxWidth: "55ch", margin: "0 auto 28px", lineHeight: 1.6 }}>
-            Whether you need custom software systems, a film or theatre score, festival live technical direction, or Swarvibhaa collaborations.
+          <p
+            style={{
+              fontSize: 16,
+              color: "var(--color-text-secondary)",
+              maxWidth: "55ch",
+              margin: "0 auto 28px",
+              lineHeight: 1.6,
+            }}
+          >
+            Whether you need custom software systems, a film or theatre score,
+            festival live technical direction, or Swarvibhaa collaborations.
           </p>
 
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 14 }}>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: 14,
+            }}
+          >
             <Link
               href="/work"
               className="btn"
@@ -383,7 +516,6 @@ export default function AboutPage() {
             </Link>
           </div>
         </section>
-
       </div>
     </div>
   );
